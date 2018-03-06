@@ -5,23 +5,28 @@ Page({
    * 页面的初始数据
    */
   data: {
+    personCount:10,
+    roundcount:4,
     againstTable:[]
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
+  createAgainstTable() {
+    wx.request({
+      url: `https://gzbtestsystem.cn/badminton/againsttable?NumberOfPeople=${this.data.personCount}&RoundsOfPerson=${this.data.roundcount}&format=json`,
+      method: "GET",
+      success: res => {
+        console.log(res.data.AgainstTable);
+        this.setData({
+          againstTable: res.data.AgainstTable
+        })
+      }
+    })},
   onLoad: function (options) {
     console.log(456);
-    wx.request({
-    url:"https://gzbtestsystem.cn/badminton/againsttable?NumberOfPeople=10&RoundsOfPerson=6&format=json",
-    method:"GET",
-    success:res=>{
-      this.setData({
-        againstTable:res.data
-      })
-    }
-  })
+    
   },
 
   /**

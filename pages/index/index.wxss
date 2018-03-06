@@ -1,26 +1,36 @@
 /**index.wxss**/
 
-    .item {
-      list-style-type: none;
-      height: 80px;
-      margin-top: 20px;
-      display: flex;
+    .wrapper {
+       width:100%;
     }
-
-    .item>input {
-      flex:1;
-      margin:0 20px 0 40px;
-      border: 2px solid #ddd;
-      border-radius: 20px;
+    .personList{
+      /* margin:20px; */
+    }
+    .item{
+       display: flex; 
+       margin:20px 0;
+       justify-content: space-around;
+    }
+     .personName {
+      width:75%; 
+      border: 1px solid #ddd;
+      border-radius: 5px; 
+       text-align: center; 
+      height:40px;
+    } 
+    .del{
       text-align: center;
-      /* font-size: inherit; */
+      line-height: 40px;
+      width:60px;
+    }
+    .btn{
+      display: flex;
+      justify-content: space-around;
     }
 
-    .item>button {
-      width:80px;
-      padding:0 20px;
-      margin:0 40px 0 20px;
-      color: red;
+     .btn>button {
+      width:40%;
+      padding:0 10px;
+      margin:20px;
       background: #eee;
-      border-color: #fff;
-    }
+    } 
