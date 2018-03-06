@@ -1,0 +1,26 @@
+/**index.wxss**/
+
+    .item {
+      list-style-type: none;
+      height: 80px;
+      margin-top: 20px;
+      display: flex;
+    }
+
+    .item>input {
+      flex:1;
+      margin:0 20px 0 40px;
+      border: 2px solid #ddd;
+      border-radius: 20px;
+      text-align: center;
+      /* font-size: inherit; */
+    }
+
+    .item>button {
+      width:80px;
+      padding:0 20px;
+      margin:0 40px 0 20px;
+      color: red;
+      background: #eee;
+      border-color: #fff;
+    }

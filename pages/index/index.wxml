@@ -1,0 +1,8 @@
+<!--index.wxml-->
+<view class="container">
+  <block wx:for="{{personList}}" wx:key="item" wx:for-item="name" class="personList">
+    <input bindtap="personNameTap" class="personName" value="{{name}}"/>
+    <!-- <button bindtap="delTap" class="del">删除</button> -->
+  </block>
+  <button>添加人员</button>
+</view>
