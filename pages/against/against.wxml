@@ -1,28 +1,35 @@
 <!--against.wxml-->
-<view>
-  <view>
-    <view>参赛人数：{{personCount}}</view>
-    <label for="count">每人场次：</label>
-    <input id="roundcount" value="{{roundcount}}"></input>
-    <button bindtap='createAgainstTable'>生成对阵表</button>
+<view class="wrapper">
+  <view class="baseInfo">
+    <view class="personCount">
+      <view>参赛人数：{{personCount}}</view>
+      <!-- <label class="warning" wx:if="{{personCount<4}}">不能少于4人</label> -->
+    </view>
+    <view class="roundCount">
+      <label for="count">每人场次：</label>
+      <input bindinput="roundCountChange" value="{{roundCount}}"></input>
+      <!-- <label class="warning">不能少于4人</label> -->
+    </view>
+    <button bindtap='createAgainstTable' disabled="{{personCount<4?'disabled':false}}"class="createTableBtn" wx:if="{{!showAgainstTable}}">生成对阵表</button>
   </view>
-  <block wx:for="{{againstTable}}" wx:key="item">
+
+  <view wx:for="{{scoreList}}" wx:key="item" class="againstTable">
     <view class="againstItem">
       <view class="side">
         <view class="name">{{item[0]}}</view>
         <view class="name">{{item[1]}}</view>
       </view>
       <view class="score">
-        <input class="scoreA" value="10" />
-        <view class="scoreBtn">
-          <button>+</button>
-          <button>-</button>
+        <view class="scoreA">{{item[4]}}</view>
+        <view class="scoreBtnGroup">
+          <button  bindtap='scoreChange' data-id="{{index}}" data-side="A" data-way="more">+</button>
+          <button  bindtap='scoreChange' data-id="{{index}}" data-side="A" data-way="less">-</button>
         </view>
-        :
-        <input class="scoreB" value="12" />
-        <view class="scoreBtn">
-          <button>+</button>
-          <button>-</button>
+        vs
+        <view class="scoreA">{{item[5]}}</view>
+        <view class="scoreBtnGroup">
+          <button  bindtap='scoreChange' data-id="{{index}}" data-side="B" data-way="more">+</button>
+          <button  bindtap='scoreChange' data-id="{{index}}" data-side="B"  data-way="less">-</button>
         </view>
       </view>
       <view class="side">
@@ -30,6 +37,5 @@
         <view class="name">{{item[3]}}</view>
       </view>
     </view>
-  </block>
-
+  </view>
 </view>

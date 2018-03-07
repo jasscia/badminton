@@ -1,80 +1,96 @@
 // against.js
 Page({
 
-  /**
-   * 页面的初始数据
-   */
   data: {
-    personCount:10,
-    roundcount:4,
-    againstTable:[]
+    personList:[],
+    scoreList:[],
+    personCount:0,
+    roundCount:4,
+    showAgainstTable:false
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  createAgainstTable() {
-    wx.request({
-      url: `https://gzbtestsystem.cn/badminton/againsttable?NumberOfPeople=${this.data.personCount}&RoundsOfPerson=${this.data.roundcount}&format=json`,
-      method: "GET",
-      success: res => {
-        console.log(res.data.AgainstTable);
-        this.setData({
-          againstTable: res.data.AgainstTable
-        })
-      }
-    })},
   onLoad: function (options) {
-    console.log(456);
-    
+    this.initalPersonList();
+    this.setData({
+      showAgainstTable: false
+    });
+  },
+  onShow: function (options) {
+    this.initalPersonList();
+    this.setData({
+      showAgainstTable: false
+    });
+  },
+  initalPersonList: function () {
+    wx.getStorage({
+      key: 'personList',
+      success: res => {
+        res = res.data.filter((name) => {
+          return name
+        });
+
+        this.setData({
+          personList: res,
+          personCount: res.length
+        })
+      },
+    })
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-  
+  roundCountChange:function(e){
+    this.setData({
+      roundCount:new Number(e.detail.value)
+    })
   },
+  createAgainstTable() {
+    if(!this.data.roundCount||this.data.personCount*this.data.roundCount%4){
+      wx.showModal({ 
+        title: "错误提示",
+        content: "场次和人数的乘积 不能被4整除",
+        mask:true,
+        duration:2000
+        })
+      return
+      }
+    this.getAgainstTable();
+    },
 
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-  
+  getAgainstTable:function(){
+      wx.request({
+        url: `https://gzbtestsystem.cn/badminton/againsttable?NumberOfPeople=${this.data.personCount}&RoundsOfPerson=${this.data.roundCount}&format=json`,
+        method: "GET",
+        success: res => {
+          Array.prototype.numToString.call(res.data.AgainstTable,this.data.personList);
+          for (let i=0; i<res.data.AgainstTable.length;i++){
+            res.data.AgainstTable[i] = res.data.AgainstTable[i].concat([0,0]);
+          };
+          this.setData({
+            scoreList:res.data.AgainstTable,
+            showAgainstTable: true
+          });
+          wx.setStorage({
+            key: 'scoreList',
+            data: res.data.AgainstTable,
+          })
+        }
+      })
   },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-  
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-  
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-  
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-  
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-  
+  scoreChange:function(e){
+    let id = e.target.dataset.id;
+    let side=(e.target.dataset.side==='A'?4:5);
+    let way=e.target.dataset.way;
+    let newScoreList = this.data.scoreList;
+    if (way === "more") {
+      newScoreList[id][side]++
+    } else if (newScoreList[id][side]!==0){
+      newScoreList[id][side]--
+    };
+    this.setData({
+      scoreList:newScoreList
+    });
+    wx.setStorage({
+      key: 'scoreList',
+      data: newScoreList
+    })
   }
 })

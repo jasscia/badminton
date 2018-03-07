@@ -1,13 +1,13 @@
 <!--index.wxml-->
 <view class="wrapper">
   <view class="personList">
-    <view wx:for="{{personList}}" wx:key="item" wx:for-item="name" class="item">
-      <input bindtap="personNameTap" class="personName" placeholder='姓名' value="{{name}}" />
-      <button bindtap="delTap" class="del">删除</button>
+    <view wx:for="{{personList}}" wx:key="item" class="item">
+      <input bindinput="personNameChange" data-item="{{item}}" class="personName" placeholder='姓名' value="{{item}}" />
+      <button bindtap="delTap" data-item="{{item}}" class="del">删除</button>
     </view>
   </view>
   <view class="btn">
-    <button>添加</button>
-    <button>完成</button>
+    <button bindtap="addPerson">添加</button>
+    <button bindtap="finish" wx:show="{{!(personList.filter((name){return name})<4)}}">完成</button>
   </view>
 </view>

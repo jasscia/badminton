@@ -1,9 +1,30 @@
 /* against.wxss */
+.baseInfo{
+  display: flex;
+  flex-direction: column;
+  justify-content:center;
+  align-items: center
+}
+.roundCount,.personCount{
+  display: flex;
+  margin:10px;
+  justify-content:space-between;
+  align-items: center;
+}
+.roundCount input{
+  /* width:20px; */
+  flex:1;
+  border-bottom: 1px solid;
+  text-align: center;
+}
+.createTableBtn{
+  width:80%;
+  margin-top:20px;
+}
 .againstItem{
   display: flex;
   align-items: center;
   justify-content: space-around;
-
   background-color: #eee;
   margin: 20px 10px;
 }
@@ -12,28 +33,29 @@
   flex-direction: column
 }
 .side .name{
-  margin:5px;
+  margin:10px auto;
 }
 .score{
   display: flex;
   align-items: center;
 }
 .scoreA,.scoreB{
-  background: red;
+  background:#44aa44; 
   height:40px;
+  line-height: 40px;
   width:40px;
   text-align: center;
   border-radius: 50%;
   margin:5px;
   padding:5px;
 }
-.scoreBtn{
+.scoreBtnGroup{
   color:orange;
 }
-.scoreBtn button{
-  background: green;
-  height:30px;
+.scoreBtnGroup button{
   width:40px;
-  margin:5px;
-  padding:2px;
+  height:30px;
+  line-height: 30px;
+  margin:5px 0;
+  padding:0;
 }

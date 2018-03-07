@@ -4,19 +4,23 @@
        width:100%;
     }
     .personList{
-      /* margin:20px; */
+     padding:0;
+     margin:0;
     }
     .item{
-       display: flex; 
-       margin:20px 0;
-       justify-content: space-around;
+      display: flex; 
+      margin:20px 0;
+      justify-content: space-around;
     }
      .personName {
-      width:75%; 
-      border: 1px solid #ddd;
-      border-radius: 5px; 
-       text-align: center; 
+      text-align: center;
+      line-height: 40px;
       height:40px;
+      width:70%; 
+      
+      margin-left:20px;
+      border: 1px solid #ddd;
+      border-radius: 5px;  
     } 
     .del{
       text-align: center;

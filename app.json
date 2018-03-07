@@ -1,13 +1,13 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/logs/logs",
-    "pages/against/against"
+    "pages/against/against",
+    "pages/result/result"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "羽毛球",
+    "navigationBarTitleText": "羽毛球赛",
     "navigationBarTextStyle": "black"
   },
   "tabBar": {
@@ -19,7 +19,12 @@
       {
         "pagePath": "pages/against/against",
         "text": "对阵表"
+      },
+      {
+        "pagePath": "pages/result/result",
+        "text": "战况一览"
       }
-    ]
+    ],
+    "selectedColor":"#33dd22"
   }
 }

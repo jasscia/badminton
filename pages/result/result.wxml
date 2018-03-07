@@ -1,0 +1,17 @@
+<!--pages/result/result.wxml-->
+<view class="wrapper">
+  <view class="item itemHead">
+    <view class='item1'>姓名</view>
+    <view class='item2'>净省分</view>
+    <view class='item3'>胜-负</view>
+    <view class='item4'>名次</view>
+  </view>
+  <view wx:for="{{result}}" wx:key="{{item}}"  class="item itemBody">
+    <!-- <view class="item"> -->
+      <view class='item1'>{{index}}</view>
+      <view class='item2'>{{item[0]}}</view>
+      <view class='item3'>{{item[1]}}-{{item[2]}}</view>
+      <view class='item4'>{{item[4]}}</view>
+    <!-- </view> -->
+  </view>
+</view>

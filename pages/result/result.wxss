@@ -1,0 +1,22 @@
+/* pages/result/result.wxss */
+.wrapper{
+  margin:20px;
+  display: grid;
+  grid-row-gap: 15px;
+  grid-template-columns:100%;
+}
+.item{
+display:grid;
+grid-template-columns:3fr 3fr 7fr 2fr;
+justify-items: center;
+height:40px;
+line-height: 40px;
+}
+
+.itemBody{
+  background: #eee;
+
+}
+.itemHead{
+  background: #44aa44;
+}
