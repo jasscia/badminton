@@ -7,7 +7,7 @@
 }
 .item{
 display:grid;
-grid-template-columns:3fr 3fr 7fr 2fr;
+grid-template-columns:3fr 3fr 3fr 2fr;
 justify-items: center;
 height:40px;
 line-height: 40px;

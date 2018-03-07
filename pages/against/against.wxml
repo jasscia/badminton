@@ -20,13 +20,16 @@
         <view class="name">{{item[1]}}</view>
       </view>
       <view class="score">
-        <view class="scoreA">{{item[4]}}</view>
         <view class="scoreBtnGroup">
           <button  bindtap='scoreChange' data-id="{{index}}" data-side="A" data-way="more">+</button>
           <button  bindtap='scoreChange' data-id="{{index}}" data-side="A" data-way="less">-</button>
         </view>
-        vs
-        <view class="scoreA">{{item[5]}}</view>
+        <view class="scoreA">{{item[4]}}</view>
+        <view class="sub">
+          <view>vs</view>
+          <view>第{{index+1}}场</view>
+        </view>
+        <view class="scoreB">{{item[5]}}</view>
         <view class="scoreBtnGroup">
           <button  bindtap='scoreChange' data-id="{{index}}" data-side="B" data-way="more">+</button>
           <button  bindtap='scoreChange' data-id="{{index}}" data-side="B"  data-way="less">-</button>

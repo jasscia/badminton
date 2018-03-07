@@ -59,3 +59,11 @@
   margin:5px 0;
   padding:0;
 }
+.sub{
+  display: flex;
+  font-size: 12px;
+  text-align: center;
+  width:50px;
+  justify-content: center;
+  flex-direction: column;
+}
