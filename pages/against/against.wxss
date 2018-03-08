@@ -12,58 +12,52 @@
   align-items: center;
 }
 .roundCount input{
-  /* width:20px; */
   flex:1;
   border-bottom: 1px solid;
   text-align: center;
+}
+.warning{
+  color:red;
+  font-size: 10px;
 }
 .createTableBtn{
   width:80%;
   margin-top:20px;
 }
-.againstItem{
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  background-color: #eee;
-  margin: 20px 10px;
+
+.againstTable{
+  display: grid;
+  justify-content: center;
+  grid-template-columns: 100%;
+  grid-column-gap: 20px;
+  margin:20px 10px;
 }
-.side{
-  display: flex;
-  flex-direction: column
+.againstItem{
+  display: grid;
+  grid-template-columns: 2fr repeat(5,1fr) 2fr;
+  justify-items: center;
+  align-items: center;
+  background-color: #eee;
 }
 .side .name{
-  margin:10px auto;
+  margin:10px 0;
 }
 .score{
-  display: flex;
-  align-items: center;
-}
-.scoreA,.scoreB{
   background:#44aa44; 
-  height:40px;
-  line-height: 40px;
+  height:50px;
+  line-height: 50px;
   width:40px;
   text-align: center;
   border-radius: 50%;
-  margin:5px;
-  padding:5px;
 }
-.scoreBtnGroup{
-  color:orange;
-}
-.scoreBtnGroup button{
+.handleBtnGroup button{
   width:40px;
   height:30px;
   line-height: 30px;
-  margin:5px 0;
-  padding:0;
+  text-align: center;
+  margin:5px;
 }
 .sub{
-  display: flex;
   font-size: 12px;
   text-align: center;
-  width:50px;
-  justify-content: center;
-  flex-direction: column;
 }
