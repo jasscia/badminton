@@ -10,11 +10,11 @@
       <input bindinput="roundCountChange" value="{{roundCount}}"></input>
       <label class="warning" wx:if="{{roundCount>8}}">不建议＞8场，可能会很累的哦</label>
     </view>
-    <button bindtap='createAgainstTable' disabled="{{personCount<4?'disabled':false}}" class="createTableBtn" wx:if="{{!showAgainstTable}}">生成对阵表</button>
+    <button bindtap='createAgainstTableTap' disabled="{{personCount<4?'disabled':false}}" class="createTableBtn" wx:if="{{showCreateBtn}}">生成对阵表</button>
   </view>
 
   <view wx:for="{{scoreList}}" wx:key="item" class="againstTable">
-    <view class="againstItem">
+    <view class="againstItem" capture-bind:tap='activeItem' data-id="{{index}}" style="{{activedItem===index?'background:lightgreen;transform:scaleY(1.4)':''}}">
       <view class="side">
         <view class="name">{{item[0]}}</view>
         <view class="name">{{item[1]}}</view>
@@ -24,12 +24,12 @@
         <button bindtap='scoreChange' data-id="{{index}}" data-side="A" data-way="more">+</button>
         <button bindtap='scoreChange' data-id="{{index}}" data-side="A" data-way="less">-</button>
       </view>
-      <view class="score">{{item[4]}}</view>
+      <view class="score scoreL">{{item[4]}}</view>
       <view class="sub">
         <view>vs</view>
         <view>第{{index+1}}场</view>
       </view>
-      <view class="score">{{item[5]}}</view>
+      <view class="score scoreR">{{item[5]}}</view>
       <view class="handleBtnGroup">
         <button bindtap='scoreChange' data-id="{{index}}" data-side="B" data-way="more">+</button>
         <button bindtap='scoreChange' data-id="{{index}}" data-side="B" data-way="less">-</button>

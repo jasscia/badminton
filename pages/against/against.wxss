@@ -44,11 +44,19 @@
 }
 .score{
   background:#44aa44; 
-  height:50px;
-  line-height: 50px;
+  height:60px;
+  line-height: 60px;
   width:40px;
   text-align: center;
-  border-radius: 50%;
+  /* border-radius: 50%; */
+}
+.scoreL{
+  border-bottom-left-radius: 50%;
+  border-top-left-radius: 50%;
+}
+.scoreR{
+  border-bottom-right-radius: 50%;
+  border-top-right-radius: 50%;
 }
 .handleBtnGroup button{
   width:40px;

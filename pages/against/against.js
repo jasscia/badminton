@@ -6,20 +6,21 @@ Page({
     scoreList:[],
     personCount:0,
     roundCount:4,
-    showAgainstTable:false
+    showCreateBtn:true,
+    activedItem:''
   },
 
   onLoad: function (options) {
     this.initalPersonList();
-    this.setData({
-      showAgainstTable: false
-    });
+    // this.setData({
+    //   showCreateBtn: false
+    // });
   },
   onShow: function (options) {
     this.initalPersonList();
-    this.setData({
-      showAgainstTable: false
-    });
+    // this.setData({
+    //   showCreateBtn: false
+    // });
   },
   initalPersonList: function () {
     wx.getStorage({
@@ -39,10 +40,11 @@ Page({
 
   roundCountChange:function(e){
     this.setData({
-      roundCount:new Number(e.detail.value)
+      roundCount:new Number(e.detail.value),
+      showCreateBtn:true
     })
   },
-  createAgainstTable() {
+  createAgainstTableTap() {
     if(!this.data.roundCount||this.data.personCount*this.data.roundCount%4){
       wx.showModal({ 
         title: "错误提示",
@@ -66,7 +68,7 @@ Page({
           };
           this.setData({
             scoreList:res.data.AgainstTable,
-            // showAgainstTable: true,
+            showCreateBtn: false,
           });
           wx.setStorage({
             key: 'scoreList',
@@ -95,6 +97,12 @@ Page({
     wx.setStorage({
       key: 'scoreList',
       data: newScoreList
+    })
+  },
+  activeItem:function(e){
+    console.log(e.currentTarget.dataset.id);
+    this.setData({
+      activedItem:e.currentTarget.dataset.id
     })
   }
 })
