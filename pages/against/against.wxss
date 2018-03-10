@@ -47,8 +47,8 @@
   height:60px;
   line-height: 60px;
   width:40px;
+  font-size:25px;
   text-align: center;
-  /* border-radius: 50%; */
 }
 .scoreL{
   border-bottom-left-radius: 50%;

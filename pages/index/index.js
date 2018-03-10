@@ -59,6 +59,14 @@ Page({
       })
     }
   },
+  changePersonList(e){
+    let content = e.detail.value;;
+    let personlist = content.trim().split('+');
+    console.log('jjj',personlist);
+    this.setData({
+      personList:personlist
+    })
+  },
   personNameChange: function (e) {
     let newList = this.data.personList.slice();
     newList.change(e.target.dataset.item, e.detail.value);

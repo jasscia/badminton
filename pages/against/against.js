@@ -12,15 +12,15 @@ Page({
 
   onLoad: function (options) {
     this.initalPersonList();
-    // this.setData({
-    //   showCreateBtn: false
-    // });
+    this.setData({
+      showCreateBtn: true
+    });
   },
   onShow: function (options) {
     this.initalPersonList();
-    // this.setData({
-    //   showCreateBtn: false
-    // });
+    this.setData({
+      showCreateBtn: true
+    });
   },
   initalPersonList: function () {
     wx.getStorage({

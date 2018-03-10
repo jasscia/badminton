@@ -1,12 +1,20 @@
 <!--index.wxml-->
 <view class="wrapper">
-  <view class="personList">
+  <view class="content">
+    <textarea placeholder='输入报名人员，用 + 分隔' bindinput="changePersonList">
+    </textarea>
+    <view class="tip">参赛人：
+      <text class="name"  wx:for="{{personList}}" wx:key="item">{{index+1}}.{{item}}</text>
+    </view>
+    <button bindtap="finish">确定</button>
+  </view>
+  <view class="personList" wx:if="{{false}}">
     <view wx:for="{{personList}}" wx:key="item" class="item">
       <input bindinput="personNameChange" data-item="{{item}}" class="personName" placeholder='姓名' value="{{item}}" />
       <button bindtap="delTap" data-item="{{item}}" class="del">删除</button>
     </view>
   </view>
-  <view class="btn">
+  <view class="btn" wx:if="{{false}}">
     <button bindtap="addPerson">添加</button>
     <button bindtap="finish" wx:show="{{!(personList.filter((name){return name})<4)}}">完成</button>
   </view>
