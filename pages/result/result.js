@@ -81,7 +81,7 @@ Page({
           result[item[i]][1] += (item[4] < item[5] ? 1 : 0);//[1]胜的场次
           result[item[i]][2] += (item[4] > item[5] ? 1 : 0);//[2]是败胜分
         }
-        result[item[i]][3] = result[item[i]][1] / result[item[i]][2];//[3]是胜/败的比值率
+        result[item[i]][3] = result[item[i]][1] - result[item[i]][2];//[3]是胜-败的比值率
       }
     }
     return result;

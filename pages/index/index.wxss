@@ -21,7 +21,6 @@
       color: #666;
     }
     .tip .name{
-      display: inline-block;
       margin:5px;
     }
     .personList{
