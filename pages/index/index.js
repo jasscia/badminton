@@ -61,7 +61,7 @@ Page({
   },
   changePersonList(e){
     let content = e.detail.value;;
-    let personlist = content.trim().split('+');
+    let personlist = content.trim().split(/[\＋\+]/);
     console.log('jjj',personlist);
     this.setData({
       personList:personlist
