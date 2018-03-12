@@ -59,13 +59,17 @@ Page({
       })
     }
   },
+ 
   changePersonList(e){
+    let findNames= function(stringWithName){
+      return stringWithName.split(/[!！？？]+/).slice(-1)[0].split(/[\+\＋]/);
+    }
     let content = e.detail.value;;
-    let personlist = content.trim().split(/[\＋\+]/);
-    console.log('jjj',personlist);
+    let personlist = findNames(content.trim());
+    // console.log('jjj',personlist);
     this.setData({
       personList:personlist
-    })
+    });
   },
   personNameChange: function (e) {
     let newList = this.data.personList.slice();
