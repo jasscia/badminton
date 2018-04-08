@@ -5,79 +5,68 @@ const app = getApp()
 
 Page({
   data: {
-    personList: []
+    personList: [],
+    personListToString:null
   },
   onLoad: function () {
     this.initalPersonList();
-    // wx.switchTab({
-    //   url: '../against/against',
-    // })
   },
   initalPersonList: function () {
     wx.getStorage({
       key: 'personList',
       success: res => {
-        if (res.data.length < 4) {
-          // let newList = res.data;
-          for (let i = 0; i < 4; i++) {
-            res.data[i] = res.data[i] || '';
-          }
-          this.setData({
-            personList: res.data
-          })
-        } else {
-          this.setData({
-            personList: res.data
-          })
-        }
-      },
-      fail: () => {
         this.setData({
-          personList: ['', '', '', '']
-        })
+            personList: res.data,
+            personListToString:res.data.join(' ')
+          })
+          console.log(this.data.personList);
       }
     })
   },
-  addPerson: function () {
-    let newList = this.data.personList.slice();
-    newList.push('');
-    this.setData({
-      personList: newList
-    })
-  },
-  delTap: function (e) {
-    if (this.data.personList.length > 4) {
-      let newList = this.data.personList.slice();
-      newList.remove(e.target.dataset.item);
+  sortPersonList(e){
+    let dom = e.target,
+        domData=dom.dataset;
+    if(domData.type){
+      let order=domData.order;
+      let type=domData.type;
+      let originArr = this.data.personList
+      let currArr = this.changePosition(originArr,order-1,type);
       this.setData({
-        personList: newList
-      })
-    } else {
-      wx.showModal({
-        title: '错误提示',
-        content: '人数不能少于4人'
-      })
+        personList: currArr,
+        personListToString:currArr.join(' ')
+      });
     }
   },
- 
-  changePersonList(e){
+  changePosition(array,index,way){
+    console.log(array,index,way)
+    if(way==="up"){
+      let tem=array[index];
+      array[index]=array[index-1];
+      array[index-1]=tem
+    }
+    if (way === "down") {
+      let tem = array[index];
+      array[index] = array[index + 1];
+      array[index+1] = tem
+    }
+    if (way === "remove") {
+      array.splice(index-1,1);
+    }
+    return array;
+  },
+  getPersonList(e){
     let findNames= function(stringWithName){
-      return stringWithName.split(/[!！？？]+/).slice(-1)[0].split(/[\+\＋]/);
+      return stringWithName.split(/[!！？？]+/).slice(-1)[0].split(/[\+\＋\s]/);
     }
     let content = e.detail.value;;
     let personlist = findNames(content.trim());
     // console.log('jjj',personlist);
     this.setData({
-      personList:personlist
+      personList:personlist,
+      // personListToString:personlist.join(' ')
     });
   },
-  personNameChange: function (e) {
-    let newList = this.data.personList.slice();
-    newList.change(e.target.dataset.item, e.detail.value);
-    this.setData({
-      personList: newList
-    })
-  },
+  
   finish: function () {
     let realPersonList = this.data.personList.filter((name) => {
       return name

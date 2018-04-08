@@ -1,21 +1,25 @@
 <!--index.wxml-->
 <view class="wrapper">
   <view class="content">
-    <textarea placeholder='输入报名人员，用 + 分隔' bindinput="changePersonList">
+    <textarea placeholder='输入报名人员，用 + 或 空格 分隔' bindinput="getPersonList" class="textarea" value="{{personListToString}}">
     </textarea>
-    <view class="tip">参赛人：
+    <!-- <view class="tip">参赛人：
       <text class="name"  wx:for="{{personList}}" wx:key="item">{{index+1}}.{{item}}</text>
+    </view> -->
+    <view class="sortTable" wx:if="{{personList}}">
+      <view class="title">实力排行榜</view>
+      <view class="ul" bindtap="sortPersonList">
+        <view class="li" wx:for="{{personList}}" wx:key="item">
+          <view class="order">{{index+1}}</view>
+          <view class="name">{{item}}</view>
+          <view class="icon up" data-type='up'  data-order='{{index+1}}'  wx:if="{{index+1>1}}"></view>
+          <view  wx:else class="icon null"></view>
+          <view class="icon down" data-type='down' data-order='{{index+1}}'  wx:if="{{index+1<personList.length}}"></view>
+          <view  wx:else class="icon null"></view>
+          <view class="icon remove" data-type='remove' data-order='{{index+1}}'></view>
+        </view>
+      </view>
     </view>
     <button bindtap="finish">确定</button>
-  </view>
-  <view class="personList" wx:if="{{false}}">
-    <view wx:for="{{personList}}" wx:key="item" class="item">
-      <input bindinput="personNameChange" data-item="{{item}}" class="personName" placeholder='姓名' value="{{item}}" />
-      <button bindtap="delTap" data-item="{{item}}" class="del">删除</button>
-    </view>
-  </view>
-  <view class="btn" wx:if="{{false}}">
-    <button bindtap="addPerson">添加</button>
-    <button bindtap="finish" wx:show="{{!(personList.filter((name){return name})<4)}}">完成</button>
   </view>
 </view>
