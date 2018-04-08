@@ -3,18 +3,18 @@
   <view class="baseInfo">
     <view class="personCount">
       <view>参赛人数：{{personCount}}</view>
-      <!-- <label class="warning" wx:if="{{personCount<4}}">不能少于4人</label>  -->
+       <label class="warning" wx:if="{{personCount<4}}">不能少于4人</label>  
     </view>
     <view class="roundCount">
       <label for="count">每人场次：</label>
       <input bindinput="roundCountChange" value="{{roundCount}}"></input>
       <label class="warning" wx:if="{{roundCount>8}}">不建议＞8场，可能会很累的哦</label>
     </view>
-    <button bindtap='createAgainstTableTap' disabled="{{personCount<4?'disabled':false}}" class="createTableBtn" wx:if="{{showCreateBtn}}">生成对阵表</button>
+    <button bindtap='createAgainstTableTap' disabled="{{personCount<4?'disabled':false}}" class="createTableBtn" wx:if="{{showCreateBtn}}">确定</button>
   </view>
 
   <view wx:for="{{scoreList}}" wx:key="item" class="againstTable">
-    <view class="againstItem" capture-bind:tap='activeItem' data-id="{{index}}" style="{{activedItem===index?'background:lightgreen;transform:scaleY(1.4)':''}}">
+    <view class="againstItem {{item[6]}}" capture-bind:tap='activeItem' data-id="{{index}}" style="{{activedItem===index?'background:lightgreen;transform:scaleY(1.4)':''}}">
       <view class="side">
         <view class="name">{{item[0]}}</view>
         <view class="name">{{item[1]}}</view>
@@ -25,9 +25,10 @@
         <button bindtap='scoreChange' data-id="{{index}}" data-side="A" data-way="less">-</button>
       </view>
       <view class="score scoreL">{{item[4]}}</view>
-      <view class="sub">
-        <view>vs</view>
+      <view class="sub" bindtap="finish" data-id="{{index}}">
         <view>第{{index+1}}场</view>
+        <view wx:if="{{item[6]==='undone'}}"  class="finishBtn">结束比赛</view> 
+        <view wx:else  class="finishBtn">查看比赛</view>
       </view>
       <view class="score scoreR">{{item[5]}}</view>
       <view class="handleBtnGroup">

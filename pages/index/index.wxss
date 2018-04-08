@@ -1,50 +1,64 @@
-/**index.wxss**/
-@import '../../util.wxss';
+
     .wrapper {
        width:100%;
        margin-bottom:60px;
     }
     .content{
-      margin:20rpx;
+      margin-top:20rpx;
       padding:0 20rpx;
-      width:710rpx;
-      /* display: grid;
-      justify-content: center; */
     }
     textarea{
-      border:1px solid #eee;
+      width:100%;
+      margin-left:-20rpx;
+      border-bottom:1px solid #eee;
+      border-bottom-right-radius: 50% 20%;
+      border-bottom-left-radius: 50% 20%;
+      background: rgba(240, 240, 240,0.6);
       padding:20rpx;
       letter-spacing: 2px;
+      text-align:left;
       height:150rpx;
       line-height: 50rpx;
       font-weight: lighter;
     }
+    .textarea::before{
+      content:'请输入参与人员姓名，用 + 或 空格 分隔';
+      color:#ccc;
+      display: block;
+      position: relative;
+      top:-20px;
+      font-weight: lighter;
+      font-size:25rpx;
+      text-align: center;
+    }
     .sortTable{
-      width:710rpx;
       margin-top:50rpx;
     }
-    .title,.add{
-      width:100%;
+    .title{
       text-align: center;
-      height:40rpx;
-      line-height: 40rpx;
+      height:20rpx;
+      width:500rpx;
+      line-height: 20rpx;
       vertical-align: middle;
       font-size: 50rpx;
+      letter-spacing: 10rpx;
       margin:40rpx auto;
+      background: linear-gradient(to right,yellow,greenyellow,yellow);
+      border-radius: 50%;
     }
     .ul{
-      width:100%;
       font-size: 40rpx;
     } 
     .li{
       display: flex;
-      background:#eee;
+      background:rgba(240, 240, 240,0.8);
       margin:30rpx 0;
-      width:100%;
       height:100rpx;
       line-height: 100rpx;
       vertical-align: middle;
       border-radius: 20rpx;
+      position: relative;
+      padding:0 20rpx;
     }
     .order::before{
       content: 'NO.';
@@ -52,23 +66,27 @@
       font-style: italic;
     }
     .name{
-      flex:1
+      flex:1;
+      white-space:nowrap;
+      overflow: hidden;
     }
     .name,.order{
       text-align: center
     }
-    .icon {
+    
+    .icon{
       width: 80rpx;
-      margin:10rpx;
+      margin:10rpx 25rpx;
       text-align: center;
-      background: lightblue;
+      color:#ccc;
       border-radius: 50%;
-    }
-    .null{
-      background: inherit;
+      font-weight: 900;
     }
     .up,.down{
-      color:azure;
+      background: #fff;     
+    }
+    .null{
+      background:rgba(240, 240, 240,0.8);
     }
     .up::after{
       content: '↑';
@@ -82,23 +100,27 @@
       display: inline-block;
       transform: translateY(-5rpx);
     }
-    .remove{
-      color:lightcoral;
-    }
-    .remove::after{
+    /* .remove{
+      position: absolute;
+      left: -20rpx;
+      top: -20rpx;
+      color:red;
+      width: 60rpx;
+      height:60rpx;
+      text-align: center;
+       background: #fff; 
+      border-radius: 50%;
+    } */
+    /* .remove::after{
       content: '×';
-      font-size: 150%;
+      font-size: 60rpx;
       display: inline-block;
-      transform: translateY(-10rpx);
+      transform: translateY(-35rpx); 
+    } */
+    .submit{
+      width:450rpx;
+      margin: 40rpx auto;
+      padding:0;
+      background:rgba(240, 240, 240,0.8);
+      letter-spacing: 20rpx;
     }
-    .btn{
-      display: flex;
-      justify-content: space-around;
-    }
-
-     .btn>button {
-      width:40%;
-      padding:0 10px;
-      margin:20px;
-      background: #eee;
-    } 

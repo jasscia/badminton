@@ -29,6 +29,11 @@ Page({
       },
     })
   },
+  onShareAppMessage() {
+    return {
+      title: "CGGC羽球赛"
+    }
+  },
   orderScore: function (obj) {
     let keys = Object.keys(obj);
     let orderedKeys = [];

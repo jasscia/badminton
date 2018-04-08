@@ -11,6 +11,11 @@ Page({
   onLoad: function () {
     this.initalPersonList();
   },
+  onShareAppMessage(){
+    return {
+      title:"CGGC羽球赛"
+    }
+  },
   initalPersonList: function () {
     wx.getStorage({
       key: 'personList',
@@ -19,7 +24,6 @@ Page({
             personList: res.data,
             personListToString:res.data.join(' ')
           })
-          console.log(this.data.personList);
       }
     })
   },
@@ -38,7 +42,6 @@ Page({
     }
   },
   changePosition(array,index,way){
-    console.log(array,index,way)
     if(way==="up"){
       let tem=array[index];
       array[index]=array[index-1];
@@ -65,7 +68,7 @@ Page({
     });
   },
   
-  finish: function () {
+  submit:function () {
     let realPersonList = this.data.personList.filter((name) => {
       return name
     });

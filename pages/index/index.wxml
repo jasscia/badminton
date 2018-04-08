@@ -1,7 +1,7 @@
 <!--index.wxml-->
 <view class="wrapper">
   <view class="content">
-    <textarea placeholder='输入报名人员，用 + 或 空格 分隔' bindinput="getPersonList" class="textarea" value="{{personListToString}}">
+    <textarea placeholder='' bindinput="getPersonList" class="textarea" value="{{personListToString}}">
     </textarea>
     <!-- <view class="tip">参赛人：
       <text class="name"  wx:for="{{personList}}" wx:key="item">{{index+1}}.{{item}}</text>
@@ -16,10 +16,10 @@
           <view  wx:else class="icon null"></view>
           <view class="icon down" data-type='down' data-order='{{index+1}}'  wx:if="{{index+1<personList.length}}"></view>
           <view  wx:else class="icon null"></view>
-          <view class="icon remove" data-type='remove' data-order='{{index+1}}'></view>
+          <!-- <view class="icon remove" data-type='remove' data-order='{{index+1}}'></view> -->
         </view>
       </view>
     </view>
-    <button bindtap="finish">确定</button>
+    <button bindtap="submit" class="submit">生成对阵表</button>
   </view>
 </view>

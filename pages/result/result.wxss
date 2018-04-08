@@ -1,18 +1,26 @@
 /* pages/result/result.wxss */
 .wrapper{
-  margin:20px;
-  display: grid;
-  grid-row-gap: 15px;
-  grid-template-columns:100%;
+  margin:20px 0;
 }
 .item{
-display:grid;
-grid-template-columns:3fr 3fr 3fr 2fr;
-justify-items: center;
-height:40px;
-line-height: 40px;
+  display: flex;
+  width:700rpx;
+  margin:15px auto;
+  height:40px;
+  line-height: 40px;
 }
-
+.item1{
+  white-space:nowrap;
+  overflow: hidden;
+}
+.item1,.item2,.item3,.item4{
+  text-align: center;
+  vertical-align: middle; 
+}
+.item1,.item2,.item3{
+  width:180px
+}
+.item4{width:170rpx}
 .itemBody{
   background: #eee;
 

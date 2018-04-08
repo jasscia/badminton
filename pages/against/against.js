@@ -16,6 +16,12 @@ Page({
       showCreateBtn: true
     });
   },
+
+  onShareAppMessage() {
+    return {
+      title: "CGGC羽球赛"
+    }
+  },
   onShow: function (options) {
     this.initalPersonList();
     this.setData({
@@ -29,6 +35,7 @@ Page({
         res = res.data.filter((name) => {
           return name
         });
+        console.log('get personList',res)
 
         this.setData({
           personList: res,
@@ -64,7 +71,7 @@ Page({
         success: res => {
           Array.prototype.numToString.call(res.data.AgainstTable,this.data.personList);
           for (let i=0; i<res.data.AgainstTable.length;i++){
-            res.data.AgainstTable[i] = res.data.AgainstTable[i].concat([0,0]);
+            res.data.AgainstTable[i] = res.data.AgainstTable[i].concat([0,0,'undone']);
           };
           this.setData({
             scoreList:res.data.AgainstTable,
@@ -100,9 +107,17 @@ Page({
     })
   },
   activeItem:function(e){
-    console.log(e.currentTarget.dataset.id);
     this.setData({
       activedItem:e.currentTarget.dataset.id
     })
+  },
+  finish:function(e){
+    let index = e.currentTarget.dataset.id;
+    let scoreList=this.data.scoreList;
+    scoreList[index][6] = (scoreList[index][6]==='done'?'undone':'done');
+    this.setData({
+      scoreList:scoreList
+    })
+    console.log(scoreList);
   }
 })
