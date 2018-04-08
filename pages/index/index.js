@@ -50,7 +50,7 @@ Page({
       array[index+1] = tem
     }
     if (way === "remove") {
-      array.splice(index-1,1);
+      array.splice(index,1);
     }
     return array;
   },
@@ -60,10 +60,8 @@ Page({
     }
     let content = e.detail.value;;
     let personlist = findNames(content.trim());
-    // console.log('jjj',personlist);
     this.setData({
       personList:personlist,
-      // personListToString:personlist.join(' ')
     });
   },
   
