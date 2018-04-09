@@ -16,7 +16,7 @@ Page({
     })
     var animation2 = wx.createAnimation({
       duration: 400,
-      timingFunction: 'ease-out',
+      timingFunction: 'ease',
     })
     this.animation1 = animation1; 
     this.animation2 = animation2;
@@ -72,20 +72,20 @@ Page({
   },
   dotAnimate(event,way){
     let index = event.target.dataset.order,
-        pos = (510+130*index-65)/2 -30;
-    if (way === "up") { pos-=32.5}
-    if (way === "down") { pos+=32.5 }
-    console.log(index, pos)//先很快的完成 将dot移动到当前位置
-    this.animation1.top(pos).opacity(1).step();
+        startYPos = (510+130*index-65)/2 -30 ,
+        endYPos = startYPos;
+    if (way === "up") { endYPos-=65}
+    if (way === "down") { endYPos+=65 }
+    console.log(index, startYPos, endYPos)//先很快的完成 将dot移动到当前位置
+    this.animation1.top(startYPos).opacity(1).step();
     if (timerId) { clearTimeout(timerId)};
      this.setData({
       animationData: this.animation1.export()
     })
 
     //再缓慢的 将dot移动到下一个位置
-     let timerId = setTimeout(function () {
-      this.animation2.scaleY(2).step();
-      this.animation2.opacity(0).scaleY(0).step();
+    let timerId=setTimeout(function () {
+      this.animation2.top(endYPos).opacity(0).scale(1).step();
       this.setData({
         animationData: this.animation2.export()
       })

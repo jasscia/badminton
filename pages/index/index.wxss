@@ -43,7 +43,7 @@ textarea{
   font-size: 50rpx;
   letter-spacing: 10rpx;
   margin:60rpx auto;  
-  position:relative
+   position:relative
 }
 /* .title::before{
   content: "参赛人";
@@ -128,10 +128,11 @@ textarea{
 
 .dot{
   position:fixed;
-  opacity:1;
+  opacity:0;
   left:250rpx;
   height: 60rpx;
-  width:60rpx;
+  width:30rpx;
+  border-radius: 50%;
   background: orange;
   z-index: 999;
 }
