@@ -24,7 +24,7 @@ textarea{
   position: relative;
   top:-20px;
   font-weight: lighter;
-  font-size:30rpx;
+  font-size:24rpx;
   text-align: center;
 }
 .tip{
@@ -45,20 +45,20 @@ textarea{
   margin:60rpx auto;  
    position:relative
 }
-/* .title::before{
-  content: "参赛人";
-  font-size:20rpx;
+ .title::before{
+  content: "调整面板";
+  font-size:24rpx;
   letter-spacing: 0rpx;
   position: absolute;
-  bottom: -20rpx;
-  left:-40rpx;
-} */
+   bottom: -10rpx; 
+  right:-65rpx;
+} 
 .title::after{
   content: " ";
   font-size: 2rpx;
   display: block;
   height:15rpx;
-  margin-top:20rpx; 
+  margin-top:10rpx; 
   background: orange;
 }
 .ul{
