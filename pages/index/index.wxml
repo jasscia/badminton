@@ -1,14 +1,17 @@
 <!--index.wxml-->
 <view class="warp">
-    <view class="dot" animation="{{animationData}}"></view>
+//动画控制器
+    <!-- <view class="dot" animation="{{animationData}}"></view> -->
   <view class="content">
     <textarea placeholder='' bindinput="getPersonList" class="textarea" value="{{personListToString}}">
     </textarea>
-    <!-- <block  wx:for="{{personList}}" wx:key="item"> -->
-     <!-- <view class="tip">{{index+1}}.{{item}} -->
-     <!-- </view> 
-    </block>  -->
-    <view class="tip">共 {{personList.length}} 人参赛</view>
+    <!-- 设置动画时候 不能有该block  -->
+     <block  wx:for="{{personList}}" wx:key="item"> 
+      <view class="tip">{{index+1}}.{{item}} 
+      </view> 
+    </block>
+    <!--设置动画的时候 要加上这个 tip  -->
+    <!-- <view class="tip">共 {{personList.length}} 人参赛</view> -->
     <view class="sortTable" wx:if="{{personList.length>0}}">
       <view class="title">实力排行榜</view>
       <view class="ul" bindtap="sortPersonList">
