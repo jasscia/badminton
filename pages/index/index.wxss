@@ -1,8 +1,6 @@
 @import '../../lib/style/font.wxss';
 textarea{
   width:100%;
-  /* margin-left:-20rpx; */
-  /* border-bottom:1px solid #eee; */
   border-bottom-right-radius:300rpx 50rpx;
   border-bottom-left-radius:300rpx 50rpx;
   background: cadetblue;
@@ -42,8 +40,8 @@ textarea{
   vertical-align: middle;
   font-size: 50rpx;
   letter-spacing: 10rpx;
-  margin:60rpx auto;  
-   position:relative
+  margin:60rpx auto 70rpx;  
+  position:relative
 }
  .title::before{
   content: "调整面板";
@@ -61,39 +59,79 @@ textarea{
   margin-top:10rpx; 
   background: orange;
 }
-.ul{
-  font-size: 40rpx;
-} 
-.li{
-  display: flex;
-  background:#fff;
-  margin:30rpx 0;
-  height:100rpx;
-  line-height: 100rpx;
-  vertical-align: middle;
-  border-radius: 20rpx;
-  position: relative;
-  padding:0 20rpx;
+.sortTable{
+  width:750rpx;
+  left:0;
+  right:0;
 }
-.order::before{
-  content: 'NO.';
-  font-size: 60%;
-  font-style: italic;
+.ul{
+  display: inline-block;
+  vertical-align: top;
+  min-height: 80rpx;
+  margin:0 10rpx;
+  width:250rpx;
+  background:#fff;
+  padding:20rpx;
+  border-radius: 20rpx;
+  position: absolute;
+} 
+.unordered{
+  left:40rpx;
+  background: #fff;
+}
+.unordered::before{
+  content:'无序榜';
+}
+.ordered::before{
+  content:'有序榜';
+}
+.ul::before{  
+  display: inline-block;
+  width:100%;
+  text-align: center;
+  transform:translateY(-45rpx);
+}
+.li{
+  margin-left:40rpx;
+  z-index:1
+}
+.ordered{
+  right:40rpx;
+  /* background: greenyellow */
 }
 .name{
+  font-size: 30rpx;
+  display: inline-block;
+  background:orange; 
+  text-align: center;
+  border-radius: 20rpx;
+  height:40rpx;
+  margin:20rpx auto;
+  padding:10rpx 20rpx;
+  text-align: center;
+  letter-spacing: 5rpx;
+  z-index:999;
+}
+.submit{
+  width:450rpx;
+  margin: 40rpx auto;
+  padding:0;
+  background:cadetblue;
+  letter-spacing: 20rpx;  
+}
+/* .name{
   flex:1;
   white-space:nowrap;
   overflow: hidden;
-}
-.name,.order{
+} */
+/* .name,.order{
   text-align: center
-}
+} */
 
-.icon{
+/* .icon{
   width: 80rpx;
   margin:10rpx 25rpx;
   text-align: center;
-  /* color:#ccc; */
   border-radius: 50%;
   font-weight: 900;
 }
@@ -114,19 +152,13 @@ textarea{
 }
 .down::after{
   content: '↓';
-}
-.submit{
-  width:450rpx;
-  margin: 40rpx auto;
-  padding:0;
-  background:cadetblue;
-  letter-spacing: 20rpx;  
-}
-.button-hover{
-  background-color: cadetblue;
-}
+} */
 
-.dot{
+/* .button-hover{
+  background-color: cadetblue;
+} */
+
+/* .dot{
   position:fixed;
   opacity:0;
   left:250rpx;
@@ -135,4 +167,4 @@ textarea{
   border-radius: 50%;
   background: orange;
   z-index: 999;
-}
+} */

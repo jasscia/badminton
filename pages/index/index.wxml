@@ -1,31 +1,28 @@
 <!--index.wxml-->
 <view class="warp">
-//动画控制器
-    <!-- <view class="dot" animation="{{animationData}}"></view> -->
   <view class="content">
     <textarea placeholder='' bindinput="getPersonList" class="textarea" value="{{personListToString}}">
     </textarea>
-    <!-- 设置动画时候 不能有该block  -->
-     <block  wx:for="{{personList}}" wx:key="item"> 
-      <view class="tip">{{index+1}}.{{item}} 
-      </view> 
-    </block>
-    <!--设置动画的时候 要加上这个 tip  -->
-    <!-- <view class="tip">共 {{personList.length}} 人参赛</view> -->
-    <view class="sortTable" wx:if="{{personList.length>0}}">
-      <view class="title">实力排行榜</view>
-      <view class="ul" bindtap="sortPersonList">
-        <view class="li" wx:for="{{personList}}" wx:key="item">
-          <view class="order">{{index+1}}</view>
-          <view class="name">{{item}}</view>
-          <view class="icon up" data-type='up'  data-order='{{index+1}}'  wx:if="{{index+1>1}}"></view>
-          <view  wx:else class="icon null"></view>
-          <view class="icon down" data-type='down' data-order='{{index+1}}'  wx:if="{{index+1<personList.length}}"></view>
-          <view  wx:else class="icon null"></view>
-          <!-- <view class="icon remove" data-type='remove' data-order='{{index+1}}'></view> -->
-        </view>
+    <block wx:for="{{personList}}" wx:key="item">
+      <view class="tip">{{index+1}}.{{item}}
       </view>
-    </view>
-    <button bindtap="submit" class="submit"  wx:if="{{personList.length>0}}">生成对阵表</button>
+    </block>
+    <movable-area class="sortTable" wx:if="{{personList.length>0}}" style="height:{{(personList_ordered.length>personList_unordered.length?personList_ordered.length:personList_unordered.length)*80+200}}rpx">
+    
+     <!-- {{}}  -->
+      <view class="title">实力排行榜</view>
+      <view class="ul unordered"  bind:touchend="unorderedMove"  style="height:{{(personList_ordered.length>personList_unordered.length?personList_ordered.length:personList_unordered.length)*80}}rpx;">
+        <movable-view direction="all" class="li" wx:for="{{personList_unordered}}" wx:key="item"  style="height:60rpx; width:300rpx; top:{{index*80+10}}rpx">
+           <view class="name" data-tag="unordered" data-index="{{index}}"  >{{item}}</view> 
+        </movable-view>
+      </view>
+
+       <view class="ul ordered" bind:touchend="unorderedMove"   style="height:{{(personList_ordered.length>personList_unordered.length?personList_ordered.length:personList_unordered.length)*80}}rpx;">
+        <movable-view direction="all" class="li" wx:for="{{personList_ordered}}" wx:key="item" style="height:60rpx; width:300rpx; top:{{index*80+10}}rpx">
+          <view class="name" data-tag="ordered" data-index="{{index}}" >{{item}}</view> 
+        </movable-view>
+      </view>
+    </movable-area>
+    <button bindtap="submit" class="submit" wx:if="{{personList.length>0}}">生成对阵表</button>
   </view>
 </view>
