@@ -1,6 +1,6 @@
 <!--pages/result/result.wxml-->
-<view class="wrapper">
-  <view class="item itemHead">
+<view class="warp">
+  <view class="itemHead">
     <view class='item1'>姓名</view>
     <view class='item3'>胜-负</view>
     <view class='item2'>净胜分</view>
@@ -8,10 +8,10 @@
   </view>
   <view wx:for="{{result}}" wx:key="{{item}}"  class="item itemBody">
     <!-- <view class="item"> -->
-      <view class='item1'>{{index}}</view>
+      <view class='item1 NO-{{item[4]}}'>{{index}}</view>
       <view class='item3'>{{item[1]}}-{{item[2]}}</view>
       <view class='item2'>{{item[0]}}</view>
-      <view class='item4'>{{item[4]}}</view>
+      <view class='item4 NO-{{item[4]}}'>{{item[4]}}</view>
     <!-- </view> -->
   </view>
 </view>

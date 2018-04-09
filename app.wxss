@@ -1,5 +1,13 @@
 
-button,input{
+ button,input{
   margin:0;
   padding:0;
+}
+.warp{
+    width:100%;
+    background: #eee;
+    padding-bottom: 100rpx;
+    margin-bottom:-100px;   
+    color:#666;
+    min-height: 1500rpx; 
 }

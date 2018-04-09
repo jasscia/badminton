@@ -6,16 +6,27 @@ const app = getApp()
 Page({
   data: {
     personList: [],
-    personListToString:null
+    personListToString:null,
+    animationData:'',
   },
   onLoad: function () {
+    var animation1 = wx.createAnimation({
+      duration: 1,
+      timingFunction: 'ease',
+    })
+    var animation2 = wx.createAnimation({
+      duration: 400,
+      timingFunction: 'ease-out',
+    })
+    this.animation1 = animation1; 
+    this.animation2 = animation2;
     this.initalPersonList();
   },
   onShareAppMessage(){
     return {
       title:"CGGC羽球赛"
     }
-  },
+  }, 
   initalPersonList: function () {
     wx.getStorage({
       key: 'personList',
@@ -34,7 +45,9 @@ Page({
       let order=domData.order;
       let type=domData.type;
       let originArr = this.data.personList
-      let currArr = this.changePosition(originArr,order-1,type);
+      let currArr = this.changePosition(originArr,order-1,type)
+
+      this.dotAnimate(e,type);
       this.setData({
         personList: currArr,
         personListToString:currArr.join(' ')
@@ -45,21 +58,42 @@ Page({
     if(way==="up"){
       let tem=array[index];
       array[index]=array[index-1];
-      array[index-1]=tem
+      array[index-1]=tem;
     }
     if (way === "down") {
       let tem = array[index];
       array[index] = array[index + 1];
-      array[index+1] = tem
+      array[index + 1] = tem;
     }
     if (way === "remove") {
       array.splice(index,1);
     }
     return array;
   },
+  dotAnimate(event,way){
+    let index = event.target.dataset.order,
+        pos = (510+130*index-65)/2 -30;
+    if (way === "up") { pos-=32.5}
+    if (way === "down") { pos+=32.5 }
+    console.log(index, pos)//先很快的完成 将dot移动到当前位置
+    this.animation1.top(pos).opacity(1).step();
+    if (timerId) { clearTimeout(timerId)};
+     this.setData({
+      animationData: this.animation1.export()
+    })
+
+    //再缓慢的 将dot移动到下一个位置
+     let timerId = setTimeout(function () {
+      this.animation2.scaleY(2).step();
+      this.animation2.opacity(0).scaleY(0).step();
+      this.setData({
+        animationData: this.animation2.export()
+      })
+    }.bind(this),50)
+  },
   getPersonList(e){
     let findNames= function(stringWithName){
-      return stringWithName.split(/[!！？？]+/).slice(-1)[0].split(/[\+\＋\s]/);
+      return stringWithName.split(/[!！？？]+/).slice(-1)[0].split(/[\+\＋\s]+/);
     }
     let content = e.detail.value;;
     let personlist = findNames(content.trim());
@@ -79,14 +113,15 @@ Page({
       })
       return
     };
+    this.setStorage('personList',realPersonList);
+    wx.switchTab({
+      url: '../against/against',
+    })
+  },
+  setStorage:function(key,data){
     wx.setStorage({
-      key: 'personList',
-      data: realPersonList,
-      success: function () {
-        wx.switchTab({
-          url: '../against/against',
-        })
-      }
+      key,
+      data
     })
   }
 })

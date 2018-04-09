@@ -3,7 +3,7 @@
   display: flex;
   flex-direction: column;
   justify-content:center;
-  align-items: center
+  align-items: center;
 }
 .roundCount,.personCount{
   display: flex;
@@ -17,105 +17,122 @@
   text-align: center;
 }
 .warning{
-  color:red;
   font-size: 10px;
+  color: orangered
 }
 .createTableBtn{
-  width:80%;
+  width:450rpx;
   margin-top:20px;
+  letter-spacing: 20rpx;
+  background: cadetblue;
 }
 
 .againstTable{
   width:100%;
+  box-sizing: border-box;
+  padding-left:20rpx;
+  padding-right:20rpx;
 }
 .againstItem{
-  font-size:32rpx;
-  height:95px;
-  background-color: #eee;
+  font-size:36rpx;
+  height:200rpx;
+  background-color: #fff;
   display: flex;
   align-items: center;
-  margin:50rpx 15rpx;
-  font-size: 40rpx;
+  margin:40rpx 0;
   border-radius: 20rpx;
-  color:#666;
-  position: relative
+  position: relative;
 }
-.done::before{
-  content: '结束';
-  position: absolute;
-  left:0;
-  right:420rpx;
-  bottom:0;
-  top:0;
-}
-.done::after{
-  content: '结束';
-  position: absolute;
-  left:380rpx;
-  right:0;
-  bottom:0;
-  top:0;
-}
-.done::before,.done::after{
-  background: rgba(255, 80,80, 1);
-  text-align: center;
-  line-height: 95px;
-  vertical-align: middle;
-  z-index: 999;
-  border-radius: 20rpx;
-}
- .side,.handleBtnGroup,score,.sub{
+.side,
+.handleBtnGroup,
+.score,
+.sub{
   display: inline-block;
   text-align: center;
-} 
-.name{
+  box-sizing: border-box;
+  padding:0;
+}
+/* 总宽 750rpx
+padding:20px 0;
+其余的 分别宽 160 70 70 110 */
+.side{
+  width:160rpx;
+  }
+.handleBtnGroup{
+  width:70rpx;
+  }
+.score{
+  width: 70rpx;
+}
+.sub{
+  width:110rpx;
+}
+.side .name{
+  width:100%;
   margin: 10px 0;
+  text-align: center;
   white-space:nowrap;
   overflow: hidden;
 }
-.side .name{
-  /* margin:10px 0; */
-  width:160rpx;
-}
-.handleBtnGroup{
-  margin:0;
-  padding:0;
-  width:60rpx;
-}
 .handleBtnGroup button{
-  height:30px;
   width:100%;
-  line-height: 30px;
-  display: inline-block;
-  text-align: center;
+  height:60rpx;
+  line-height: 60rpx;
   margin:10rpx 0;
+  text-align: center;
+  display: inline-block;
 }
 .score{
-  background:#44aa44; 
-  height:60px;
-  line-height: 60px;
-  width:70rpx; 
-  font-size:60rpx;
-  text-align: center;
+  height:160rpx;
+  text-align: center; 
+  line-height: 160rpx;
+  font-size:60rpx; 
+  background:cadetblue; 
 }
 .scoreL{
   border-bottom-left-radius: 50%;
   border-top-left-radius: 50%;
 }
 .scoreR{
-  /* width:94rpx;  */
   border-bottom-right-radius: 50%;
   border-top-right-radius: 50%;
 }
 .sub{
-  width:104rpx; 
-  font-size: 20rpx;
+  font-size: 25rpx;
+  letter-spacing: -2rpx;
   text-align: center;
-  height:40px;
-  padding:0;
 }
- .finishBtn{
-  margin:10rpx;
-  background: lightcoral;
+.sub .finishBtn{
+  margin:5rpx;
+  background: gold;
   border-radius: 20%;
 } 
+.done::before{
+  content: '结束';
+  position: absolute;
+  left:0;
+  right:415rpx;
+  bottom:0;
+  top:0;
+}
+.done::after{
+  content: '结束';
+  position: absolute;
+  left:405rpx;
+  right:0;
+  bottom:0;
+  top:0;
+}
+.done::before,.done::after{
+  background: orange;
+  text-align: center;
+  line-height: 95px;
+  vertical-align: middle;
+  z-index: 999;
+  border-radius: 20rpx;
+}
+.selected{
+  background:lightgreen;
+  transform:scaleY(1.3);
+  transition: transform 0.5s;
+}

@@ -1,13 +1,20 @@
-/* pages/result/result.wxss */
-.wrapper{
-  margin:20px 0;
+@import '../../lib/style/font.wxss';
+.itemHead{
+  display: flex;
+  width:700rpx;
+  margin:0 auto;
+  height:80rpx;
+  line-height: 80rpx;
+  border-bottom: 10rpx solid cadetblue;
 }
 .item{
   display: flex;
   width:700rpx;
-  margin:15px auto;
-  height:40px;
-  line-height: 40px;
+  margin:25rpx auto;
+  height:80rpx;
+  line-height: 80rpx;
+  border-radius: 20rpx;
+  background: #fff;
 }
 .item1{
   white-space:nowrap;
@@ -21,10 +28,24 @@
   width:180px
 }
 .item4{width:170rpx}
-.itemBody{
-  background: #eee;
-
+.NO-1,.NO-2,.NO-3{
+  position: relative;
 }
-.itemHead{
-  background: #44aa44;
+.NO-1::after,.NO-2::after,.NO-3::after{
+  font-family: "iconfont";
+  content: "\e725";
+  font-size: 40rpx;
+  position: absolute;
+  /* top:0;
+  right:0;
+  z-index: 999; */
+}
+.NO-1::after{ 
+  color: gold;
+}
+.NO-2::after{ 
+  color: coral;
+}
+.NO-3::after{ 
+  color: chartreuse;
 }

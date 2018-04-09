@@ -1,126 +1,137 @@
+@import '../../lib/style/font.wxss';
+textarea{
+  width:100%;
+  /* margin-left:-20rpx; */
+  /* border-bottom:1px solid #eee; */
+  border-bottom-right-radius:300rpx 50rpx;
+  border-bottom-left-radius:300rpx 50rpx;
+  background: cadetblue;
+  padding:20rpx;
+  letter-spacing: 2px;
+  text-align:left;
+  height:200rpx;
+  line-height: 50rpx;
+  font-weight: lighter;
+  border-top: 25rpx solid #eee;
+  color:#333;
+  font-weight: 200;
+}
+.textarea::before{
+  content:'请输入参与人员姓名，用 + 或 空格 分隔';
+  letter-spacing: 0;
+  color:orangered;
+  display: block;
+  position: relative;
+  top:-20px;
+  font-weight: lighter;
+  font-size:30rpx;
+  text-align: center;
+}
+.tip{
+  font-size: 24rpx;
+  color: #666;
+  display: inline-block;
+  margin:5rpx 8rpx;
+  height:30rpx;
+}
+.title{
+  text-align: center;
+  height:60rpx;
+  width:350rpx;
+  line-height: 60rpx;
+  vertical-align: middle;
+  font-size: 50rpx;
+  letter-spacing: 10rpx;
+  margin:60rpx auto;  
+  position:relative
+}
+/* .title::before{
+  content: "参赛人";
+  font-size:20rpx;
+  letter-spacing: 0rpx;
+  position: absolute;
+  bottom: -20rpx;
+  left:-40rpx;
+} */
+.title::after{
+  content: " ";
+  font-size: 2rpx;
+  display: block;
+  height:15rpx;
+  margin-top:20rpx; 
+  background: orange;
+}
+.ul{
+  font-size: 40rpx;
+} 
+.li{
+  display: flex;
+  background:#fff;
+  margin:30rpx 0;
+  height:100rpx;
+  line-height: 100rpx;
+  vertical-align: middle;
+  border-radius: 20rpx;
+  position: relative;
+  padding:0 20rpx;
+}
+.order::before{
+  content: 'NO.';
+  font-size: 60%;
+  font-style: italic;
+}
+.name{
+  flex:1;
+  white-space:nowrap;
+  overflow: hidden;
+}
+.name,.order{
+  text-align: center
+}
 
-    .wrapper {
-       width:100%;
-       margin-bottom:60px;
-    }
-    .content{
-      margin-top:20rpx;
-      padding:0 20rpx;
-    }
-    textarea{
-      width:100%;
-      margin-left:-20rpx;
-      border-bottom:1px solid #eee;
-      border-bottom-right-radius: 50% 20%;
-      border-bottom-left-radius: 50% 20%;
-      background: rgba(240, 240, 240,0.6);
-      padding:20rpx;
-      letter-spacing: 2px;
-      text-align:left;
-      height:150rpx;
-      line-height: 50rpx;
-      font-weight: lighter;
-    }
-    .textarea::before{
-      content:'请输入参与人员姓名，用 + 或 空格 分隔';
-      color:#ccc;
-      display: block;
-      position: relative;
-      top:-20px;
-      font-weight: lighter;
-      font-size:25rpx;
-      text-align: center;
-    }
-    .sortTable{
-      margin-top:50rpx;
-    }
-    .title{
-      text-align: center;
-      height:20rpx;
-      width:500rpx;
-      line-height: 20rpx;
-      vertical-align: middle;
-      font-size: 50rpx;
-      letter-spacing: 10rpx;
-      margin:40rpx auto;
-      background: linear-gradient(to right,yellow,greenyellow,yellow);
-      border-radius: 50%;
-    }
-    .ul{
-      font-size: 40rpx;
-    } 
-    .li{
-      display: flex;
-      background:rgba(240, 240, 240,0.8);
-      margin:30rpx 0;
-      height:100rpx;
-      line-height: 100rpx;
-      vertical-align: middle;
-      border-radius: 20rpx;
-      position: relative;
-      padding:0 20rpx;
-    }
-    .order::before{
-      content: 'NO.';
-      font-size: 60%;
-      font-style: italic;
-    }
-    .name{
-      flex:1;
-      white-space:nowrap;
-      overflow: hidden;
-    }
-    .name,.order{
-      text-align: center
-    }
-    
-    .icon{
-      width: 80rpx;
-      margin:10rpx 25rpx;
-      text-align: center;
-      color:#ccc;
-      border-radius: 50%;
-      font-weight: 900;
-    }
-    .up,.down{
-      background: #fff;     
-    }
-    .null{
-      background:rgba(240, 240, 240,0.8);
-    }
-    .up::after{
-      content: '↑';
-      font-size: 150%;
-      display: inline-block;
-      transform: translateY(-5rpx);
-    }
-    .down::after{
-      content: '↓';
-      font-size: 150%;
-      display: inline-block;
-      transform: translateY(-5rpx);
-    }
-    /* .remove{
-      position: absolute;
-      left: -20rpx;
-      top: -20rpx;
-      color:red;
-      width: 60rpx;
-      height:60rpx;
-      text-align: center;
-       background: #fff; 
-      border-radius: 50%;
-    } */
-    /* .remove::after{
-      content: '×';
-      font-size: 60rpx;
-      display: inline-block;
-      transform: translateY(-35rpx); 
-    } */
-    .submit{
-      width:450rpx;
-      margin: 40rpx auto;
-      padding:0;
-      background:rgba(240, 240, 240,0.8);
-      letter-spacing: 20rpx;
-    }
+.icon{
+  width: 80rpx;
+  margin:10rpx 25rpx;
+  text-align: center;
+  /* color:#ccc; */
+  border-radius: 50%;
+  font-weight: 900;
+}
+.up,.down{
+  background: orange;     
+}
+.up:after,.down:after{ 
+  font-size: 120%;
+  display: inline-block;
+  transform: translateY(-5rpx);
+  color: gold;
+}
+.null{
+  background:#fff;
+}
+.up::after{
+  content: '↑';
+}
+.down::after{
+  content: '↓';
+}
+.submit{
+  width:450rpx;
+  margin: 40rpx auto;
+  padding:0;
+  background:cadetblue;
+  letter-spacing: 20rpx;  
+}
+.button-hover{
+  background-color: cadetblue;
+}
+
+.dot{
+  position:fixed;
+  opacity:1;
+  left:250rpx;
+  height: 60rpx;
+  width:60rpx;
+  background: orange;
+  z-index: 999;
+}

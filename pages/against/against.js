@@ -24,9 +24,9 @@ Page({
   },
   onShow: function (options) {
     this.initalPersonList();
-    this.setData({
-      showCreateBtn: true
-    });
+    // this.setData({
+    //   showCreateBtn: true
+    // });
   },
   initalPersonList: function () {
     wx.getStorage({
@@ -106,7 +106,7 @@ Page({
       data: newScoreList
     })
   },
-  activeItem:function(e){
+  selectItem:function(e){
     this.setData({
       activedItem:e.currentTarget.dataset.id
     })

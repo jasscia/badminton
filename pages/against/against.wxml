@@ -1,5 +1,5 @@
 <!--against.wxml-->
-<view class="wrapper">
+<view class="warp">
   <view class="baseInfo">
     <view class="personCount">
       <view>参赛人数：{{personCount}}</view>
@@ -14,15 +14,15 @@
   </view>
 
   <view wx:for="{{scoreList}}" wx:key="item" class="againstTable">
-    <view class="againstItem {{item[6]}}" capture-bind:tap='activeItem' data-id="{{index}}" style="{{activedItem===index?'background:lightgreen;transform:scaleY(1.4)':''}}">
+    <view class="againstItem {{item[6]}} {{activedItem===index?'selected':''}}" capture-bind:tap='selectItem' data-id="{{index}}">
       <view class="side">
         <view class="name">{{item[0]}}</view>
         <view class="name">{{item[1]}}</view>
       </view>
       <!-- <view class="score"> -->
       <view class="handleBtnGroup">
-        <button bindtap='scoreChange' data-id="{{index}}" data-side="A" data-way="more">+</button>
-        <button bindtap='scoreChange' data-id="{{index}}" data-side="A" data-way="less">-</button>
+        <button bindtap='scoreChange' data-id="{{index}}" data-side="A" data-way="more"  hover-class="hover">+</button>
+        <button bindtap='scoreChange' data-id="{{index}}" data-side="A" data-way="less"  hover-class="hover">-</button>
       </view>
       <view class="score scoreL">{{item[4]}}</view>
       <view class="sub" bindtap="finish" data-id="{{index}}">
@@ -32,8 +32,8 @@
       </view>
       <view class="score scoreR">{{item[5]}}</view>
       <view class="handleBtnGroup">
-        <button bindtap='scoreChange' data-id="{{index}}" data-side="B" data-way="more">+</button>
-        <button bindtap='scoreChange' data-id="{{index}}" data-side="B" data-way="less">-</button>
+        <button bindtap='scoreChange' data-id="{{index}}" data-side="B" data-way="more" hover-class="hover">+</button>
+        <button bindtap='scoreChange' data-id="{{index}}" data-side="B" data-way="less"  hover-class="hover">-</button>
       </view>
       <!-- </view> -->
       <view class="side">
