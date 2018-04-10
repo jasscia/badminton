@@ -1,12 +1,13 @@
 @import '../../lib/style/font.wxss';
 textarea{
   width:100%;
-  border-bottom-right-radius:300rpx 50rpx;
-  border-bottom-left-radius:300rpx 50rpx;
+   border-bottom-right-radius:300rpx 50rpx;
+  border-bottom-left-radius:300rpx 50rpx; 
   background: cadetblue;
   padding:20rpx;
   letter-spacing: 2px;
   text-align:left;
+  width:710rpx;
   height:200rpx;
   line-height: 50rpx;
   font-weight: lighter;
@@ -17,12 +18,11 @@ textarea{
 .textarea::before{
   content:'请输入参与人员姓名，用 + 或 空格 分隔';
   letter-spacing: 0;
-  color:orangered;
+  color:#666;
   display: block;
-  position: relative;
-  top:-20px;
+  margin-top:-40rpx;
   font-weight: lighter;
-  font-size:24rpx;
+  font-size:28rpx;
   text-align: center;
 }
 .tip{
@@ -89,7 +89,7 @@ textarea{
   display: inline-block;
   width:100%;
   text-align: center;
-  transform:translateY(-45rpx);
+  transform:translateY(-42rpx);
 }
 .li{
   margin-left:40rpx;

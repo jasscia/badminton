@@ -9,10 +9,15 @@ Page({
     personList_unordered: [],
     personList_ordered: [],
     personListToString: null,
-    animationData: '',
+    // animationData: '',
   },
   onLoad: function () {
-    // this.setStorage('personList', []);
+    // this.animation=wx.createAnimation({
+    //   duration: 400,
+    //   timingFunction: "linear",
+    //   delay: 0,
+    //   transformOrigin: "50% 50% 0",
+    // })
     this.pos={startX:0,startY:0,endX:0,endY:0};
     this.initalPersonList();
  
@@ -55,40 +60,53 @@ Page({
     this.setStorage('personList_unordered', []);
   },
 
-unorderedMove(e) {
-  console.log(e.target.dataset.tag);
-  if (!e.target.dataset.tag){return};
-  let index = e.target.dataset.index;
-  let orderedList = this.data.personList_ordered;
-  let unorderedList = this.data.personList_unordered;
-  let list = orderedList.concat(unorderedList)
-  let value = null;
-  if (e.target.dataset.tag==='unordered') {
-    value = unorderedList[index]; 
-    unorderedList.splice(index, 1);
-    orderedList.push(value);
-   };
-   if (e.target.dataset.tag === 'ordered') {
-     value = orderedList[index];
-     orderedList.splice(index, 1);
-     unorderedList.push(value);
-   };
-  this.setData({
-    personList_unordered: unorderedList,
-    personList_ordered: orderedList,
-    personList: orderedList.concat(unorderedList),
-  })
-  this.setStorage('personList', list);
-  this.setStorage('personList_ordered', orderedList);
-  this.setStorage('personList_unordered', unorderedList);
-},
-touchEnd(e) {
-  this.pos.endX = e.detail.x,
-  this.pos.endY = e.detail.y;
-},
-touchStart(e){
-  this.pos.startX=e.detail.x,
-  this.pos.startY = e.detail.y;
+  touchEnd: function (e) {
+    this.pos.endX = e.changedTouches[0].pageX,
+    this.pos.endY = e.changedTouches[0].pageY;
+  },
+  touchStart: function (e) {
+    this.pos.startX = e.touches[0].pageX,
+    this.pos.startY = e.touches[0].pageY;
+  },
+  itemMove: function (e) {
+    //首先判断 点击对象是否正确
+    if (!e.target.dataset.tag){return};
+    // //为初始点和 结束点 定位
+    // if (e.type === "touchstart") { this.touchStart(e)}
+    // if (e.type === "touchend") { this.touchEnd(e)}
+    // let distanceX = this.pos.endX - this.pos.startX;
+    // let distanceY = this.pos.endY - this.pos.startY;
+    // let originPosTop = e.target.dataset.originpostop;
+    // // console.log(this.pos)
+    // console.log(distanceX)
+    // //判断移动位置是否满足要求
+    // if(Math.abs(distanceX)<100){//单位转换 px 与 rpx的转换问题
+    //   return
+    // }
+    //更新数据
+    let index = e.target.dataset.index;
+    let orderedList = this.data.personList_ordered;
+    let unorderedList = this.data.personList_unordered;
+    let list = orderedList.concat(unorderedList)
+    let value = null;
+    if (e.target.dataset.tag==='unordered') {
+      value = unorderedList[index]; 
+      unorderedList.splice(index, 1);
+      orderedList.push(value);
+    };
+    if (e.target.dataset.tag === 'ordered') {
+      value = orderedList[index];
+      orderedList.splice(index, 1);
+      unorderedList.push(value);
+    };
+    this.setData({
+      personList_unordered: unorderedList,
+      personList_ordered: orderedList,
+      personList: orderedList.concat(unorderedList),
+    })
+    this.setStorage('personList', list);
+    this.setStorage('personList_ordered', orderedList);
+    this.setStorage('personList_unordered', unorderedList);
 },
   submit: function () {
     let realPersonList = this.data.personList.filter((name) => {
