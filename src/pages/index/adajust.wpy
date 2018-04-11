@@ -1,0 +1,202 @@
+<style lang="less">
+  .title{
+  text-align: center;
+  height:60rpx;
+  width:350rpx;
+  line-height: 60rpx;
+  vertical-align: middle;
+  font-size: 50rpx;
+  letter-spacing: 10rpx;
+  margin:60rpx auto 70rpx;  
+  position:relative
+}
+ .title::before{
+  content: "调整面板";
+  font-size:24rpx;
+  letter-spacing: 0rpx;
+  position: absolute;
+   bottom: -10rpx; 
+  right:-65rpx;
+} 
+.title::after{
+  content: " ";
+  font-size: 2rpx;
+  display: block;
+  height:15rpx;
+  margin-top:10rpx; 
+  background: orange;
+}
+.sortTable{
+  width:750rpx;
+  left:0;
+  right:0;
+}
+.ul{
+  display: inline-block;
+  vertical-align: top;
+  min-height: 80rpx;
+  margin:0 10rpx;
+  width:250rpx;
+  background:#fff;
+  padding:20rpx;
+  border-radius: 20rpx;
+  position: absolute;
+} 
+.unordered{
+  left:40rpx;
+  background: #fff;
+}
+.unordered::before{
+  content:'无序榜';
+}
+.ordered::before{
+  content:'有序榜';
+}
+.ul::before{  
+  display: inline-block;
+  width:100%;
+  text-align: center;
+  transform:translateY(-42rpx);
+}
+.li{
+  margin-left:40rpx;
+  z-index:1
+}
+.ordered{
+  right:40rpx;
+  /* background: greenyellow */
+}
+.name{
+  font-size: 30rpx;
+  display: inline-block;
+  background:orange; 
+  text-align: center;
+  border-radius: 20rpx;
+  height:40rpx;
+  margin:20rpx auto;
+  padding:10rpx 20rpx;
+  text-align: center;
+  letter-spacing: 5rpx;
+  z-index:999;
+}
+.submit{
+  width:450rpx;
+  margin: 40rpx auto;
+  padding:0;
+  background:cadetblue;
+  letter-spacing: 20rpx;  
+}
+</style>
+<template>
+  <view class="container">
+    <movable-area class="sortTable" 
+                  wx:if="{{personList.length>0}}" 
+                  style="height:{{(personList_ordered.length>personList_unordered.length?personList_ordered.length:personList_unordered.length)*80+200}}rpx"
+                  @touchend="itemMove">
+      <view class="title">实力排行榜</view>
+
+      <view class="ul unordered"  
+            style="height:{{(personList_ordered.length>personList_unordered.length?personList_ordered.length:personList_unordered.length)*80}}rpx;">
+        <movable-view 
+          direction="horizontal" 
+          class="li" 
+          wx:for="{{personList_unordered}}" 
+          wx:key="item"  
+          style="height:60rpx; width:300rpx; top:{{index*80+10}}rpx">
+           <view class="name" 
+                  data-tag="unordered" 
+                  data-index="{{index}}">{{item}}</view> 
+                  <!-- data-originPosTop="{{index*80+10}}"
+                  animation="{{animationData}}" -->
+        </movable-view>
+      </view>
+
+       <view class="ul ordered" 
+              style="height:{{(personList_ordered.length>personList_unordered.length?personList_ordered.length:personList_unordered.length)*80}}rpx;">
+        <movable-view 
+                  direction="horizontal" 
+                  class="li" 
+                  wx:for="{{personList_ordered}}" 
+                  wx:key="item" 
+                  style="height:60rpx; width:300rpx; top:{{index*80+10}}rpx">
+            <view class="name" 
+                  data-tag="ordered" 
+                  data-index="{{index}}">{{item}}</view> 
+                  <!-- data-originPos-top="{{index*80+10}}"
+                  animation="{{animationData}}" -->
+        </movable-view>
+      </view>
+    </movable-area>
+    <button @tap="submit" class="submit" wx:if="{{personList.length>0}}">生成对阵表</button>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import setStorage from '../../common/util'
+  export default class Adajust extends wepy.page {
+  data={
+    personList:[],
+    personList_unordered:[],
+    personList_ordered:[],
+  };
+
+  onLoad(){
+    this.getPersonListFromStorage();
+  };
+async getPersonListFromStorage() {
+    let personList=await getStorage('personList');
+    // let personList_unordered=await getStorage('personList_unordered');
+    // let personList_ordered=await getStorage('personList_ordered');
+    // let personListToString=await getStorage('personList');
+    
+    this.personList=personList.data
+    this.personList_unordered=personList.data
+    // this.personListToString=personList.data
+  };
+  itemMove (e) {
+    if (!e.target.dataset.tag){return};
+    let index = e.target.dataset.index;
+    let orderedList = this.data.personList_ordered;
+    let unorderedList = this.data.personList_unordered;
+    let list = orderedList.concat(unorderedList)
+    let value = null;
+    if (e.target.dataset.tag==='unordered') {
+      value = unorderedList[index]; 
+      unorderedList.splice(index, 1);
+      orderedList.push(value);
+    };
+    if (e.target.dataset.tag === 'ordered') {
+      value = orderedList[index];
+      orderedList.splice(index, 1);
+      unorderedList.push(value);
+    };
+    // this.setData({
+      this.personList_unordered= unorderedList,
+      this.personList_ordered= orderedList,
+      this.personList= orderedList.concat(unorderedList),
+    // })
+    setStorage('personList', list);
+    setStorage('personList_ordered', orderedList);
+    setStorage('personList_unordered', unorderedList);
+};
+  submit () {
+    //先判断名字中有没有 为 空的
+    let personList = this.data.personList.filter((name) => {
+      return name
+    });
+    //人数小于4 不能成立
+    if (personList.length < 4) {
+      wx.showModal({
+        title: '错误提示',
+        content: '人数不能少于4人'
+      })
+      return
+    };
+    setStorage('personList', PersonList);
+    wx.switchTab({
+      url: '../main/main',
+    })
+  }
+  }
+</script>

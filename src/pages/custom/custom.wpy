@@ -1,0 +1,24 @@
+<template>
+  <view class="custom">
+    
+  </view>
+</template>
+
+<style lang="less" scoped>
+@import '../../common/common.less';
+
+</style>
+<script>
+import wepy from 'wepy';
+export default class Custom extends wepy.page {
+    config = {
+      
+    };
+    components={
+      
+    };
+    data = {
+      
+    };
+}
+</script>

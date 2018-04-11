@@ -1,0 +1,45 @@
+<template>
+  <view class="container">
+    <header :titleList.sync="titleList" :selectedItem.sync="activeBar"></header>
+    <signUp wx:if="{{activeBar===titleList[0]}}" ></signUp>
+    <adajust wx:if="{{activeBar===titleList[1]}}"></adajust>
+  </view>
+</template>
+<style lang="less" scoped>
+@import  '../../common/common.less';
+
+</style>
+<script>
+  import wepy from 'wepy';
+  import {setStorage,getStorage} from '../../common/util';
+  import header from '../../components/header'
+  import singUp from './singUp';
+  import adajust from './adajust';
+  import 'wepy-async-function';
+
+  export default class Index extends wepy.page {
+  
+    components = {
+      header:header,
+      singUp:singUp,
+      adajust:adajust,
+      // twoSide:twoSide
+    };
+    data = {
+      activeBar:'step1',
+      titleList:['step1','step2'],
+    };
+
+  // async onShareAppMessage(res){
+  //   await initUserInfo();
+  //   return share('/pages/index/index.wpy')
+  // }
+
+  onShareAppMessage() {
+    return {
+      title: "CGGC羽球赛"
+    }
+  };
+ 
+}
+</script>

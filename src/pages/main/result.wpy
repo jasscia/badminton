@@ -1,40 +1,113 @@
-//logs.js
-const util = require('../../utils/util.js')
+<style lang="less">
+.itemHead{
+  display: flex;
+  width:700rpx;
+  margin:0 auto;
+  height:80rpx;
+  line-height: 80rpx;
+  border-bottom: 10rpx solid cadetblue;
+}
+.item{
+  display: flex;
+  width:700rpx;
+  margin:25rpx auto;
+  height:80rpx;
+  line-height: 80rpx;
+  border-radius: 20rpx;
+  background: #fff;
+}
+.item1{
+  white-space:nowrap;
+  overflow: hidden;
+}
+.item1,.item2,.item3,.item4{
+  text-align: center;
+  vertical-align: middle; 
+}
+.item1,.item2,.item3{
+  width:180px
+}
+.item4{width:170rpx}
+.NO-1,.NO-2,.NO-3{
+  position: relative;
+}
+.NO-1::after,.NO-2::after,.NO-3::after{
+  font-family: "iconfont";
+  content: "\e725";
+  font-size: 40rpx;
+  position: absolute;
+  /* top:0;
+  right:0;
+  z-index: 999; */
+}
+.NO-1::after{ 
+  color: gold;
+}
+.NO-2::after{ 
+  color: coral;
+}
+.NO-3::after{ 
+  color: chartreuse;
+}
+</style>
+<template>
+  <view class="container">
+    <view class="itemHead">
+    <view class='item1'>姓名</view>
+    <view class='item3'>胜-负</view>
+    <view class='item2'>净胜分</view>
+    <view class='item4'>名次</view>
+  </view>
 
-Page({
-  data: {
+  <repeat for="{{result}}" wx:key="{{item}}"  class="item itemBody">
+    <!-- <view class="item"> -->
+      <view class='item1 NO-{{item[4]}}'>{{index}}</view>
+      <view class='item3'>{{item[1]}}-{{item[2]}}</view>
+      <view class='item2'>{{item[0]}}</view>
+      <view class='item4 NO-{{item[4]}}'>{{item[4]}}</view>
+    <!-- </view> -->
+  </repeat>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  const util = require('../../utils/util.js')
+  export default class Result extends wepy.page {
+
+ data= {
     result: {}
-  },
-  onLoad: function () {
+  }
+  onLoad () {
     wx.getStorage({
       key: 'scoreList',
       success: res => {
         let calcedScore = this.calcScore(res.data);
         let orderedScore = this.orderScore(calcedScore);
-        this.setData({
-          result: orderedScore
-        })
+        // this.setData({
+          this.result= orderedScore
+        // })
       },
     })
-  },
-  onShow: function () {
+  }
+  onShow () {
     wx.getStorage({
       key: 'scoreList',
       success: res => {
         let calcedScore = this.calcScore(res.data);
         let orderedScore = this.orderScore(calcedScore);
-        this.setData({
-          result: orderedScore
-        })
+        // this.setData({
+          this.result= orderedScore
+        // })
       },
     })
-  },
+  }
   onShareAppMessage() {
     return {
       title: "CGGC羽球赛"
     }
-  },
-  orderScore: function (obj) {
+  }
+  orderScore(obj) {
     let keys = Object.keys(obj);
     let orderedKeys = [];
     for (let i = 0; i < keys.length; i++) {
@@ -46,8 +119,8 @@ Page({
       newObj[orderedKeys[i]] = obj[orderedKeys[i]].concat(i + 1)//[4]是名次，concat的部分
     }
     return newObj;
-  },
-  findKeyOfMax: function (obj, orderedKeys) {
+  }
+  findKeyOfMax(obj, orderedKeys) {
     let keys = Object.keys(obj);
     let key_of_max = '';
     for (let i = 0; i < keys.length; i++) {
@@ -71,8 +144,8 @@ Page({
       }
     }
     return key_of_max;
-  },
-  calcScore: function (array) {
+  }
+  calcScore (array) {
     let result = {};
     for (let item of array) {
       for (let i = 0; i < 4; i++) {
@@ -91,4 +164,5 @@ Page({
     }
     return result;
   }
-})
+  }
+</script>
