@@ -59,7 +59,7 @@
     <view class='item4'>名次</view>
   </view>
 
-  <repeat for="{{result}}" wx:key="{{item}}"  class="item itemBody">
+  <repeat for="{{result}}" key="{{item}}"  class="item itemBody">
     <!-- <view class="item"> -->
       <view class='item1 NO-{{item[4]}}'>{{index}}</view>
       <view class='item3'>{{item[1]}}-{{item[2]}}</view>
@@ -72,97 +72,95 @@
 
 <script>
   import wepy from 'wepy'
-  const util = require('../../utils/util.js')
+  import {getStorage} from '../../common/util'
+  // const util = require('../../utils/util.js')
   export default class Result extends wepy.page {
-
- data= {
-    result: {}
-  }
-  onLoad () {
-    wx.getStorage({
-      key: 'scoreList',
-      success: res => {
-        let calcedScore = this.calcScore(res.data);
-        let orderedScore = this.orderScore(calcedScore);
-        // this.setData({
-          this.result= orderedScore
-        // })
-      },
-    })
-  }
-  onShow () {
-    wx.getStorage({
-      key: 'scoreList',
-      success: res => {
-        let calcedScore = this.calcScore(res.data);
-        let orderedScore = this.orderScore(calcedScore);
-        // this.setData({
-          this.result= orderedScore
-        // })
-      },
-    })
-  }
-  onShareAppMessage() {
-    return {
-      title: "CGGC羽球赛"
+    data= {
+      result: {}
     }
-  }
-  orderScore(obj) {
-    let keys = Object.keys(obj);
-    let orderedKeys = [];
-    for (let i = 0; i < keys.length; i++) {
-      let key_of_max = this.findKeyOfMax(obj, orderedKeys);
-      orderedKeys.push(key_of_max)
+    onLoad () {
+      this.getResultFromStorage()
     }
-    let newObj = {};
-    for (let i=0; i < orderedKeys.length; i++) {
-      newObj[orderedKeys[i]] = obj[orderedKeys[i]].concat(i + 1)//[4]是名次，concat的部分
+    onShow () {
+      this.getResultFromStorage()
+      // wx.getStorage({
+      //   key: 'scoreList',
+      //   success: res => {
+      //     let calcedScore = this.calcScore(res.data)
+      //     let orderedScore = this.orderScore(calcedScore)
+      // // this.setData({
+      //     this.result = orderedScore
+      //   // })
+      //   }
+      // })
     }
-    return newObj;
-  }
-  findKeyOfMax(obj, orderedKeys) {
-    let keys = Object.keys(obj);
-    let key_of_max = '';
-    for (let i = 0; i < keys.length; i++) {
-      if (orderedKeys.indexOf(keys[i]) !== -1) {//对于已经被找到的值 排除在本次查询之外
-        continue;
+    async getResultFromStorage() {
+      let res = await getStorage('scoreList')
+      let calcedScore = this.calcScore(res.data)
+      let orderedScore = this.orderScore(calcedScore)
+      this.result = orderedScore
+    }
+    onShareAppMessage() {
+      return {
+        title: 'CGGC羽球赛'
       }
-      if (!key_of_max) {//把第一个在查询范围内的值赋值为max
-        key_of_max = keys[i];
-        continue;
+    }
+    orderScore(obj) {
+      let keys = Object.keys(obj)
+      let orderedKeys = []
+      for (let i = 0; i < keys.length; i++) {
+        let keyOfMax = this.findKeyOfMax(obj, orderedKeys)
+        orderedKeys.push(keyOfMax)
       }
-      if (obj[key_of_max][3] > obj[keys[i]][3]) {//先比较 胜/负比
+      let newObj = {}
+      for (let i = 0; i < orderedKeys.length; i++) {
+        newObj[orderedKeys[i]] = obj[orderedKeys[i]].concat(i + 1)// [4]是名次，concat的部分
+      }
+      return newObj
+    }
+    findKeyOfMax(obj, orderedKeys) {
+      let keys = Object.keys(obj)
+      let keyOfMax = ''
+      for (let i = 0; i < keys.length; i++) {
+        if (orderedKeys.indexOf(keys[i]) !== -1) { // 对于已经被找到的值 排除在本次查询之外
+          continue
+        }
+        if (!keyOfMax) { // 把第一个在查询范围内的值赋值为max
+          keyOfMax = keys[i]
+          continue
+        }
+        if (obj[keyOfMax][3] > obj[keys[i]][3]) { // 先比较 胜/负比
         // key_of_max = keys[i];
-      } else if (obj[key_of_max][3] < obj[keys[i]][3]) {
-        key_of_max = keys[i];
-      } else {
-        if (obj[key_of_max][0] >= obj[keys[i]][0]) {//再比较净胜分
+        } else if (obj[keyOfMax][3] < obj[keys[i]][3]) {
+          keyOfMax = keys[i]
+        } else {
+          if (obj[keyOfMax][0] >= obj[keys[i]][0]) { // 再比较净胜分
           // key_of_max  = keys[i]
-        } else {
-          key_of_max = keys[i];
+          } else {
+            keyOfMax = keys[i]
+          }
         }
       }
+      return keyOfMax
     }
-    return key_of_max;
-  }
-  calcScore (array) {
-    let result = {};
-    for (let item of array) {
-      for (let i = 0; i < 4; i++) {
-        result[item[i]] = result[item[i]] || [0, 0, 0];
-        if (i < 2) {
-          result[item[i]][0] += (item[4] - item[5]);
-          result[item[i]][1] += (item[4] > item[5] ? 1 : 0);
-          result[item[i]][2] += (item[4] < item[5] ? 1 : 0);
-        } else {
-          result[item[i]][0] += (item[5] - item[4]);//[0]是净胜分
-          result[item[i]][1] += (item[4] < item[5] ? 1 : 0);//[1]胜的场次
-          result[item[i]][2] += (item[4] > item[5] ? 1 : 0);//[2]是败胜分
+    calcScore (array) {
+      let result = {}
+      for (let item of array) {
+        for (let i = 0; i < 4; i++) {
+          result[item[i]] = result[item[i]] || [0, 0, 0]
+          if (i < 2) {
+            result[item[i]][0] += (item[4] - item[5])
+            result[item[i]][1] += (item[4] > item[5] ? 1 : 0)
+            result[item[i]][2] += (item[4] < item[5] ? 1 : 0)
+          } else {
+            result[item[i]][0] += (item[5] - item[4])// [0]是净胜分
+            result[item[i]][1] += (item[4] < item[5] ? 1 : 0)// [1]胜的场次
+            result[item[i]][2] += (item[4] > item[5] ? 1 : 0)// [2]是败胜分
+          }
+          result[item[i]][3] = result[item[i]][1] - result[item[i]][2]// [3]是胜-败的比值率
         }
-        result[item[i]][3] = result[item[i]][1] - result[item[i]][2];//[3]是胜-败的比值率
       }
+      return result
     }
-    return result;
-  }
   }
 </script>

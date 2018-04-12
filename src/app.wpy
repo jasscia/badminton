@@ -1,13 +1,13 @@
 <script>
-import wepy from 'wepy';
-import 'wepy-async-function';
-import {initUserInfo} from './common/common';
+import wepy from 'wepy'
+import 'wepy-async-function'
+// import {initUserInfo} from './common/common'
 export default class extends wepy.app {
   config = {
     pages: [
       'pages/index/index',
-      // 'pages/main/main',
-      'pages/custom/custom',
+      'pages/main/main',
+      'pages/custom/custom'
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -20,20 +20,20 @@ export default class extends wepy.app {
       list: [
         {pagePath: 'pages/index/index',
           text: '参赛报名'},
-        // {pagePath: 'pages/main/main',
-        //   text: '赛事直播'},
+        {pagePath: 'pages/main/main',
+          text: '赛事直播'},
         {pagePath: 'pages/custom/custom',
           text: '比赛说明'}
       ]
     }
-  };
+  }
 
   onLaunch() {
-    this.setKeepScreenOn();
+    this.setKeepScreenOn()
   }
-  setKeepScreenOn(){
-    wx.setKeepScreenOn({
-      keepScreenOn:true
+  setKeepScreenOn() {
+    wepy.setKeepScreenOn({
+      keepScreenOn: true
     })
   }
 }

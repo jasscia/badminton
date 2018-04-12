@@ -9,16 +9,6 @@
 
 </style>
 <script>
-import wepy from 'wepy';
-export default class Custom extends wepy.page {
-    config = {
-      
-    };
-    components={
-      
-    };
-    data = {
-      
-    };
-}
+import wepy from 'wepy'
+export default class Custom extends wepy.page {}
 </script>

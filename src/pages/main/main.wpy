@@ -1,9 +1,9 @@
 <template>
   <view class="container">
-    <!-- <header :titleList.sync="titleList" :selectedItem.sync="activeBar"></header> -->
-    <againstTable wx:if="{{activeBar===titleList[0]}}"></againstTable>   
-    <view  class="againstTable"  wx:if="{{activeBar===titleList[0]}}">
-    <repeat for="{{scoreList}}" wx:key="item">
+    <header :titleList.sync="titleList" :selectedItem.sync="activeBar"></header>
+    <againstTable if="{{activeBar===titleList[0]}}"></againstTable>   
+    <view  class="againstTable"  if="{{activeBar===titleList[0]}}">
+    <repeat for="{{scoreList}}" key="item">
       <result></result>
       </repeat>
 
@@ -16,23 +16,22 @@
 @import '../../common/common.less';
 </style>
 <script>
-import wepy from 'wepy';
-import header from '../../components/header';
-import againstTable from './againstTable';
-import result from './result';
+import wepy from 'wepy'
+import header from '../../components/header'
+import againstTable from './againstTable'
+import result from './result'
 export default class Main extends wepy.page {
   config = {
     navigationBarTitleText: 'CGGC羽球赛'
-  };
+  }
   data = {
     activeBar: '对阵表',
     titleList: ['对阵表', '实时战况']
-  };
+  }
   components = {
+    header: header,
     againstTable: againstTable,
     result: result
-  };
+  }
 }
 </script>
-
-
