@@ -6,20 +6,18 @@
     <repeat for="{{scoreList}}" key="item">
       <result></result>
       </repeat>
-
-    </view>
-
-    
+    </view>    
   </view> 
 </template>
 <style lang="less" scoped>
-@import '../../common/common.less';
+@import '../common/common.less';
 </style>
 <script>
 import wepy from 'wepy'
-import header from '../../components/header'
-import againstTable from './againstTable'
-import result from './result'
+import header from '../components/header'
+import againstTable from '../components/againstTable'
+import resultOfGame from '../components/resultOfGame'
+import 'wepy-async-function'
 export default class Main extends wepy.page {
   config = {
     navigationBarTitleText: 'CGGC羽球赛'
@@ -31,7 +29,7 @@ export default class Main extends wepy.page {
   components = {
     header: header,
     againstTable: againstTable,
-    result: result
+    resultOfGame: resultOfGame
   }
 }
 </script>

@@ -1,5 +1,5 @@
 <style lang="less">
-@import '../../common/common.less';
+@import '../common/common.less';
 .singup{
   margin:40rpx;
 }
@@ -46,13 +46,11 @@
 }
 </style>
 <template>
-  <view class="singup">
+  <view class="singup">{{activeBar}} {{titleList[1]}} {{titleList[0]}}
      <textarea placeholder='' @input="inputNames" class="textarea" value="{{personListToString}}"> </textarea>
-    <!-- <view class="tip"> -->
       <repeat for="{{personList}}" key="item"  class="tip">
         <view class="tip">{{index+1}}.{{item}}
       </repeat>
-    <!-- </view> -->
     <view class="statement">说明：为了程序生成更合理的对阵表，请输入人名后，移步step2,适当调整人员的实力。</view>
     <button @tap="nextBtnTap" class="nextBtn" hidden="{{personList.length<4}}">下一步</button>
   </view>
@@ -60,39 +58,32 @@
 
 <script>
 import wepy from 'wepy'
-import {setStorage, getPersonListFromStorage} from '../../common/util.js'
-export default class singUp extends wepy.page {
-  props={
-    activeBar: {
-      type: 'String',
-      default: null,
-      twoWay: true
-    }
-  }
+import {setStorage, getPersonListFromStorage} from '../common/util.js'
+import 'wepy-async-function'
+export default class SingUp extends wepy.component {
   data={
     personList: [],
     personListToString: null
   }
   onLoad() {
-    this.personList=getPersonListFromStorage()
-    this.personListToString=this.personList.join(' ')
+    this.personList = getPersonListFromStorage()
+    this.personListToString = this.personList.join(' ')
   }
   methods = {
 
-  inputNames(e) {
-    let content = e.detail.value
-    let names = this.parseNames(content.trim())
-    this.personList = names
-    this.personListToString = names.join(' ')
+    inputNames: function(e) {
+      let content = e.detail.value
+      let names = this.parseNames(content.trim())
+      this.personList = names
+      this.personListToString = names.join(' ')
 
-    setStorage('personList', personList)
-    setStorage('personListToString', personListToString)
-  },
-    nextBtnTap = function() {
-      this.activeBar = 'setp2'
+      setStorage('personList', this.personList)
+      setStorage('personListToString', this.personListToString)
+    },
+    nextBtnTap: function() {
+      this.$emit('nextStep')
     }
   }
-
   parseNames = function (names) {
     return names.split(/[!！？？]+/).slice(-1)[0].split(/[\+\＋\s]+/)
   }

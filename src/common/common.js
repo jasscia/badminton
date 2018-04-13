@@ -52,7 +52,7 @@ const updateMatchInfo = async function(gameid, originMatchInfo) {
 }
 
 const initUserInfo = async function() {
-  let token = await getStorage('token')
+  let token = wx.getStorageSync('token')
   // let userInfo = await getStorage('userInfo')
   if (!token) {
     let loginRes = await login()
@@ -69,7 +69,7 @@ const addPlayer = async function(e) {
   let url = URLList.addplayerURL
   let method = 'POST'
   let data = {
-    token: await getStorage('token'),
+    token: wx.getStorageSync('token'),
     gameid: e.target.dataset.gameid
   }
   let res = await htr(url, method, data)
@@ -140,6 +140,12 @@ const share = function(path) {
     }
   }
 }
+
+const requestTableList = function(personCount,roundCount) {
+  let url = `https://gzbtestsystem.cn/badminton/againsttable?NumberOfPeople=${personCount}&RoundsOfPerson=${roundCount}&format=json`;
+  let method = "GET";
+  htr(url,method);
+  }
 export {downLoadMatchList,
         downLoadMatchInfo,
         updateMatchInfo,
@@ -148,4 +154,4 @@ export {downLoadMatchList,
         changeRealname,
         createGame,
         formatTime,
-        share}
+        share,requestTableList}

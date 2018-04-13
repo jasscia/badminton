@@ -1,29 +1,17 @@
 {
-  "name": "e_wepy",
+  "name": "v-wepy",
   "version": "0.0.1",
-  "description": "A WePY project",
+  "description": "version4 of badminton",
   "main": "dist/app.js",
   "scripts": {
     "dev": "wepy build --watch",
     "build": "cross-env NODE_ENV=production wepy build --no-cache",
-    "dev:web": "wepy build --output web",
-    "clean": "find ./dist -maxdepth 1 -not -name 'project.config.json' -not -name 'dist' | xargs rm -rf",
     "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "wepy": {
-    "module-a": false,
-    "./src/components/list": "./src/components/wepy-list.wpy"
   },
   "author": "Amypher <1648511816@qq.com>",
   "license": "MIT",
   "dependencies": {
-    "redux": "^3.7.2",
-    "redux-actions": "^2.2.1",
-    "redux-promise": "^0.5.3",
-    "wepy-redux": "^1.5.3",
-    "wepy": "^1.6.0",
-    "wepy-async-function": "^1.4.4",
-    "wepy-com-toast": "^1.0.2"
+    "wepy": "^1.7.1"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.1",

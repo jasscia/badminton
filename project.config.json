@@ -1,13 +1,15 @@
 {
-  "description": "A WePY project",
-  "setting": {
-    "urlCheck": true,
-    "es6": false,
-    "postcss": false,
-    "minified": false
-  },
-  "compileType": "miniprogram",
-  "appid": "wxfee681a382d5f7dc",
-  "projectname": "e_wepy",
-  "miniprogramRoot": "./dist"
+	"description": "version4 of badminton",
+	"setting": {
+		"urlCheck": true,
+		"es6": false,
+		"postcss": false,
+		"minified": false,
+		"newFeature": true
+	},
+	"compileType": "miniprogram",
+	"appid": "wxfee681a382d5f7dc",
+	"projectname": "v-wepy",
+	"miniprogramRoot": "./dist",
+	"condition": {}
 }

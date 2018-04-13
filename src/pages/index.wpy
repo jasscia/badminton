@@ -1,0 +1,59 @@
+<template>
+  <view class="container">
+    <inputNames :personList.sync="personList"></inputNames>
+    <adajustByStep :personList.sync="personList"></adajustByStep>
+    <resultOfNames :personList.sync="personList"></resultOfNames>    
+  </view>
+</template>
+<style lang="less" scoped>
+@import '../../common/common.less';
+.content{
+  margin:0 20rpx;
+}
+
+</style>
+<script>
+import wepy from 'wepy'
+import { getPersonListFromStorage, setStorage } from '../common/util'
+import header from '../components/header'
+import inputNames from '../components/inputNames'
+import adajustByStep from '../components/adajustByStep'
+import resultOfNames from '../components/resultOfNames'
+import 'wepy-async-function'
+export default class Index extends wepy.page {
+  components = {
+    header: header,
+    inputNames: inputNames,
+    adajustByStep: adajustByStep,
+    resultOfNames: resultOfNames
+  }
+  data={
+    personList: []
+  }
+  computed={
+    personListToString () {
+      return this.personList.join(' ')
+    }
+  }
+  watch={
+    personListToString () {
+      setStorage('personList', this.personList)
+    }
+  }
+  async onLoad() {
+    this.personList = await getPersonListFromStorage()
+  }
+  // data = {
+  //   activeBar: 'step1',
+  //   titleList: ['step1', 'step2']
+  // }
+  onShareAppMessage() {
+    return {}
+  }
+  events={
+    nextStep() {
+      this.activeBar = 'step1'
+    }
+  }
+}
+</script>

@@ -1,0 +1,162 @@
+<style lang="less">
+@import '../common/common.less';
+.warp{
+  margin-top:40rpx;
+}
+.title{
+  text-align: center;
+  height:60rpx;
+  width:350rpx;
+  line-height: 60rpx;
+  vertical-align: middle;
+  font-size: 50rpx;
+  letter-spacing: 10rpx;
+  margin:60rpx auto;  
+  position:relative
+}
+ .title::before{
+  content: "调整面板";
+  font-size:24rpx;
+  letter-spacing: 0rpx;
+  position: absolute;
+  bottom: -10rpx; 
+  right:-65rpx;
+} 
+.title::after{
+  content: " ";
+  font-size: 2rpx;
+  display: block;
+  height:15rpx;
+  margin-top:10rpx; 
+  background: @btn-em;
+}
+.ul{
+  font-size: 40rpx;
+} 
+.li{
+  display: flex;
+  background:#fff;
+  margin:30rpx 0;
+  height:100rpx;
+  line-height: 100rpx;
+  vertical-align: middle;
+  border-radius: 20rpx;
+  position: relative;
+  padding:0 20rpx;
+}
+.order::before{
+  content: 'NO.';
+  font-size: 60%;
+  font-style: italic;
+}
+.name{
+  flex:1;
+  white-space:nowrap;
+  overflow: hidden;
+}
+.name,.order{
+  text-align: center
+}
+
+.icon{
+  width: 80rpx;
+  margin:10rpx 25rpx;
+  text-align: center;
+  /* color:#ccc; */
+  border-radius: 50%;
+  font-weight: 900;
+}
+.up,.down{
+  background: @btn-em;     
+}
+.up:after,.down:after{ 
+  font-size: 120%;
+  display: inline-block;
+  transform: translateY(-5rpx);
+  color: @btn-em;
+}
+.null{
+  background:#fff;
+}
+.up::after{
+  content: '↑';
+}
+.down::after{
+  content: '↓';
+}
+.submit{
+  width:450rpx;
+  margin: 40rpx auto;
+  padding:0;
+  background: @btn;
+  letter-spacing: 20rpx;  
+}
+.button-hover{
+  background-color: @btn-em;
+}
+</style>
+<template>
+  <view class="warp">
+      <view class="sortTable" wx:if="{{personList.length>0}}">
+      <view class="title">实力排行榜</view>
+      <view class="ul" @tap="sortPersonList">
+        <repeat class="li" for="{{personList}}" key="item">
+          <view class="order">{{index+1}}</view>
+          <view class="name">{{item}}</view>
+          <view class="icon up" data-type='up'  data-order='{{index+1}}'  wx:if="{{index+1>1}}"></view>
+          <view  wx:else class="icon null"></view>
+          <view class="icon down" data-type='down' data-order='{{index+1}}'  wx:if="{{index+1<personList.length}}"></view>
+          <view  wx:else class="icon null"></view>
+          <view class="icon remove" data-type='remove' data-order='{{index+1}}'></view>
+        </repeat>
+      </view>
+    </view>   
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+import 'wepy-async-function'
+export default class AdajustByStep extends wepy.component {
+  props = {
+    personList: {
+      type: 'Array',
+      default: [],
+      twoWay: true
+    }
+  }
+  methods = {
+    sortPersonList(e) {
+      let dom = e.target
+      let domData = dom.dataset
+      if (domData.type) {
+        let order = domData.order
+        let type = domData.type
+        let originArr = this.personList
+        let currArr = this.changePosition(originArr, order - 1, type)
+
+        this.dotAnimate(e, type)
+        this.personList = currArr
+        this.personListToString = currArr.join(' ')
+      }
+    }
+  }
+  changePosition(array, index, way) {
+    if (way === 'up') {
+      let tem = array[index]
+      array[index] = array[index - 1]
+      array[index - 1] = tem
+    }
+    if (way === 'down') {
+      let tem = array[index]
+      array[index] = array[index + 1]
+      array[index + 1] = tem
+    }
+    if (way === 'remove') {
+      array.splice(index, 1)
+    }
+    return array
+  }
+}
+</script>
+ 

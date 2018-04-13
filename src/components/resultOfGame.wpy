@@ -1,4 +1,5 @@
 <style lang="less">
+@import '../common/common.less';
 .itemHead{
   display: flex;
   width:700rpx;
@@ -72,17 +73,20 @@
 
 <script>
   import wepy from 'wepy'
-  import {getStorage} from '../../common/util'
-  // const util = require('../../utils/util.js')
-  export default class Result extends wepy.page {
+  import {getStorage, getResultFromStorage} from '../common/util'
+  import 'wepy-async-function'
+  export default class ResultOfGame extends wepy.component {
     data= {
       result: {}
     }
-    onLoad () {
-      this.getResultFromStorage()
+    async onLoad () {
+      let scoreList = await getStorage('scoreList')
+      getResultFromStorage(scoreList)
     }
-    onShow () {
-      this.getResultFromStorage()
+    async onShow () {
+      let scoreList = await getStorage('scoreList')
+      getResultFromStorage(scoreList)
+      // this.getResultFromStorage()
       // wx.getStorage({
       //   key: 'scoreList',
       //   success: res => {
@@ -94,9 +98,8 @@
       //   }
       // })
     }
-    async getResultFromStorage() {
-      let res = await getStorage('scoreList')
-      let calcedScore = this.calcScore(res.data)
+    async getResultFromStorage(scoreList) {
+      let calcedScore = this.calcScore(scoreList)
       let orderedScore = this.orderScore(calcedScore)
       this.result = orderedScore
     }

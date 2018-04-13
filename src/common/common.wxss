@@ -17,6 +17,7 @@
 }
 .container {
   background: #eee;
+  color: #333;
   min-height: 1000rpx;
   padding-bottom: 200rpx;
   margin-bottom: -200rpx;
