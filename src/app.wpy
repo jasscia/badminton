@@ -5,9 +5,9 @@ import 'wepy-async-function'
 export default class extends wepy.app {
   config = {
     pages: [
-      'pages/index/index',
-      'pages/main/main',
-      'pages/custom/custom'
+      'pages/index',
+      'pages/main',
+      'pages/custom'
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -18,11 +18,11 @@ export default class extends wepy.app {
     },
     tabBar: {
       list: [
-        {pagePath: 'pages/index/index',
+        {pagePath: 'pages/index',
           text: '参赛报名'},
-        {pagePath: 'pages/main/main',
+        {pagePath: 'pages/main',
           text: '赛事直播'},
-        {pagePath: 'pages/custom/custom',
+        {pagePath: 'pages/custom',
           text: '比赛说明'}
       ]
     }
