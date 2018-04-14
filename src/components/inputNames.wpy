@@ -40,7 +40,7 @@
 }
 .tip{
   font-size: 24rpx;
-  color: @sideFont;
+  color: @font-side;
   display: inline-block;
   margin:5rpx 8rpx;
   height:30rpx;
@@ -58,7 +58,7 @@
 </template>
 <script>
 import wepy from 'wepy'
-export default class inpustNames extends wepy.component {
+export default class InpustNames extends wepy.component {
   props={
     personList: {
       type: 'Array',

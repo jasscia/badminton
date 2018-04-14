@@ -37,8 +37,8 @@
         <button @tap="submit" class="submit">确定</button>
     </view>
 </template>
-<script>
 
+<script>
 import wepy from 'wepy'
 import {setStorage} from '../common/util'
 import 'wepy-async-function'

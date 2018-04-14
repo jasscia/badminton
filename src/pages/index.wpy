@@ -7,9 +7,6 @@
 </template>
 <style lang="less" scoped>
 @import '../../common/common.less';
-.content{
-  margin:0 20rpx;
-}
 
 </style>
 <script>

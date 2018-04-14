@@ -7,7 +7,7 @@
   background: @bgc-card;
   .statement{
     height:60rpx;
-    border-bottom: 5rpx solid @score-color;
+    border-bottom: 5rpx solid @btn-em;
     .title{
       height:40rpx;
       font-size: 30rpx;
