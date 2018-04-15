@@ -63,7 +63,7 @@
     // }
     .null{
       background:@bgc-card;
-    // }
+    }
     // .up::after{
     //   content: '↑';
     // }
@@ -91,8 +91,8 @@
 </style>
 <template>
   <view class="panel" wx:if="{{personList.length>0}}">
-    <!-- <view class="statement">共{{personList.length}}人参赛，实力由强到弱依次为</view> -->
-    <!-- <view  class="names">      
+    <!-- <view class="statement">共{{personList.length}}人参赛，实力由强到弱依次为</view>
+    <view  class="names">      
       <repeat for="{{personList}}" key="item"  class="tip">
           <view class="name">{{index+1}}.{{item}}</view>
       </repeat>
@@ -118,8 +118,8 @@
     </view>
     <input class="addPlayer" 
           placeholder="请输入拟添加人员姓名" 
-          @change="addPlayer" data-add-after="{{addAfter}}" 
-          hidden="{{!ifShowAdd}}"/>
+          @blur="addPlayer" data-add-after="{{addAfter}}" 
+          hidden="{{!ifShowAdd}}" />
 </view>  
 </template>
 
