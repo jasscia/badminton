@@ -1,0 +1,170 @@
+<!--pages/result/result.wxml-->
+<template>   
+  <view class="wrapper">
+    <button wx:if="{{ifShowBtn}}" @tap="getResult">获取排名结果</button>
+     <view class="itemHead"  wx:if="{{!ifShowBtn}}">
+      <view class='item1'>姓名</view>
+      <view class='item3'>胜-负</view>
+      <view class='item2'>净胜分</view>
+      <view class='item4'>名次</view>
+    </view>
+    <repeat wx:for="{{result}}" wx:key="{{item}}">
+      <view  class="item itemBody"  wx:if="{{!ifShowBtn}}">
+        <view class='item1 NO-{{item[4]}}'>{{index}}</view>
+        <view class='item3'>{{item[1]}}-{{item[2]}}</view>
+        <view class='item2'>{{item[0]}}</view>            
+        <view class='item4 NO-{{item[4]}}'>{{item[4]}}</view>
+      </view>
+  </repeat>
+  </view>
+</template>
+<style lang="less" scoped>
+@import '../common/common.less';
+.itemHead{
+  display: flex;
+  width:700rpx;
+  margin:0 auto;
+  height:80rpx;
+  line-height: 80rpx;
+  background: lightgreen;
+  margin-top: 40rpx;
+  margin-bottom: -10rpx;
+  // border-bottom: 10rpx solid cadetblue;
+}
+.item{
+  display: flex;
+  width:700rpx;
+  margin:25rpx auto;
+  height:80rpx;
+  line-height: 80rpx;
+  border-radius: 20rpx;
+  background: #fff;
+}
+.item1{
+  white-space:nowrap;
+  overflow: hidden;
+}
+.item1,.item2,.item3,.item4{
+  text-align: center;
+  vertical-align: middle; 
+}
+.item1,.item2,.item3{
+  width:180px
+}
+.item4{width:170rpx}
+.NO-1,.NO-2,.NO-3{
+  position: relative;
+}
+.NO-1::after,.NO-2::after,.NO-3::after{
+  font-family: "iconfont";
+  content: "\e725";
+  font-size: 40rpx;
+  position: absolute;
+  /* top:0;
+  right:0;
+  z-index: 999; */
+}
+.NO-1::after{ 
+  color: gold;
+}
+.NO-2::after{ 
+  color: coral;
+}
+.NO-3::after{ 
+  color: chartreuse;
+}
+
+</style>
+<script>
+import wepy from 'wepy';
+export default class Result extends wepy.page  {
+  props= {
+    groupList: {
+      type:Array,
+      default:[]
+    }
+  }
+  data={
+    result:{},
+    ifShowBtn:true
+  }
+  onLoad () {
+  }
+  onShow () {
+  }
+  onUnload(){
+    this.ifShowBtn=true
+  }
+  onHide(){
+    this.ifShowBtn=true
+  }
+  methods={
+    getResult(){
+      this.ifShowBtn=false
+    this.groupList=wx.getStorage('groupList');
+    let calcedScore = this.calcScore(this.groupList);
+    let orderedScore = this.orderScore(calcedScore);
+    this.result= orderedScore;
+    }
+  }
+  calcScore(groupList) {
+    let result = {};
+    for (let item of groupList) {
+      for (let i = 0; i < 4; i++) {
+        result[item[i]] = result[item[i]] || [0, 0, 0];
+        if (i < 2) {
+          result[item[i]][0] += (item[4] - item[5]);
+          result[item[i]][1] += (item[4] > item[5] ? 1 : 0);
+          result[item[i]][2] += (item[4] < item[5] ? 1 : 0);
+        } else {
+          result[item[i]][0] += (item[5] - item[4]);//[0]是净胜分
+          result[item[i]][1] += (item[4] < item[5] ? 1 : 0);//[1]胜的场次
+          result[item[i]][2] += (item[4] > item[5] ? 1 : 0);//[2]是败胜分
+        }
+        result[item[i]][3] = result[item[i]][1] - result[item[i]][2];//[3]是胜-败的比值率
+      }
+    }
+    return result;
+  }
+  orderScore(obj) {
+    let keys = Object.keys(obj);
+    let orderedKeys = [];
+    for (let i = 0; i < keys.length; i++) {
+      let key_of_max = this.findKeyOfMax(obj, orderedKeys);
+      orderedKeys.push(key_of_max)
+    }
+    let newObj = {};
+    for (let i=0; i < orderedKeys.length; i++) {
+      newObj[orderedKeys[i]] = obj[orderedKeys[i]].concat(i + 1)//[4]是名次，concat的部分
+    }
+    return newObj;
+  }
+  findKeyOfMax(obj, orderedKeys) {
+    let keys = Object.keys(obj);
+    let key_of_max = '';
+    for (let i = 0; i < keys.length; i++) {
+      if (orderedKeys.indexOf(keys[i]) !== -1) {//对于已经被找到的值 排除在本次查询之外
+        continue;
+      }
+      if (!key_of_max) {//把第一个在查询范围内的值赋值为max
+        key_of_max = keys[i];
+        continue;
+      }
+      if (obj[key_of_max][3] > obj[keys[i]][3]) {//先比较 胜/负比
+        // key_of_max = keys[i];
+      } else if (obj[key_of_max][3] < obj[keys[i]][3]) {
+        key_of_max = keys[i];
+      } else {
+        if (obj[key_of_max][0] >= obj[keys[i]][0]) {//再比较净胜分
+          // key_of_max  = keys[i]
+        } else {
+          key_of_max = keys[i];
+        }
+      }
+    }
+    return key_of_max;
+  }
+}
+</script>
+
+

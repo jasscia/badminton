@@ -26,14 +26,16 @@
   height:200rpx;
   line-height:50rpx;
   display:block;
-  width:100%;
+  width:670rpx;
+  box-sizing: border-box;
+  margin:40rpx 20px;
+  border-radius: 20rpx;
   background:#fff;
   padding:15rpx;
   letter-spacing:2px;
   text-align:left;
   font-weight:lighter;
   font-weight:200;
-  margin-bottom:5px;
 }
 </style>
 <template>

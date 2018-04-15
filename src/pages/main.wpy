@@ -1,35 +1,58 @@
+
 <template>
   <view class="container">
-    <!-- <MainHeader :titleList.sync="titleList" :selectedItem.sync="activeBar"></MainHeader> -->
-    <againstTable if="{{activeBar===titleList[0]}}"></againstTable>   
-    <view  class="againstTable"  if="{{activeBar===titleList[0]}}">
-    <repeat for="{{scoreList}}" key="item">
-      <result></result>
-      </repeat>
-    </view>    
-  </view> 
+    <MainHeader :titleList.sync="titleList" :selectedItem.sync="activeBar"></MainHeader>
+    <groupTable wx:if="{{activeBar===titleList[1]}}" :groupList.sync="groupList"></groupTable>
+    <result  wx:if="{{activeBar===titleList[2]}}" :groupList.sync="groupList"></result>
+  </view>
 </template>
+
 <style lang="less" scoped>
-@import '../common/common.less';
+  @import '../../common/common.less';
 </style>
+
+
 <script>
 import wepy from 'wepy'
 import header from '../components/header'
-import againstTable from '../components/againstTable'
-import resultOfGame from '../components/resultOfGame'
-import 'wepy-async-function'
-export default class Main extends wepy.page {
+import groupTable from '../components/groupTable'
+import result from "../components/result"
+export default class Live extends wepy.page {
   config = {
-    navigationBarTitleText: 'CGGC羽球赛'
+    navigatorBatText:'比赛实况'
   }
-  data = {
-    activeBar: '对阵表',
-    titleList: ['对阵表', '实时战况']
+  components={
+    MainHeader:header,
+    groupTable:groupTable,
+    result:result
   }
-  components = {
-    MainHeader: header,
-    againstTable: againstTable,
-    resultOfGame: resultOfGame
+  data={
+    personList:[],
+    groupList:[],
+    titleList:['对阵表','战况预览'],
+    activeBar:'对阵表'
+  }
+  watch={
+    groupList(){
+      wx.setStorageSync('groupList',this.groupList)
+    }
+  }
+  onLoad(options){
+    this.groupList=wx.getStorageSync('groupList')
+  }
+  onShow(options){
+    this.groupList=wx.getStorageSync('groupList')
+  }
+  events={
+    changeActiveBar(from){
+      if(from==='from baseData'){
+        this.activeBar=this.titleList[1]
+      }
+    },
+    updataGroupList(newArray){
+      this.groupList=newArray
+      console.log(this.groupList)
+    }
   }
 }
 </script>

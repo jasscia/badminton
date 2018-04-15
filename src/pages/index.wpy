@@ -2,54 +2,125 @@
   <view class="container">
     <IndexHeader  :titleList.sync="titleList" :selectedItem.sync="activeBar"></IndexHeader>
     <inputNames :personList.sync="personList" :activeBar.sync="activeBar"></inputNames>
+    <view class="roundCount">
+      <label for="roundPer">每人场数</label>
+      <input type="number" name="" id="roundCount" value="{{roundCount}}" @input="changeRoundCount"/>
+    </view>
+    <button id="btn" @tap="makeGroup">生产对阵表</button>
     <adajustByStep :personList.sync="personList"  :activeBar.sync="activeBar"></adajustByStep>
     <!-- <resultOfNames :personList.sync="personList"></resultOfNames>     -->
   </view>
 </template>
 <style lang="less" scoped>
-@import '../../common/common.less';
+@import '../common/common.less';
+.roundCount{
+    font-size:30rpx;
+    background: @bgc-card;
+    margin:40rpx 0;
+    padding-left:30rpx;
+    border-bottom: 2px solid @bgc;
+    label{
+      width: 150rpx;
+      color: @font-side;
+      font-weight: lighter;
+    }
+    label,input{
+      display: inline-block;
+      height: 60px;
+      line-height: 60px;
+      vertical-align: middle;
+    }
+    input{
+      width:500rpx;
+    }
+  }
+
+  #btn{
+    margin:40rpx auto;
+    width:450rpx;
+    height:100rpx;
+    line-height: 100rpx;
+    vertical-align: middle;
+    text-align: center;
+  }
 </style>
 
 <script>
 import wepy from 'wepy'
 import { setStorage } from '../common/util'
+import { requestTableList } from '../common/common'
 import header from '../components/header'
 import inputNames from '../components/inputNames'
 import adajustByStep from '../components/adajustByStep'
-import resultOfNames from '../components/resultOfNames'
 import 'wepy-async-function'
 export default class Index extends wepy.page {
   components = {
     IndexHeader: header,
     inputNames: inputNames,
-    adajustByStep: adajustByStep,
-    resultOfNames: resultOfNames
+    adajustByStep: adajustByStep
   }
   data={
     personList: [],
+    roundCount:4,
     activeBar: '输入报名人员',
     titleList: ['输入报名人员', '调整人员实力']
   }
-  // computed={
-  //   personListToString () {
-  //     return this.personList.join(' ')
-  //   }
-  // }
   watch={
     personList () {
       setStorage('personList', this.personList)
+    },
+    activeBar(){
+      this.personList=this.personList.filter(name=>{
+        return name
+      })
     }
   }
   onShareAppMessage() {
     return {}
   }
   events={
-    nextStep() {
-      this.activeBar = 'step1'
-    },
     upadtaPersonList(newPersonList) {
-      this.personList = newPersonList
+      this.personList = newPersonList.filter(name=>{
+        return name
+      })
     }
   }
+  methods={
+    changeRoundCount(e){
+      this.roundCount=e.detail.value
+    },
+    makeGroup() {
+      this.personList=this.personList.filter(name=>{
+        return name
+      })
+        if (!this.roundCount || this.personList.length * this.roundCount % 4) {
+          wepy.showModal({
+            title: '错误提示',
+            content: '场次和人数的乘积 不能被4整除 排阵失败！！',
+            mask: true,
+            duration: 2000
+          })
+          return
+        }
+        this.getAgainstTable()
+      }
+  }
+      getAgainstTable= async function() {
+        await requestTableList(this.personList.length,this.roundCount)
+        let groupList = wx.getStorageSync('groupList')
+        let reversePersonList = []
+        for (let i = this.personList.length - 1; i >= 0; i--) {
+          reversePersonList.push(this.personList[i])
+        }
+        Array.prototype.numToString.call(groupList, reversePersonList)
+        for (let i = 0, len = groupList.length; i < len; i++) {
+          groupList[i] = groupList[i].concat([0, 0, 'undone'])
+        };
+        console.log('kk',groupList)
+        wx.setStorageSync('groupList',groupList)
+        wx.switchTab({
+          url:'/pages/main'
+        })
+      }
 }
 </script>

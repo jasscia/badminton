@@ -77,19 +77,19 @@ const formateDate = (time) => {
     return string + joincode[curKey - 1] + curValue
   })
 }
-// const htr = function(url, method, data) {
-//   return new Promise((resolve, reject) => {
-//     // console.log('进入htr fn');
-//     wx.request({
-//       url,
-//       method,
-//       data,
-//       success: resolve,
-//       fail: reject
-//     })
-//   })
-// }
-const htr = wepy.requset
+const htr = function(url, method, data) {
+  return new Promise((resolve, reject) => {
+    // console.log('进入htr fn');
+    wx.request({
+      url,
+      method,
+      data,
+      success: resolve,
+      fail: reject
+    })
+  })
+}
+// const htr = wepy.requset
 const URLList = {
   getGameInfoURL: 'https://kkiqq.cn/api/badminton/game',
   postGameInfoURL: 'https://kkiqq.cn/api/badminton/game',
@@ -107,6 +107,7 @@ const getPersonListFromStorage = async function () {
   }
   return personList
 }
+
 export {URLList,
         htr,
         formateDate,
@@ -139,7 +140,6 @@ Array.prototype.numToString = function(stringArr) {
       if (num > stringArr.length) {
       } else {
         this.change(num, stringArr[num - 1])
-                // this[this.indexOf(num)] = stringArr[num - 1]
       }
     }
   }

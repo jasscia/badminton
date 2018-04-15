@@ -1,27 +1,15 @@
 <style lang="less" scoped>
 @import '../common/common.less';
-// .panel{
-//   margin-top:40rpx;
-// }
-.statement,.names{
-  line-height: 40rpx;
-  font-size: 30rpx;
-  background:@bgc-card;
-  margin:2rpx;
-}
-.names{
-  display: flex;
-  flex-wrap: wrap; 
-  .name{
-    color: @font-side;
-    margin:10rpx;
-    text-align: center;
-    vertical-align: middle;
-  }
-}
-.ul{
+.panel{
+  margin-top:40rpx;
   font-size: 40rpx;
-  .li{
+}
+.personList{
+  .tip{
+    font-size: 30rpx;
+    color:@font-side;
+  }
+  .row{
     display: flex;
     background: @bgc-card;
     margin:30rpx 0;
@@ -29,47 +17,76 @@
     line-height: 100rpx;
     vertical-align: middle;
     border-radius: 20rpx;
-    // position: relative;
     padding:0 20rpx;
     .order::before{
       content: 'NO.';
       font-size: 60%;
       font-style: italic;
     }
+    .order{
+      width:80rpx;
+    }
     .name{
-      flex:1;
+      width:400rpx;
       white-space:nowrap;
       overflow: hidden;
-      }
+    }
     .name,.order{
       text-align: center
     }
+    .iconGroup{
+      flex: 1;
+      display:flex;
+      width:300rpx;
+      margin:0;
+      padding:0;
+    }
     .icon{
-      width: 80rpx;
+      width:80rpx;
+      height:80rpx;
       margin:10rpx 25rpx;
       text-align: center;
-      /* color:#ccc; */
       border-radius: 50%;
       font-weight: 900;
+      background: @btn-em;  
     }
-    .up,.down{
-      background: @btn-em;     
-    }
-    // .up:after,.down:after{ 
-    //   font-size: 120%;
-    //   display: inline-block;
-    //   transform: translateY(-5rpx);
-    //   color: @btn-em;
-    // }
-    .null{
+    .icon.null{
       background:@bgc-card;
     }
-    // .up::after{
-    //   content: '↑';
-    // }
-    // .down::after{
-    //   content: '↓';
-    // }
+    .icon::after{
+      font-family:"iconfont";
+      font-weight:900;
+    }
+    .remove::after{
+      content: "\e648";
+    }
+    .add::after{
+      content:"\e613";
+    }
+    .up::after{
+      content: "\e62c"
+    }
+    .down::after{
+      content:"\e630"
+    }
+    input{
+      flex:1;
+      width:600rpx;
+      height:80rpx;
+      line-height: 80rpx;
+      vertical-align: middle;
+      text-align: center;
+      font-size: 30rpx;
+    }
+    .sureAdd{
+      background: lawngreen;
+      font-size: 30rpx;
+    }
+    .sureAdd::after{
+      content: "\e638";
+      matgin-bottom:20rpx;
+      display: inline-block;
+    }
   }
 }
 .submit{
@@ -79,47 +96,32 @@
   background: @btn;
   letter-spacing: 20rpx;  
 }
-.addPlayer{
-  position: fixed;
-  bottom:0;
-  left:0%;
-  right:0;
-  height:80rpx;
-  text-align: center;
-  font-size:40rpx;
-}
 </style>
 <template>
   <view class="panel" wx:if="{{personList.length>0}}">
-    <!-- <view class="statement">共{{personList.length}}人参赛，实力由强到弱依次为</view>
-    <view  class="names">      
-      <repeat for="{{personList}}" key="item"  class="tip">
-          <view class="name">{{index+1}}.{{item}}</view>
-      </repeat>
-    </view> -->
-    <view class="warp" @tap="sortPersonList">
-      <view class="tip"  hidden="{{activeBar==='输入报名人员'}}">人员实力由强向弱依次为</view>
+    <view class="personList" @tap="sortPersonList">
+      <view class="tip"  hidden="{{activeBar==='输入报名人员'}}">按人员实力由强向弱排序</view>
       <repeat for="{{personList}}" key="item">
-        <view class="row">
+        <view class="row" wx:if="{{item}}">
           <view class="order">{{index+1}}</view>
           <view class="name">{{item}}</view>
-          <view class="upAndDown"  hidden="{{activeBar==='输入报名人员'}}">
-            <view class="icon up" data-type="up"  data-order="{{index+1}}"  wx:if="{{index+1>1}}">&#xe62c;</view>
+          <view class="iconGroup upAndDown"  wx:if="{{activeBar!=='输入报名人员'}}">
+            <view class="icon up" data-type="up"  data-order="{{index+1}}"  wx:if="{{index+1>1}}"></view>
             <view  wx:else class="icon null"></view>
-            <view class="icon down" data-type="down" data-order="{{index+1}}"  wx:if="{{index+1<personList.length}}">&#xe62d;</view>
+            <view class="icon down" data-type="down" data-order="{{index+1}}"  wx:if="{{index+1<personList.length}}"></view>
             <view  wx:else class="icon null"></view>
           </view>
-          <view class="addAndReduce" hidden="{{activeBar!=='输入报名人员'}}">
-            <view class="icon add" data-type="add" data-order="{{index+1}}">&#xe6f8;</view>
-            <view class="icon remove" data-type="remove" data-order="{{index+1}}">&#xe60c;</view>
+          <view class="iconGroup  addAndReduce" wx:if="{{activeBar==='输入报名人员'}}">
+            <view class="icon add" data-type="add" data-order="{{index+1}}"></view>
+            <view class="icon remove" data-type="remove" data-order="{{index+1}}"></view>
           </view>         
+        </view>
+        <view class="row addRow" wx:if="{{!item}}">
+            <input placeholder="输入姓名,点击右侧确定添加" value="{{newName}}" @input="inputNewName"/>
+            <view class="icon sureAdd" @tap="addPlayer"></view>
         </view>
       </repeat>
     </view>
-    <input class="addPlayer" 
-          placeholder="请输入拟添加人员姓名" 
-          @blur="addPlayer" data-add-after="{{addAfter}}" 
-          hidden="{{!ifShowAdd}}" />
 </view>  
 </template>
 
@@ -140,9 +142,17 @@ export default class AdajustByStep extends wepy.component {
     }
   }
   data={
-    ifShowAdd: false,
-    addAfter: 0
+    newName:'',
+    addAfter: null
   }
+  // match={
+  //   activeBar(){
+  //     this.personList=this.personList.filter(name=>{
+  //       return name
+  //     })
+  //     console.log(this.personList)
+  //   }
+  // }
   methods = {
     sortPersonList(e) {
       let dom = e.target
@@ -152,12 +162,24 @@ export default class AdajustByStep extends wepy.component {
         let type = domData.type
         let originArr = this.personList
         let currArr = this.changePosition(originArr, order - 1, type)
-
-        this.dotAnimate(e, type)
         this.personList = currArr
         this.personListToString = currArr.join(' ')
       }
+    },
+  inputNewName(e){
+    this.newName=e.detail.value
+  },
+  addPlayer(e) {
+    let index=this.addAfter;
+    if (this.newName) {
+      this.personList[index]= this.newName
+    }else{
+      this.personList.splice(index,1)
     }
+    console.log('提交时候',this.personList)
+    this.addAfter = 0
+    this.newName=''
+  }
   }
   changePosition(array, index, way) {
     if (way === 'up') {
@@ -176,17 +198,10 @@ export default class AdajustByStep extends wepy.component {
     if (way === 'add') {
       this.ifshowAdd = true
       this.addAfter = index
+      this.personList.splice(index,0,null)
     }
+    console.log('tap addBtn',index,this.addAfter,this.personList)
     return array
-  }
-  addPlayer(e) {
-    let value = e.detail.value
-    let addAfter = e.target.dataset.addAfter
-    if (value) {
-      this.personList.splice(addAfter, 0, value)
-    }
-    this.ifshowAdd = false
-    this.addAfter = 0
   }
 }
 </script>
