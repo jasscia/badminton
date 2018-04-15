@@ -19,26 +19,26 @@ const formatNumber = n => {
   n = n.toString()
   return n[1] ? n : '0' + n
 }
-const login = wepy.login
-// const login = function() {
-//   return new Promise((resolve, reject) => {
-//     // console.log('进入login fn');
-//     wepy.login({
-//       success: resolve,
-//       fail: reject
-//     })
-//   })
-// }
-const getUserInfo = wepy.getUserInfo
-// const getUserInfo = function() {
-//   return new Promise((resolve, reject) => {
-//     // console.log('进入userInfo fn');
-//     wx.getUserInfo({
-//       success: resolve,
-//       fail: reject
-//     })
-//   })
-// }
+// const login = wepy.login
+const login = function() {
+  return new Promise((resolve, reject) => {
+    // console.log('进入login fn');
+    wepy.login({
+      success: resolve,
+      fail: reject
+    })
+  })
+}
+// const getUserInfo = wepy.getUserInfo
+const getUserInfo = function() {
+  return new Promise((resolve, reject) => {
+    // console.log('进入userInfo fn');
+    wx.getUserInfo({
+      success: resolve,
+      fail: reject
+    })
+  })
+}
 const getToken = async function(code, nickName, avatarUrl) {
     // console.log('进入getToken fn');
   let url = URLList.getTokenURl
@@ -100,7 +100,8 @@ const URLList = {
   changeRealnameURl: 'https://kkiqq.cn/api/badminton/userrename'
 }
 const getPersonListFromStorage = async function () {
-  let personList = wx.getStorageSync('personList').data
+  console.log(wx.getStorageSync('personList'))
+  let personList = wx.getStorageSync('personList')
   if (!personList) {
     personList = []
   }

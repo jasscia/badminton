@@ -1,6 +1,6 @@
 <template>
 <view  class="header"  @tap="selectItem" >
-    <repeat wx:for="{{titleList}}" wx:for-index="index" wx:key="index"> 
+    <repeat for="{{titleList}}" index="index" key="index"> 
       <view class="{{selectedItem===item?'selectedItem':''}}" data-titleName="{{item}}">{{item}}</view>
     </repeat>
 </view>
@@ -35,7 +35,7 @@ import wepy from 'wepy'
 export default class Header extends wepy.component {
   props={
     titleList: {
-      type: Object,
+      type: Array,
       default: []
     },
     selectedItem: {

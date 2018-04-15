@@ -1,88 +1,76 @@
-<style lang="less">
+<style lang="less" scoped>
 @import '../common/common.less';
-.warp{
-  margin-top:40rpx;
+// .panel{
+//   margin-top:40rpx;
+// }
+.statement,.names{
+  line-height: 40rpx;
+  font-size: 30rpx;
+  background:@bgc-card;
+  margin:2rpx;
 }
-.title{
-  text-align: center;
-  height:60rpx;
-  width:350rpx;
-  line-height: 60rpx;
-  vertical-align: middle;
-  font-size: 50rpx;
-  letter-spacing: 10rpx;
-  margin:60rpx auto;  
-  position:relative
-}
- .title::before{
-  content: "调整面板";
-  font-size:24rpx;
-  letter-spacing: 0rpx;
-  position: absolute;
-  bottom: -10rpx; 
-  right:-65rpx;
-} 
-.title::after{
-  content: " ";
-  font-size: 2rpx;
-  display: block;
-  height:15rpx;
-  margin-top:10rpx; 
-  background: @btn-em;
+.names{
+  display: flex;
+  flex-wrap: wrap; 
+  .name{
+    color: @font-side;
+    margin:10rpx;
+    text-align: center;
+    vertical-align: middle;
+  }
 }
 .ul{
   font-size: 40rpx;
-} 
-.li{
-  display: flex;
-  background: @bgc-card;
-  margin:30rpx 0;
-  height:100rpx;
-  line-height: 100rpx;
-  vertical-align: middle;
-  border-radius: 20rpx;
-  position: relative;
-  padding:0 20rpx;
-}
-.order::before{
-  content: 'NO.';
-  font-size: 60%;
-  font-style: italic;
-}
-.name{
-  flex:1;
-  white-space:nowrap;
-  overflow: hidden;
-}
-.name,.order{
-  text-align: center
-}
-
-.icon{
-  width: 80rpx;
-  margin:10rpx 25rpx;
-  text-align: center;
-  /* color:#ccc; */
-  border-radius: 50%;
-  font-weight: 900;
-}
-.up,.down{
-  background: @btn-em;     
-}
-.up:after,.down:after{ 
-  font-size: 120%;
-  display: inline-block;
-  transform: translateY(-5rpx);
-  color: @btn-em;
-}
-.null{
-  background:@bgc-card;
-}
-.up::after{
-  content: '↑';
-}
-.down::after{
-  content: '↓';
+  .li{
+    display: flex;
+    background: @bgc-card;
+    margin:30rpx 0;
+    height:100rpx;
+    line-height: 100rpx;
+    vertical-align: middle;
+    border-radius: 20rpx;
+    // position: relative;
+    padding:0 20rpx;
+    .order::before{
+      content: 'NO.';
+      font-size: 60%;
+      font-style: italic;
+    }
+    .name{
+      flex:1;
+      white-space:nowrap;
+      overflow: hidden;
+      }
+    .name,.order{
+      text-align: center
+    }
+    .icon{
+      width: 80rpx;
+      margin:10rpx 25rpx;
+      text-align: center;
+      /* color:#ccc; */
+      border-radius: 50%;
+      font-weight: 900;
+    }
+    .up,.down{
+      background: @btn-em;     
+    }
+    // .up:after,.down:after{ 
+    //   font-size: 120%;
+    //   display: inline-block;
+    //   transform: translateY(-5rpx);
+    //   color: @btn-em;
+    // }
+    .null{
+      background:@bgc-card;
+    // }
+    // .up::after{
+    //   content: '↑';
+    // }
+    // .down::after{
+    //   content: '↓';
+    // }
+  }
 }
 .submit{
   width:450rpx;
@@ -91,27 +79,48 @@
   background: @btn;
   letter-spacing: 20rpx;  
 }
-.button-hover{
-  background-color: @btn-em;
+.addPlayer{
+  position: fixed;
+  bottom:0;
+  left:0%;
+  right:0;
+  height:80rpx;
+  text-align: center;
+  font-size:40rpx;
 }
 </style>
 <template>
-  <view class="warp">
-      <view class="sortTable" wx:if="{{personList.length>0}}">
-      <view class="title">实力排行榜</view>
-      <view class="ul" @tap="sortPersonList">
-        <repeat class="li" for="{{personList}}" key="item">
+  <view class="panel" wx:if="{{personList.length>0}}">
+    <!-- <view class="statement">共{{personList.length}}人参赛，实力由强到弱依次为</view> -->
+    <!-- <view  class="names">      
+      <repeat for="{{personList}}" key="item"  class="tip">
+          <view class="name">{{index+1}}.{{item}}</view>
+      </repeat>
+    </view> -->
+    <view class="warp" @tap="sortPersonList">
+      <view class="tip"  hidden="{{activeBar==='输入报名人员'}}">人员实力由强向弱依次为</view>
+      <repeat for="{{personList}}" key="item">
+        <view class="row">
           <view class="order">{{index+1}}</view>
           <view class="name">{{item}}</view>
-          <view class="icon up" data-type='up'  data-order='{{index+1}}'  wx:if="{{index+1>1}}"></view>
-          <view  wx:else class="icon null"></view>
-          <view class="icon down" data-type='down' data-order='{{index+1}}'  wx:if="{{index+1<personList.length}}"></view>
-          <view  wx:else class="icon null"></view>
-          <view class="icon remove" data-type='remove' data-order='{{index+1}}'></view>
-        </repeat>
-      </view>
-    </view>   
-  </view>
+          <view class="upAndDown"  hidden="{{activeBar==='输入报名人员'}}">
+            <view class="icon up" data-type="up"  data-order="{{index+1}}"  wx:if="{{index+1>1}}">&#xe62c;</view>
+            <view  wx:else class="icon null"></view>
+            <view class="icon down" data-type="down" data-order="{{index+1}}"  wx:if="{{index+1<personList.length}}">&#xe62d;</view>
+            <view  wx:else class="icon null"></view>
+          </view>
+          <view class="addAndReduce" hidden="{{activeBar!=='输入报名人员'}}">
+            <view class="icon add" data-type="add" data-order="{{index+1}}">&#xe6f8;</view>
+            <view class="icon remove" data-type="remove" data-order="{{index+1}}">&#xe60c;</view>
+          </view>         
+        </view>
+      </repeat>
+    </view>
+    <input class="addPlayer" 
+          placeholder="请输入拟添加人员姓名" 
+          @change="addPlayer" data-add-after="{{addAfter}}" 
+          hidden="{{!ifShowAdd}}"/>
+</view>  
 </template>
 
 <script>
@@ -120,10 +129,19 @@ import 'wepy-async-function'
 export default class AdajustByStep extends wepy.component {
   props = {
     personList: {
-      type: 'Array',
+      type: Array,
       default: [],
       twoWay: true
+    },
+    activeBar: {
+      type: String,
+      default: '输入报名人员',
+      twoWay: true
     }
+  }
+  data={
+    ifShowAdd: false,
+    addAfter: 0
   }
   methods = {
     sortPersonList(e) {
@@ -155,7 +173,20 @@ export default class AdajustByStep extends wepy.component {
     if (way === 'remove') {
       array.splice(index, 1)
     }
+    if (way === 'add') {
+      this.ifshowAdd = true
+      this.addAfter = index
+    }
     return array
+  }
+  addPlayer(e) {
+    let value = e.detail.value
+    let addAfter = e.target.dataset.addAfter
+    if (value) {
+      this.personList.splice(addAfter, 0, value)
+    }
+    this.ifshowAdd = false
+    this.addAfter = 0
   }
 }
 </script>

@@ -1,17 +1,18 @@
 <template>
   <view class="container">
-    <inputNames :personList.sync="personList"></inputNames>
-    <adajustByStep :personList.sync="personList"></adajustByStep>
-    <resultOfNames :personList.sync="personList"></resultOfNames>    
+    <IndexHeader  :titleList.sync="titleList" :selectedItem.sync="activeBar"></IndexHeader>
+    <inputNames :personList.sync="personList" :activeBar.sync="activeBar"></inputNames>
+    <adajustByStep :personList.sync="personList"  :activeBar.sync="activeBar"></adajustByStep>
+    <!-- <resultOfNames :personList.sync="personList"></resultOfNames>     -->
   </view>
 </template>
 <style lang="less" scoped>
 @import '../../common/common.less';
-
 </style>
+
 <script>
 import wepy from 'wepy'
-import { getPersonListFromStorage, setStorage } from '../common/util'
+import { setStorage } from '../common/util'
 import header from '../components/header'
 import inputNames from '../components/inputNames'
 import adajustByStep from '../components/adajustByStep'
@@ -19,37 +20,35 @@ import resultOfNames from '../components/resultOfNames'
 import 'wepy-async-function'
 export default class Index extends wepy.page {
   components = {
-    header: header,
+    IndexHeader: header,
     inputNames: inputNames,
     adajustByStep: adajustByStep,
     resultOfNames: resultOfNames
   }
   data={
-    personList: []
+    personList: [],
+    activeBar: '输入报名人员',
+    titleList: ['输入报名人员', '调整人员实力']
   }
-  computed={
-    personListToString () {
-      return this.personList.join(' ')
-    }
-  }
+  // computed={
+  //   personListToString () {
+  //     return this.personList.join(' ')
+  //   }
+  // }
   watch={
-    personListToString () {
+    personList () {
       setStorage('personList', this.personList)
     }
   }
-  async onLoad() {
-    this.personList = await getPersonListFromStorage()
-  }
-  // data = {
-  //   activeBar: 'step1',
-  //   titleList: ['step1', 'step2']
-  // }
   onShareAppMessage() {
     return {}
   }
   events={
     nextStep() {
       this.activeBar = 'step1'
+    },
+    upadtaPersonList(newPersonList) {
+      this.personList = newPersonList
     }
   }
 }

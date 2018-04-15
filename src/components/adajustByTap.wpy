@@ -12,6 +12,10 @@
       height:40rpx;
       font-size: 30rpx;
     }
+    .tips{
+      display: flex;
+      flex-wrap: wrap;
+    }
     .tip{
       height:30rpx;
       font-size:24rpx;
@@ -79,9 +83,11 @@
     </view>
     <view class = "result">
       <view class="">共{{personList.length}}参赛，实力由强到弱依次为</view>
-      <repeat for="{{personList}}" key="item"  class="tip">
-        <view class="tip">{{index+1}}.{{item}}</view>
-      </repeat>
+      <view class="tips">
+        <repeat for="{{personList}}" key="item">
+          <view class="tip">{{index+1}}.{{item}}</view>
+        </repeat>
+      </view>
     </view>    
     <view class="roundCount">
       <label for="count">请输入每人需要完成的场次：要求人数与场次的乘积可以被4整除</label>

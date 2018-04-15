@@ -4,18 +4,15 @@
   background:@bgc;
 }
 .statement{
-  position: fixed;
-  top:0;
-  left:0;
-  right:0;
-  color: @font-side;
-  font-weight: lighter;
-  font-size:28rpx;
-  text-align: center;
-  height:40rpx;
-  line-height: 40rpx;
-  vertical-align: middle;
-  text-align: center;
+  color:@font-side;
+  font-weight:lighter;
+  font-size:30rpx;
+  text-align:left;
+  line-height:40rpx;
+  vertical-align:middle;
+  border-bottom:1px solid @btn;
+  background:@bgc-card;
+  padding:15rpx;
 }
 .rollBtn{
   position: fixed;
@@ -26,54 +23,62 @@
   background: @btn-em;
 }
 .textarea{
-  margin:40rpx auto;
-  width:690rpx;
   height:200rpx;
-  line-height: 50rpx;
-  background: @bgc-card;
-  padding:20rpx;
+  line-height:50rpx;
+  display:block;
+  width:100%;
+  background:#fff;
+  padding:15rpx;
   letter-spacing:2px;
   text-align:left;
-  font-weight: lighter;
-  font-weight: 200;
-  background: red;
-}
-.tip{
-  font-size: 24rpx;
-  color: @font-side;
-  display: inline-block;
-  margin:5rpx 8rpx;
-  height:30rpx;
+  font-weight:lighter;
+  font-weight:200;
+  margin-bottom:5px;
 }
 </style>
 <template>
   <view class="warp nameBlock">
-    <view class="statement">说明：为了程序生成更合理的对阵表，请输入人名后,适当调整人员的实力</view>
-    <view class="rollBtn" @tap="rollBtnTap">{{ifshow?'收起':'展开'}}btn</view>
-    <textarea if="{{ifshow}}" placeholder='请输入参与人员姓名，用 + 或 空格 分隔' @input="inputNames" class="textarea" value="{{personList.join()}}"> </textarea>
-    <repeat for="{{personList}}" key="item"  class="tip">
-      <view class="tip">{{index+1}}.{{item}}<view>
-    </repeat>
+    <!-- <view class="statement">为了为您生成更合理、公平的对阵方案，请适当调整人员实力</view> -->
+    <!-- <view class="rollBtn" @tap="rollBtnTap">{{ifshow?'收起':'展开'}}btn</view> -->
+    <textarea wx:if="{{activeBar==='输入报名人员'}}"
+              class="textarea" 
+              @input="inputNames"
+              placeholder="请输入参与人员姓名，用 + 或 空格 分隔"
+              value="{{personListToString}}"> </textarea>
+    <!-- <repeat for="{{personList}}" key="item"  class="tip">
+      <view class="tip">{{index+1}}.{{item}}</view>
+    </repeat> -->
   </view>
 </template>
 <script>
 import wepy from 'wepy'
+import {getPersonListFromStorage} from '../common/util'
 export default class InpustNames extends wepy.component {
   props={
-    personList: {
-      type: 'Array',
-      default: [],
+    activeBar: {
+      type: String,
+      default: '输入报名人员',
       twoWay: true
     }
   }
   data = {
-    ifshow: true
+    personList: []
+  }
+  computed={
+    personListToString() {
+      return this.personList.join(' ')
+    }
+  }
+  async onLoad() {
+    this.personList = await getPersonListFromStorage()
+    this.$emit('upadtaPersonList', this.personList)
   }
   methods = {
     inputNames: function(e) {
       let content = e.detail.value
-      let names = this.parseNames(content.trim())
+      let names = this.parseNames(content)
       this.personList = names
+      this.$emit('upadtaPersonList', this.personList)
     },
     rollBtnTap: function() {
       this.ifshow = !this.ifshow

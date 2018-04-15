@@ -1,4 +1,4 @@
-<style lang="less">
+<style lang="less" scoped>
 @import '../common/common.less';
 .singup{
   margin:40rpx;
@@ -49,7 +49,7 @@
   <view class="singup">{{activeBar}} {{titleList[1]}} {{titleList[0]}}
      <textarea placeholder='' @input="inputNames" class="textarea" value="{{personListToString}}"> </textarea>
       <repeat for="{{personList}}" key="item"  class="tip">
-        <view class="tip">{{index+1}}.{{item}}
+        <view class="tip">{{index+1}}.{{item}}</view>
       </repeat>
     <view class="statement">说明：为了程序生成更合理的对阵表，请输入人名后，移步step2,适当调整人员的实力。</view>
     <button @tap="nextBtnTap" class="nextBtn" hidden="{{personList.length<4}}">下一步</button>
@@ -70,7 +70,6 @@ export default class SingUp extends wepy.component {
     this.personListToString = this.personList.join(' ')
   }
   methods = {
-
     inputNames: function(e) {
       let content = e.detail.value
       let names = this.parseNames(content.trim())

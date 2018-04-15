@@ -23,19 +23,13 @@
 }
 </style>
 <template>
-      <view class="warp">
-        <view class = "result">
-        <view class="">共{{personList.length}}参赛，实力由强到弱依次为</view>
-        <repeat for="{{personList}}" key="item"  class="tip">
-            <view class="tip">{{index+1}}.{{item}}</view>
-        </repeat>
-        </view>    
-        <view class="roundCount">
-          <label for="count">请输入每人需要完成的场次：要求人数与场次的乘积可以被4整除</label>
-          <input id="count"  @tap="inputRandCount" value="{{roundCount}}" />
-        </view>
-        <button @tap="submit" class="submit">确定</button>
+  <view class="result">
+    <view class="roundCount">
+      <label for="count">请输入每人需要完成的场次：要求人数与场次的乘积可以被4整除</label>
+      <input id="count"  @tap="inputRandCount" value="{{roundCount}}" />
     </view>
+    <button @tap="submit" class="submit">确定</button>
+</view>
 </template>
 
 <script>
@@ -45,7 +39,7 @@ import 'wepy-async-function'
 export default class ResultOfNames extends wepy.component {
   props = {
     personList: {
-      type: 'Array',
+      type: Array,
       default: [],
       twoWay: true
     },

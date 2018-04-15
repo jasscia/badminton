@@ -97,7 +97,7 @@ padding:20px 0;
   top:0;
 }
 .done::before,.done::after{
-  background: orange;
+  background: @btn-em;
   text-align: center;
   line-height: 95px;
   vertical-align: middle;

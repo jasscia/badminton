@@ -1,6 +1,6 @@
 <template>
   <view class="container">
-    <header :titleList.sync="titleList" :selectedItem.sync="activeBar"></header>
+    <!-- <MainHeader :titleList.sync="titleList" :selectedItem.sync="activeBar"></MainHeader> -->
     <againstTable if="{{activeBar===titleList[0]}}"></againstTable>   
     <view  class="againstTable"  if="{{activeBar===titleList[0]}}">
     <repeat for="{{scoreList}}" key="item">
@@ -27,7 +27,7 @@ export default class Main extends wepy.page {
     titleList: ['对阵表', '实时战况']
   }
   components = {
-    header: header,
+    MainHeader: header,
     againstTable: againstTable,
     resultOfGame: resultOfGame
   }
