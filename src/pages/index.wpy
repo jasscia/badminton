@@ -152,7 +152,9 @@ export default class Index extends wepy.page {
     let groupList=await requestTableList(this.personCount,this.roundCount)
     //将请求到的 只有数字的对阵表 转换成带人名的 对阵表，并在后面加上 分数 和完成状态
     groupList.forEach((numList,index,groupList)=>{
+      // console.log('index',index+1,groupList[index].slice())
       this.transformNumToPersonName(numList,reversePersonList)
+      // console.log('index',index+1,groupList[index].slice())
       groupList[index]=groupList[index].concat([0, 0, 'undone'])
     })
     //完成后保存结果 并跳转到对阵表
@@ -175,7 +177,7 @@ export default class Index extends wepy.page {
   judgeIfOk(){
       if(this.personCount<4){
         return false}
-      if(this.roundCount===0){
+      if(!this.roundCount){
         return false}
       if(this.personCount*this.roundCount%4!==0){
         return false}
