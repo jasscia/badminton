@@ -132,22 +132,19 @@ export default class Index extends wepy.page {
       this.ifShowPanel=!this.ifShowPanel
     },
     makeGroup() {
-      this.personList=this.personList.filter(name=>{
-        return name
-      })
-      if(!this.roundCount){
-        this.getAgainstTable()
-      }
+      this.getAgainstTable()
     }
   }
   getAgainstTable= async function() {
     // 由于后端顺序 是由弱到强排列的 所以 先对人员的数组转序
     let reversePersonList = []
     for (let i = this.personList.length - 1; i >= 0; i--) {
-      reversePersonList.push(this.personList[i])
+      if(this.personList[i]){
+        reversePersonList.push(this.personList[i])
+      }
     }
     //请求 对阵表
-    let groupList=await requestTableList(this.personList.length,this.roundCount)
+    let groupList=await requestTableList(this.personCount,this.roundCount)
     //将请求到的 只有数字的对阵表 转换成带人名的 对阵表，并在后面加上 分数 和完成状态
     groupList.forEach((numList,index,groupList)=>{
       this.transformNumToPersonName(numList,reversePersonList)

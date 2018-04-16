@@ -54,7 +54,6 @@ export default class Header extends wepy.component {
       let titlename = e.target.dataset.titlename
       if (titlename) {
         this.selectedItem = titlename
-        console.log(this.selectedItem)
       }
     }
   }

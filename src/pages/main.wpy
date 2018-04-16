@@ -39,7 +39,6 @@ export default class Live extends wepy.page {
   }
   onLoad(options){
     this.groupList=wx.getStorageSync('groupList')
-    console.log(this.groupList)
   }
   onShow(options){
     this.groupList=wx.getStorageSync('groupList')

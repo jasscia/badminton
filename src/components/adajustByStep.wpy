@@ -181,7 +181,6 @@ export default class AdajustByStep extends wepy.component {
     }else{
       this.personList.splice(index,1)
     }
-    console.log('提交时候',this.personList)
     this.addAfter = 0
     this.newName=''
   }
@@ -205,7 +204,6 @@ export default class AdajustByStep extends wepy.component {
       this.addAfter = index
       this.personList.splice(index,0,null)
     }
-    console.log('tap addBtn',index,this.addAfter,this.personList)
     return array
   }
 }

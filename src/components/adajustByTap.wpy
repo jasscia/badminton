@@ -112,7 +112,6 @@ export default class AdajustByTap extends wepy.component {
     this.personList = await getPersonListFromStorage()
     this.personList_unordered = this.personList.slice()
     this.personList_ordered = []
-    console.log(this.personList, this.personList_unordered, this.personList_ordered)
   }
   methods = {
     inputRandCount(e) {

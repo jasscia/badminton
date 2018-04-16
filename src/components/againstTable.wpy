@@ -91,7 +91,7 @@ padding:20px 0;
 .done::after{
   content: '结束';
   position: absolute;
-  left:405rpx;
+  left:415rpx;
   right:0;
   bottom:0;
   top:0;
@@ -154,10 +154,6 @@ padding:20px 0;
     }
 
     onLoad (options) {
-      console.log(options.query)
-      // this.personList = getPersonListFromStorage().filter((name) => {
-      //   return name
-      // })
       this.personCount = this.personList.length
     }
 
@@ -209,18 +205,13 @@ padding:20px 0;
         this.scoreList = newScoreList
       },
       selectItem(e) {
-    // this.setData({
         this.activedItem = e.currentTarget.dataset.id
-    // })
       },
       finish(e) {
         let index = e.currentTarget.dataset.id
         let scoreList = this.data.scoreList
         scoreList[index][6] = (scoreList[index][6] === 'done' ? 'undone' : 'done')
-  // this.setData({
         this.scoreList = scoreList
-    // })
-        console.log(scoreList)
       }
     }
   }

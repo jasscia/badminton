@@ -89,17 +89,14 @@ export default class Result extends wepy.page  {
   }
  watch={
    groupList(){
-     console.log('watcher')
      this.getResult()
    }
  }
   getResult(){
-  console.log(this.groupList)
   let calcedScore = this.calcScore(this.groupList);
   let orderedScore = this.orderScore(calcedScore);
   this.result= orderedScore;
   this.$apply()
-  console.log('result=',this.result)
   }
   calcScore(groupList) {
     let result = {};
@@ -118,7 +115,6 @@ export default class Result extends wepy.page  {
         result[item[i]][3] = result[item[i]][1] - result[item[i]][2];//[3]是胜-败的比值率
       }
     }
-    console.log('计算后',result)
     return result;
   }
   orderScore(obj) {
@@ -132,7 +128,6 @@ export default class Result extends wepy.page  {
     for (let i=0; i < orderedKeys.length; i++) {
       newObj[orderedKeys[i]] = obj[orderedKeys[i]].concat(i + 1)//[4]是名次，concat的部分
     }
-    console.log('ordered',newObj)
     return newObj;
   }
   findKeyOfMax(obj, orderedKeys) {
@@ -147,12 +142,10 @@ export default class Result extends wepy.page  {
         continue;
       }
       if (obj[key_of_max][3] > obj[keys[i]][3]) {//先比较 胜/负比
-        // key_of_max = keys[i];
       } else if (obj[key_of_max][3] < obj[keys[i]][3]) {
         key_of_max = keys[i];
       } else {
         if (obj[key_of_max][0] >= obj[keys[i]][0]) {//再比较净胜分
-          // key_of_max  = keys[i]
         } else {
           key_of_max = keys[i];
         }
