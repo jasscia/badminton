@@ -157,8 +157,7 @@ export default class GroupTable extends wepy.page {
   props={
     groupList:{
       type:Array,
-      default:[],
-      twoWay:true
+      default:[]
     }
   }
   data={
@@ -167,8 +166,7 @@ export default class GroupTable extends wepy.page {
   
   watch={
     groupList(){
-      wx.getStorageSync('groupList',this.groupList)
-      console.log('h',this.groupList)
+      this.$emit('updataGroupList',this.groupList)
     }
   }
   methods={

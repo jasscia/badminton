@@ -23,13 +23,13 @@
   background: @btn-em;
 }
 .textarea{
-  height:200rpx;
+  height:300rpx;
   line-height:50rpx;
   display:block;
-  width:670rpx;
+  width:750rpx;
   box-sizing: border-box;
-  margin:40rpx 20px;
-  border-radius: 20rpx;
+  margin:40rpx 0px;
+  // border-radius: 20rpx;
   background:#fff;
   padding:15rpx;
   letter-spacing:2px;
@@ -37,19 +37,18 @@
   font-weight:lighter;
   font-weight:200;
 }
+.textarea-placeholder{
+  font-size: 30rpx;
+  font-weight: 200rpx;
+}
 </style>
 <template>
   <view class="warp nameBlock">
-    <!-- <view class="statement">为了为您生成更合理、公平的对阵方案，请适当调整人员实力</view> -->
-    <!-- <view class="rollBtn" @tap="rollBtnTap">{{ifshow?'收起':'展开'}}btn</view> -->
     <textarea wx:if="{{activeBar==='输入报名人员'}}"
               class="textarea" 
               @input="inputNames"
               placeholder="请输入参与人员姓名，用 + 或 空格 分隔"
               value="{{personListToString}}"> </textarea>
-    <!-- <repeat for="{{personList}}" key="item"  class="tip">
-      <view class="tip">{{index+1}}.{{item}}</view>
-    </repeat> -->
   </view>
 </template>
 <script>

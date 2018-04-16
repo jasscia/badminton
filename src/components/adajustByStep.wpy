@@ -30,6 +30,8 @@
       width:400rpx;
       white-space:nowrap;
       overflow: hidden;
+      text-overflow: ellipsis;
+      margin-left:15rpx;
     }
     .name,.order{
       text-align: center

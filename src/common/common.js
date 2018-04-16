@@ -141,19 +141,20 @@ const share = function(path) {
   }
 }
 
-const requestTableList = function(personCount,roundCount) {
+const requestTableList = async function(personCount,roundCount) {
   let url = `https://gzbtestsystem.cn/badminton/againsttable?NumberOfPeople=${personCount}&RoundsOfPerson=${roundCount}&format=json`;
   let method = "GET";
   let data={};
-  let success=function(res){
-      
-    wx.showModal({
-      title: '友情建议',
-      content: `共为您排了${res.data.AgainstTable.length}场比赛，如果您的赛时为2小时，建议预定${Math.ceil(res.data.AgainstTable.length / 14)}个场地!\rps:每个场地不宜超过14场。`
-    })
-      wx.setStorageSync('groupList',res.data.AgainstTable)
-  }
-  htr(url,method,data).then(success);
+  // let success=function(res){ 
+  //   wx.showModal({
+  //     title: '友情建议',
+  //     content: `共为您排了${res.data.AgainstTable.length}场比赛，如果您的赛时为2小时，建议预定${Math.ceil(res.data.AgainstTable.length / 14)}个场地!\rps:每个场地不宜超过14场。`
+  //   })
+  //     wx.setStorageSync('groupList',res.data.AgainstTable)
+  //     console.log('getstorage',wx.getStorageSync('groupList'))
+  //   }
+  let res=await htr(url,method,data);
+  return res.data.AgainstTable
   }
 export {downLoadMatchList,
         downLoadMatchInfo,

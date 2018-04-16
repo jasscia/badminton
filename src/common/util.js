@@ -126,20 +126,25 @@ Array.prototype.remove = function (val) {
     this.splice(index, 1)
   }
 }
-Array.prototype.change = function (oldval, val) {
-  var index = this.indexOf(oldval)
+Array.prototype.transform = function (num, name) {
+  var index = this.indexOf(num)
   if (index > -1) {
-    this[index] = val
+    this[index] = name
   }
 }
-Array.prototype.numToString = function(stringArr) {
+Array.prototype.transformNumToPersonName = function(nameArr) {
   for (let num of this) {
     if (Array.isArray(num)) {
-      Array.prototype.numToString.call(num, stringArr)
-    } else {
-      if (num > stringArr.length) {
-      } else {
-        this.change(num, stringArr[num - 1])
+      console.log(num)
+      Array.prototype.transformNumToPersonName.call(num, nameArr)
+
+      console.log(num)
+    } 
+    if (!Array.isArray(num))  {
+      if (num > nameArr.length) {
+      } 
+      else {
+        this.transform(num, nameArr[num - 1])
       }
     }
   }

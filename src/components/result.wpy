@@ -1,15 +1,15 @@
 <!--pages/result/result.wxml-->
 <template>   
   <view class="wrapper">
-    <button wx:if="{{ifShowBtn}}" @tap="getResult">获取排名结果</button>
-     <view class="itemHead"  wx:if="{{!ifShowBtn}}">
+    <!-- <button wx:if="{{ifShowBtn}}" @tap="getResult">获取排名结果</button> -->
+    <view class="itemHead">
       <view class='item1'>姓名</view>
       <view class='item3'>胜-负</view>
       <view class='item2'>净胜分</view>
       <view class='item4'>名次</view>
     </view>
-    <repeat wx:for="{{result}}" wx:key="{{item}}">
-      <view  class="item itemBody"  wx:if="{{!ifShowBtn}}">
+    <repeat wx:for="{{result}}" wx:key="{{index}}">
+      <view  class="item itemBody">
         <view class='item1 NO-{{item[4]}}'>{{index}}</view>
         <view class='item3'>{{item[1]}}-{{item[2]}}</view>
         <view class='item2'>{{item[0]}}</view>            
@@ -85,27 +85,21 @@ export default class Result extends wepy.page  {
     }
   }
   data={
-    result:{},
-    ifShowBtn:true
+    result:{}
   }
-  onLoad () {
-  }
-  onShow () {
-  }
-  onUnload(){
-    this.ifShowBtn=true
-  }
-  onHide(){
-    this.ifShowBtn=true
-  }
-  methods={
-    getResult(){
-      this.ifShowBtn=false
-    this.groupList=wx.getStorage('groupList');
-    let calcedScore = this.calcScore(this.groupList);
-    let orderedScore = this.orderScore(calcedScore);
-    this.result= orderedScore;
-    }
+ watch={
+   groupList(){
+     console.log('watcher')
+     this.getResult()
+   }
+ }
+  getResult(){
+  console.log(this.groupList)
+  let calcedScore = this.calcScore(this.groupList);
+  let orderedScore = this.orderScore(calcedScore);
+  this.result= orderedScore;
+  this.$apply()
+  console.log('result=',this.result)
   }
   calcScore(groupList) {
     let result = {};
@@ -124,6 +118,7 @@ export default class Result extends wepy.page  {
         result[item[i]][3] = result[item[i]][1] - result[item[i]][2];//[3]是胜-败的比值率
       }
     }
+    console.log('计算后',result)
     return result;
   }
   orderScore(obj) {
@@ -137,6 +132,7 @@ export default class Result extends wepy.page  {
     for (let i=0; i < orderedKeys.length; i++) {
       newObj[orderedKeys[i]] = obj[orderedKeys[i]].concat(i + 1)//[4]是名次，concat的部分
     }
+    console.log('ordered',newObj)
     return newObj;
   }
   findKeyOfMax(obj, orderedKeys) {
