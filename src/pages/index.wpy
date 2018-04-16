@@ -4,14 +4,11 @@
     <inputNames :personList.sync="personList" hidden="{{ifShowPanel}}"></inputNames>
     <view class="roundCount">
       <label for="roundPer">每人场数</label>
-      <input type="number" id="roundCount" value="{{roundCount}}" @input="changeRoundCount" />
+      <input type="number" id="roundCount" placeholder="请设定每人场次" value="{{roundCount}}" @input="changeRoundCount" />
       <view class="error" hidden="{{ifOk}}">与人数的乘积 应能被4整除</view>
     </view>
-    <view class="tip">请<text class="em">先</text>按照队员的能力
-                    <text class="em">由强到弱</text>
-                      依次排序后，<text class="em">再生成对阵表</text>，这样有利于避免一些尴尬的情况(如两强vs两弱)，
-                      从而生成更合理的对阵表
-                    <button class="controller" @tap="toggleIfShowPanel">
+    <view class="tip">请<text class="em">先</text>按照队员的能力<text class="em">由强到弱</text>依次排序后，<text class="em">再生成对阵表</text>，这样有利于避免一些尴尬的情况(如两强vs两弱)，
+                      从而生成更合理的对阵表<button class="controller" @tap="toggleIfShowPanel">
                       {{ifShowPanel?'返回报名表':'显示实力调整面板'}}</button></view>
     <button id="btn" @tap="makeGroup" 
             disabled="{{!ifOk}}">生产对阵表</button>
@@ -28,15 +25,16 @@
   padding:0 10rpx;
   .em{
     color:@btn-em;
-    font-size: 34rpx;
   }
   .controller{
-    background-color:tomato;
+    background-color:lightgreen;
+    color:@btn-em;
     height:60rpx;
     line-height: 60rpx;
     display: inline-block;
     vertical-align: middle;
     padding:0 8rpx;
+    font-size: 30rpx;
   }
 }
 .roundCount{
@@ -62,8 +60,11 @@
       flex:1;
     }
     .error{
-      width:400rpx;
+      width:300rpx;
+      text-align: right;
+      padding-right:20rpx;
       color:tomato;
+      font-size: 24rpx;
     }
 }
   #btn{
@@ -73,6 +74,7 @@
     line-height: 100rpx;
     vertical-align: middle;
     text-align: center;
+    background: @btn;
   }
 </style>
 
@@ -93,7 +95,7 @@ export default class Index extends wepy.page {
   data={
     personList: [],
     personCount:0,
-    roundCount:4,
+    roundCount:null,
     activeBar: '输入报名人员',
     titleList: ['输入报名人员', '调整人员实力'],
     ifShowPanel:false,
@@ -102,6 +104,7 @@ export default class Index extends wepy.page {
   watch={
     personList () {
       setStorage('personList', this.personList)
+      setStorage('groupList',[])
       this.personCount=this.calPersonCount()
       this.ifOk=this.judgeIfOk()
     },
@@ -115,7 +118,9 @@ export default class Index extends wepy.page {
     // }
   }
   onShareAppMessage() {
-    return {}
+    return {
+      path:'/pages/index'
+    }
   }
   events={
     upadtaPersonList(newPersonList) {
@@ -168,7 +173,7 @@ export default class Index extends wepy.page {
     });
   }
   judgeIfOk(){
-      if(this.personCount===0){
+      if(this.personCount<4){
         return false}
       if(this.roundCount===0){
         return false}

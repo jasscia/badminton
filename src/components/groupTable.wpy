@@ -109,7 +109,7 @@ padding:20px 0;
     }
     .sub{
       font-size: 25rpx;
-      letter-spacing: -2rpx;
+      // letter-spacing: -2rpx;
       text-align: center;
       .finishBtn{
         margin:5rpx;
@@ -120,15 +120,15 @@ padding:20px 0;
   }  
 }
 .done::before{
-  content: '结束';
+  content: '';
   position: absolute;
   left:0;
-  right:410rpx;
+  right:417rpx;
   bottom:0;
   top:0;
 }
 .done::after{
-  content: '结束';
+  content: '';
   position: absolute;
   left:405rpx;
   right:0;
@@ -136,12 +136,13 @@ padding:20px 0;
   top:0;
 }
 .done::before,.done::after{
-  background: @btn-em;
+  background: #fff;
   text-align: center;
   line-height: 95px;
   vertical-align: middle;
   z-index: 999;
   border-radius: 20rpx;
+  opacity: 0.9;
 }
 .againstItem.selected{
   background:lightgreen;

@@ -67,6 +67,8 @@
     .icon::after{
       font-family:"iconfont";
       font-weight:900;
+      display: inline-block;
+      transform: translateY(-8rpx);
     }
     .remove::after{
       content: "\e648";

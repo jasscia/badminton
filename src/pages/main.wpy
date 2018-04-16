@@ -37,6 +37,11 @@ export default class Live extends wepy.page {
       wx.setStorageSync('groupList',this.groupList)
     }
   }
+  onShareAppMessage() {
+    return {
+      path:'/pages/index'
+    }
+  }
   onLoad(options){
     this.groupList=wx.getStorageSync('groupList')
   }

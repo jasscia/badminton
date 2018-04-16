@@ -11,17 +11,11 @@
   width:750rpx;
   box-sizing: border-box;
   margin-bottom:10rpx;
-  // border-radius: 20rpx;
   background:#fff;
   padding:15rpx;
   letter-spacing:2px;
   text-align:left;
-  font-weight:lighter;
-  font-weight:200;
-}
-.textarea-placeholder{
-  font-size: 30rpx;
-  font-weight: 200rpx;
+  font-size: 32rpx;
 }
 .tip{
   padding:0 10rpx;
@@ -34,12 +28,11 @@
 </style>
 <template>
   <view class="warp nameBlock">
-    <textarea wx:if="{{activeBar==='输入报名人员'}}"
-              class="textarea" 
+    <textarea class="textarea" 
               @input="inputNames"
-              placeholder="请输入参与人员姓名，用 + 或 空格 分隔"
+              placeholder="请输入参赛队员姓名，用 '+' 或 '空格' 分隔"
               value="{{personListToString}}"> </textarea>
-    <view class="tip">共 {{personList.length}} 人参赛，分别是：   
+    <view class="tip">共 {{personCount}} 名队员，分别是:
       <repeat  for="{{personList}}" key="item">
         <text class="name">{{index+1}}.{{item}}</text>
       </repeat>
@@ -63,6 +56,10 @@ export default class InpustNames extends wepy.component {
   computed={
     personListToString() {
       return this.personList.join(' ')
+    },
+    personCount(){
+      let personList=this.personList.filter(name=>{return name})
+      return personList.length
     }
   }
   async onLoad() {
