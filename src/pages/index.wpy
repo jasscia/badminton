@@ -1,40 +1,71 @@
 <template>
   <view class="container">
-    <IndexHeader  :titleList.sync="titleList" :selectedItem.sync="activeBar"></IndexHeader>
-    <inputNames :personList.sync="personList" :activeBar.sync="activeBar"></inputNames>
+    <!-- <IndexHeader  :titleList.sync="titleList" :selectedItem.sync="activeBar"></IndexHeader> -->
+    <inputNames :personList.sync="personList" hidden="{{ifShowPanel}}"></inputNames>
     <view class="roundCount">
       <label for="roundPer">每人场数</label>
-      <input type="number" name="" id="roundCount" value="{{roundCount}}" @input="changeRoundCount"/>
+      <input type="number" id="roundCount" value="{{roundCount}}" @input="changeRoundCount" />
+      <view class="error" hidden="{{ifOk}}">与人数的乘积 应能被4整除</view>
     </view>
-    <button id="btn" @tap="makeGroup">生产对阵表</button>
-    <adajustByStep :personList.sync="personList"  :activeBar.sync="activeBar"></adajustByStep>
+    <view class="tip">请<text class="em">先</text>按照队员的能力
+                    <text class="em">由强到弱</text>
+                      依次排序后，<text class="em">再生成对阵表</text>，这样有利于避免一些尴尬的情况(如两强vs两弱)，
+                      从而生成更合理的对阵表
+                    <button class="controller" @tap="toggleIfShowPanel">
+                      {{ifShowPanel?'返回报名表':'显示实力调整面板'}}</button></view>
+    <button id="btn" @tap="makeGroup" 
+            disabled="{{!ifOk}}">生产对阵表</button>
+    <adajustByStep :personList.sync="personList"  hidden="{{!ifShowPanel}}"></adajustByStep>
     <!-- <resultOfNames :personList.sync="personList"></resultOfNames>     -->
   </view>
 </template>
 <style lang="less" scoped>
 @import '../common/common.less';
+.tip{
+  font-size: 30rpx;
+  color:@font-side;
+  line-height: 50rpx;
+  padding:0 10rpx;
+  .em{
+    color:@btn-em;
+    font-size: 34rpx;
+  }
+  .controller{
+    background-color:tomato;
+    height:60rpx;
+    line-height: 60rpx;
+    display: inline-block;
+    vertical-align: middle;
+    padding:0 8rpx;
+  }
+}
 .roundCount{
+    display:flex;
+    align-items: center;
     font-size:30rpx;
     background: @bgc-card;
-    margin:40rpx 0;
+    margin-bottom:40rpx;
     padding-left:30rpx;
-    border-bottom: 2px solid @bgc;
     label{
       width: 150rpx;
       color: @font-side;
       font-weight: lighter;
     }
-    label,input{
-      display: inline-block;
+    label,input,.error{
       height: 60px;
       line-height: 60px;
       vertical-align: middle;
     }
     input{
-      width:500rpx;
+      text-align: left;
+      padding-left:20rpx;
+      flex:1;
     }
-  }
-
+    .error{
+      width:400rpx;
+      color:tomato;
+    }
+}
   #btn{
     margin:40rpx auto;
     width:450rpx;
@@ -61,19 +92,27 @@ export default class Index extends wepy.page {
   }
   data={
     personList: [],
+    personCount:0,
     roundCount:4,
     activeBar: '输入报名人员',
-    titleList: ['输入报名人员', '调整人员实力']
+    titleList: ['输入报名人员', '调整人员实力'],
+    ifShowPanel:false,
+    ifOk:false
   }
   watch={
     personList () {
       setStorage('personList', this.personList)
+      this.personCount=this.calPersonCount()
+      this.ifOk=this.judgeIfOk()
     },
-    activeBar(){
-      this.personList=this.personList.filter(name=>{
-        return name
-      })
-    }
+    roundCount(){
+      this.ifOk=this.judgeIfOk()
+    },
+    // activeBar(){
+    //   this.personList=this.personList.filter(name=>{
+    //     return name
+    //   })
+    // }
   }
   onShareAppMessage() {
     return {}
@@ -89,62 +128,62 @@ export default class Index extends wepy.page {
     changeRoundCount(e){
       this.roundCount=e.detail.value
     },
+    toggleIfShowPanel(){
+      this.ifShowPanel=!this.ifShowPanel
+    },
     makeGroup() {
       this.personList=this.personList.filter(name=>{
         return name
       })
       if(!this.roundCount){
-        wepy.showModal({
-            title: '错误提示',
-            content: '场次不能为空',
-            mask: true,
-            duration: 2000
-          })
-          return
-        }
-      if(this.personList.length * this.roundCount % 4){
-        wepy.showModal({
-            title: '错误提示',
-            content: '场次和人数的乘积 不能被4整除 排阵失败！！',
-            mask: true,
-            duration: 2000
-          })
-          return
-      }
         this.getAgainstTable()
       }
+    }
   }
-      getAgainstTable= async function() {
-        // 由于后端顺序 是由弱到强排列的 所以 先对人员的数组转序
-        let reversePersonList = []
-        for (let i = this.personList.length - 1; i >= 0; i--) {
-          reversePersonList.push(this.personList[i])
-        }
-        //请求 对阵表
-        let groupList=await requestTableList(this.personList.length,this.roundCount)
-        //将请求到的 只有数字的对阵表 转换成带人名的 对阵表，并在后面加上 分数 和完成状态
-        groupList.forEach((numList,index,groupList)=>{
-          this.transformNumToPersonName(numList,reversePersonList)
-          groupList[index]=groupList[index].concat([0, 0, 'undone'])
+  getAgainstTable= async function() {
+    // 由于后端顺序 是由弱到强排列的 所以 先对人员的数组转序
+    let reversePersonList = []
+    for (let i = this.personList.length - 1; i >= 0; i--) {
+      reversePersonList.push(this.personList[i])
+    }
+    //请求 对阵表
+    let groupList=await requestTableList(this.personList.length,this.roundCount)
+    //将请求到的 只有数字的对阵表 转换成带人名的 对阵表，并在后面加上 分数 和完成状态
+    groupList.forEach((numList,index,groupList)=>{
+      this.transformNumToPersonName(numList,reversePersonList)
+      groupList[index]=groupList[index].concat([0, 0, 'undone'])
+    })
+    //完成后保存结果 并跳转到对阵表
+    wx.setStorageSync('groupList',groupList)
+    wx.showModal({
+      title: '友情建议',
+      content: `共为您排了${groupList.length}场比赛，如果您的赛时为2小时，建议预定${Math.ceil(groupList.length / 14)}个场地!\rps:每个场地不宜超过14场。`,
+      success:()=>{
+        wx.switchTab({
+          url:'/pages/main'
         })
-        //完成后保存结果 并跳转到对阵表
-        wx.setStorageSync('groupList',groupList)
-        wx.showModal({
-          title: '友情建议',
-          content: `共为您排了${groupList.length}场比赛，如果您的赛时为2小时，建议预定${Math.ceil(groupList.length / 14)}个场地!\rps:每个场地不宜超过14场。`,
-          success:()=>{
-            wx.switchTab({
-              url:'/pages/main'
-            })
-          }
-        })
-        
       }
-      transformNumToPersonName(numList,nameList){
-        numList.forEach((num,index,numList) => {
-          numList[index]=nameList[num-1]
-        });
-      }
-
+    })       
+  }
+  transformNumToPersonName(numList,nameList){
+    numList.forEach((num,index,numList) => {
+      numList[index]=nameList[num-1]
+    });
+  }
+  judgeIfOk(){
+      if(this.personCount===0){
+        return false}
+      if(this.roundCount===0){
+        return false}
+      if(this.personCount*this.roundCount%4!==0){
+        return false}
+      return true
+  }
+  calPersonCount(){
+    let personList=this.personList.filter(name=>{
+      return name
+    })
+    return personList.length
+  }
 }
 </script>

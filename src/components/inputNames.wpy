@@ -2,25 +2,7 @@
 @import '../common/common.less';
 .warp{
   background:@bgc;
-}
-.statement{
-  color:@font-side;
-  font-weight:lighter;
-  font-size:30rpx;
-  text-align:left;
-  line-height:40rpx;
-  vertical-align:middle;
-  border-bottom:1px solid @btn;
-  background:@bgc-card;
-  padding:15rpx;
-}
-.rollBtn{
-  position: fixed;
-  top:0;
-  right:0;
-  width:40rpx;
-  height:40rpx;
-  background: @btn-em;
+  margin-bottom:40rpx;
 }
 .textarea{
   height:300rpx;
@@ -28,7 +10,7 @@
   display:block;
   width:750rpx;
   box-sizing: border-box;
-  margin:40rpx 0px;
+  margin-bottom:10rpx;
   // border-radius: 20rpx;
   background:#fff;
   padding:15rpx;
@@ -41,6 +23,13 @@
   font-size: 30rpx;
   font-weight: 200rpx;
 }
+.tip{
+  font-size: 12px;
+  color: #666;
+  .name{
+    margin:5rpx;
+  }
+}
 </style>
 <template>
   <view class="warp nameBlock">
@@ -49,6 +38,11 @@
               @input="inputNames"
               placeholder="请输入参与人员姓名，用 + 或 空格 分隔"
               value="{{personListToString}}"> </textarea>
+    <view class="tip">共 {{personList.length}} 人参赛，分别是：   
+      <repeat  for="{{personList}}" key="item">
+        <text class="name">{{index+1}}.{{item}}</text>
+      </repeat>
+    </view>
   </view>
 </template>
 <script>

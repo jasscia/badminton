@@ -4,11 +4,13 @@
   margin-top:40rpx;
   font-size: 40rpx;
 }
-.personList{
-  .tip{
-    font-size: 30rpx;
-    color:@font-side;
+.tip{
+  font-size: 40rpx;
+  color:tomato;
+  line-height: 80rpx;
+  padding:20rpx;
   }
+.personList{
   .row{
     display: flex;
     background: @bgc-card;
@@ -17,7 +19,7 @@
     line-height: 100rpx;
     vertical-align: middle;
     border-radius: 20rpx;
-    padding:0 20rpx;
+    padding:0 0 0 20rpx;
     .order::before{
       content: 'NO.';
       font-size: 60%;
@@ -27,7 +29,7 @@
       width:80rpx;
     }
     .name{
-      width:400rpx;
+      width:200rpx;
       white-space:nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -39,14 +41,15 @@
     .iconGroup{
       flex: 1;
       display:flex;
-      width:300rpx;
+      justify-content: flex-end;
+      // width:500rpx;
       margin:0;
       padding:0;
     }
     .icon{
       width:80rpx;
       height:80rpx;
-      margin:10rpx 25rpx;
+      margin:10rpx 15rpx;
       text-align: center;
       border-radius: 50%;
       font-weight: 900;
@@ -54,6 +57,12 @@
     }
     .icon.null{
       background:@bgc-card;
+    }
+    .icon.remove{
+      background: tomato;
+    }
+    .icon.add{
+      background:springgreen;
     }
     .icon::after{
       font-family:"iconfont";
@@ -100,23 +109,25 @@
 }
 </style>
 <template>
-  <view class="panel" wx:if="{{personList.length>0}}">
-    <view class="personList" @tap="sortPersonList">
-      <view class="tip"  hidden="{{activeBar==='输入报名人员'}}">按人员实力由强向弱排序</view>
+  <view class="panel">
+    <view class="tip"  wx:if="{{!personList.length}}">ops！ 您还没有输入报名人员呢，请返回报名表，输入报名人员后再来吧</view>
+    <view class="personList" @tap="sortPersonList"  wx:if="{{personList.length>0}}">
       <repeat for="{{personList}}" key="item">
         <view class="row" wx:if="{{item}}">
           <view class="order">{{index+1}}</view>
           <view class="name">{{item}}</view>
-          <view class="iconGroup upAndDown"  wx:if="{{activeBar!=='输入报名人员'}}">
+          <view class="iconGroup upAndDown">
+            <view class="icon remove" data-type="remove" data-order="{{index+1}}"></view>
             <view class="icon up" data-type="up"  data-order="{{index+1}}"  wx:if="{{index+1>1}}"></view>
             <view  wx:else class="icon null"></view>
             <view class="icon down" data-type="down" data-order="{{index+1}}"  wx:if="{{index+1<personList.length}}"></view>
             <view  wx:else class="icon null"></view>
-          </view>
-          <view class="iconGroup  addAndReduce" wx:if="{{activeBar==='输入报名人员'}}">
             <view class="icon add" data-type="add" data-order="{{index+1}}"></view>
-            <view class="icon remove" data-type="remove" data-order="{{index+1}}"></view>
-          </view>         
+          </view>
+          <!-- <view class="iconGroup  addAndReduce"> -->
+            <!-- <view class="icon add" data-type="add" data-order="{{index+1}}"></view> -->
+            <!-- <view class="icon remove" data-type="remove" data-order="{{index+1}}"></view> -->
+          <!-- </view>          -->
         </view>
         <view class="row addRow" wx:if="{{!item}}">
             <input placeholder="输入姓名,点击右侧确定添加" value="{{newName}}" @input="inputNewName"/>
@@ -147,14 +158,6 @@ export default class AdajustByStep extends wepy.component {
     newName:'',
     addAfter: null
   }
-  // match={
-  //   activeBar(){
-  //     this.personList=this.personList.filter(name=>{
-  //       return name
-  //     })
-  //     console.log(this.personList)
-  //   }
-  // }
   methods = {
     sortPersonList(e) {
       let dom = e.target
