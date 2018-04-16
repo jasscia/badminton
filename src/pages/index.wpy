@@ -75,7 +75,7 @@
 }
   #btn{
     margin:40rpx auto;
-    width:450rpx;
+    // width:450rpx;
     height:100rpx;
     line-height: 100rpx;
     vertical-align: middle;
