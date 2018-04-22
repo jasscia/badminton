@@ -1,146 +1,126 @@
 <template>
-  <view class="container">
-    <!-- <IndexHeader  :titleList.sync="titleList" :selectedItem.sync="activeBar"></IndexHeader> -->
-    <view class="tip">请<text class="em">先</text>按照队员的能力<text class="em">由强到弱</text>依次排序后，<text class="em">再生成对阵表</text>，这样有利于避免一些尴尬的情况(如两强vs两弱)，
-                      从而生成更合理的对阵表<button class="controller" @tap="toggleIfShowPanel">
-                      {{ifShowPanel?'返回报名表':'显示实力调整面板'}}</button></view>
-    <inputNames :personList.sync="personList" hidden="{{ifShowPanel}}"></inputNames>
-    <view class="roundCount">
-      <label for="roundPer">每人场数</label>
-      <input type="number" id="roundCount" placeholder="请设定每人场次" value="{{roundCount}}" @input="changeRoundCount" />
-      <view class="error" hidden="{{ifOk}}">与人数的乘积 应能被4整除</view>
+  <view class="container" style="min-height:{{windowHeight}}px">
+    <view class="tip">请先按照队员的能力由强到弱依次排序后，再生成对阵表，
+                      这样有利于避免一些尴尬的情况(如两强vs两弱)，
+                      从而生成更合理的对阵表</view>
+    <view  class="inputGroup names">
+      <text class="title">人员报名</text>
+      <input type="text" class="roundCount" @input="inputName" 
+            placeholder="这里输入参赛队员姓名，用 '+' 或 '空格' 结束" 
+            placeholder-style="font-weight:200;color:red;font-size:24rpx"/>
     </view>
-    
-    <button id="btn" @tap="makeGroup" 
-            disabled="{{!ifOk}}">生产对阵表</button>
-    <adajustByStep :personList.sync="personList"  hidden="{{!ifShowPanel}}"></adajustByStep>
-    <!-- <resultOfNames :personList.sync="personList"></resultOfNames>     -->
+    <view class="inputGroup round">
+      <text class="title">场次设定</text>
+      <input type="number" class="roundCount" @input="roundCountInput" 
+          placeholder="这里输入每人场次,要求与人数的乘积能被4整除"
+          placeholder-style="font-weight:200;color:red;font-size:24rpx"/>
+    </view>
+    <button class="makeGroup" @tap="makeGroup" 
+            disabled="{{!ifOk}}">生成对阵表</button>
+    <panle wx:if="{{personList.length}}" :personList.sync="personList"></panle>
   </view>
 </template>
 <style lang="less" scoped>
 @import '../common/common.less';
 .tip{
   font-size: 28rpx;
-  color:@font;
+  color:#000;
   line-height: 50rpx;
   padding:20rpx;
-  font-weight: 400;
+  font-weight: 200;
   background: @btn;
-  .em{
-    color:@btn-em;
-    font-weight: 400;
-    font-size:30rpx;
+}
+.inputGroup{
+  display: flex;
+  font-size:32rpx;
+  text-align:center;
+  margin-bottom:0;
+  margin-top:5rpx;
+  background:@bgc-card;
+  padding:20rpx;
+  input{
+    flex:1; 
   }
-  .controller{
-    background-color:lightgreen;
-    color:@btn-em;
-    height:60rpx;
-    line-height: 60rpx;
-    display: inline-block;
-    vertical-align: middle;
-    padding:0 8rpx;
-    font-size: 30rpx;
-    font-weight: 400;
+  .title{
+    padding-right:10rpx;
+    border-right:4rpx solid @bgc;
   }
 }
-.roundCount{
-    display:flex;
-    align-items: center;
-    font-size:30rpx;
-    background: @bgc-card;
-    margin-bottom:40rpx;
-    padding-left:30rpx;
-    label{
-      width: 150rpx;
-      color: @font-side;
-      font-weight: lighter;
-    }
-    label,input,.error{
-      height: 60px;
-      line-height: 60px;
-      vertical-align: middle;
-    }
-    input{
-      text-align: left;
-      padding-left:20rpx;
-      flex:1;
-    }
-    .error{
-      width:300rpx;
-      text-align: right;
-      padding-right:20rpx;
-      color:tomato;
-      font-size: 24rpx;
-    }
-}
-  #btn{
-    margin:40rpx auto;
-    // width:450rpx;
+  .makeGroup{
+    margin:30rpx 40rpx;
     height:100rpx;
     line-height: 100rpx;
     vertical-align: middle;
     text-align: center;
-    background: @bgc-card;
+    background: @btn;
   }
 </style>
 
 <script>
 import wepy from 'wepy'
-import { setStorage } from '../common/util'
 import { requestTableList } from '../common/common'
-import header from '../components/header'
-import inputNames from '../components/inputNames'
-import adajustByStep from '../components/adajustByStep'
+import panle from '../components/panle'
 import 'wepy-async-function'
 export default class Index extends wepy.page {
   components = {
-    IndexHeader: header,
-    inputNames: inputNames,
-    adajustByStep: adajustByStep
+    panle:panle
   }
   data={
     personList: [],
     personCount:0,
     roundCount:null,
-    activeBar: '输入报名人员',
-    titleList: ['输入报名人员', '调整人员实力'],
-    ifShowPanel:false,
-    ifOk:false
-  }
-  watch={
-    personList () {
-      setStorage('personList', this.personList)
-      setStorage('groupList',[])
-      this.personCount=this.calPersonCount()
-      this.ifOk=this.judgeIfOk()
-    },
-    roundCount(){
-      this.ifOk=this.judgeIfOk()
-    },
-    // activeBar(){
-    //   this.personList=this.personList.filter(name=>{
-    //     return name
-    //   })
-    // }
+    ifOk:false,
+    windowHeight:750
   }
   onShareAppMessage() {
     return {
       path:'/pages/index'
     }
   }
+  onLoad(){
+    this.personList=wx.getStorageSync('personList')
+    this.personCount=this.personList.length
+    this.ifOk=(this.personCount>=4 && this.roundCount && !(this.personCount*this.roundCount%4))
+    wx.getSystemInfo({
+    success(res){
+      this.windowHeight=res.windowHeight
+      console.log(this.windowHeight)
+    }
+  })
+  }
+  watch={
+    personList(personList){
+      wx.setStorageSync('personList',personList)
+    }
+  }
   events={
-    upadtaPersonList(newPersonList) {
-      this.personList = newPersonList.filter(name=>{
+    updatePersonList(personList) {
+      this.personList = personList.filter(name=>{
         return name
       })
+      this.personCount=this.personList.length
     }
   }
   methods={
-    changeRoundCount(e){
-      this.roundCount=e.detail.value
+    inputName(e){
+      let content = e.detail.value
+      let pos = e.detail.cursor
+      let reg=/[\+\＋\s]+/
+      let lastChar=content.charAt(content.length-1)
+      if(reg.test(lastChar)){
+        let names=content.split(/[\+\＋\s]+/).filter(name=>{
+          return name
+        })
+        this.personList=[...this.personList,...names]
+        return {
+          value: '',
+          cursor: 0
+        }
+      }
     },
-    toggleIfShowPanel(){
-      this.ifShowPanel=!this.ifShowPanel
+    roundCountInput(e){
+      this.roundCount=e.detail.value
+      this.ifOk=(this.personCount>=4 && this.roundCount && !(this.personCount*this.roundCount%4))
     },
     makeGroup() {
       this.getAgainstTable()
@@ -179,21 +159,6 @@ export default class Index extends wepy.page {
     numList.forEach((num,index,numList) => {
       numList[index]=nameList[num-1]
     });
-  }
-  judgeIfOk(){
-      if(this.personCount<4){
-        return false}
-      if(!this.roundCount){
-        return false}
-      if(this.personCount*this.roundCount%4!==0){
-        return false}
-      return true
-  }
-  calPersonCount(){
-    let personList=this.personList.filter(name=>{
-      return name
-    })
-    return personList.length
   }
 }
 </script>

@@ -1,7 +1,11 @@
 
 <template>
-  <view class="warp"> 
-  <repeat for="{{groupList}}" key="index" index="index" item="item" if="{{state===1}}">
+  <view class="warp">
+    <view wx:if="!groupList.length" class="totast">
+      <view class="tip">ops!您没有任何赛事信息</view>
+      <button class="gotoIndex" @tap="gotoIndex">创建赛事</button>
+    </view> 
+  <repeat for="{{groupList}}" key="index" index="index" item="item" if="{{groupList.length&&state===1}}">
     <view class="againstTable">
     <view class="againstItem {{item[6]}} {{activedItem===index?'selected':''}}" @tap.stop='selectItem' data-id="{{index}}">
       <view class="side">
@@ -38,6 +42,19 @@
 
 <style lang="less" scoped>
   @import '../common/common.less';
+  .totast{
+    .tip{
+      margin-top:200rpx;
+      margin-bottom: 50rpx;
+      padding:0 20rpx;
+      text-align: center;
+      vertical-align: middle;
+      font-size: 60rpx;
+    }
+    button{
+      width:67%;
+    }
+  }
 .againstTable{
   width:100%;
   box-sizing: border-box;
@@ -188,6 +205,11 @@ export default class GroupTable extends wepy.page {
       let index = e.currentTarget.dataset.id;
       let tag=(this.groupList[index][6]==='done'?'undone':'done')
       this.groupList[index][6]=tag
+    },
+    gotoIndex(){
+      wx.switchTab({
+        url:'/pages/index'
+      })
     }
   }
 }

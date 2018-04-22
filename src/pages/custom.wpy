@@ -1,5 +1,5 @@
 <template>
-  <view class="container">
+  <view class="container"  style="min-height:{{windowHeight}}px">
     <view class="title">赛制规制</view>
     <view class="content">
       <view class="item">采用“轮转制”，支持任意多的队员 任意多场次</view>
@@ -61,6 +61,17 @@ export default class Custom extends wepy.page {
     return {
       path:'/pages/index'
     }
+  }
+  data={
+      windowHeight:750
+  }
+  onLoad(){
+    wx.getSystemInfo({
+    success(res){
+      this.windowHeight=res.windowHeight
+      console.log(this.windowHeight)
+    }
+  })
   }
 }
 </script>

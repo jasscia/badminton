@@ -21,7 +21,7 @@ export default class extends wepy.app {
         {pagePath: 'pages/index',
           text: '参赛报名'},
         {pagePath: 'pages/main',
-          text: '赛事直播'},
+          text: '赛事详情'},
         {pagePath: 'pages/custom',
           text: '比赛说明'}
       ]
@@ -30,6 +30,17 @@ export default class extends wepy.app {
 
   onLaunch() {
     this.setKeepScreenOn()
+    wx.getSystemInfo({
+      success(res){
+        // console.log('globaldata',this.globalData)
+        // this.globalData.windowHeight=res.windowHeight
+        // this.globalData.windowWidth=res.windowWidth
+      }
+    })
+  }
+  globalData={
+    windowHeight:null,
+    windowWidth:null
   }
   setKeepScreenOn() {
     wepy.setKeepScreenOn({

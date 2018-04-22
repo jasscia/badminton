@@ -1,0 +1,167 @@
+<style lang="less" scoped>
+@import '../common/common.less';
+@font-size:36rpx;
+.panel{
+  margin-top:60rpx;
+  font-size: @font-size;
+  width:100%;
+  background: pink;
+  border-radius: 20rpx;
+}
+.panel::before{
+  content:"实力调整板";
+  display:block;
+  height: 1.2em;
+  width:250rpx;
+  margin:0 auto;
+  padding-top:10rpx;
+  text-align: center;
+  transform: translateY(-40rpx);
+  background: pink;
+}
+.item{
+  display: flex;
+  justify-content: space-between;
+  background: @bgc-card;
+  width:630rpx;
+  margin:30rpx 60rpx;
+  height:100rpx;
+  line-height: 100rpx;
+  box-sizing: border-box;
+  vertical-align: middle;
+  border-radius: 20rpx;
+  padding:0 15rpx;
+}
+.order::before{
+  content: 'NO.';
+  font-size: 60%;
+  font-style: italic;
+}
+.name,.order,.remove{
+  text-align: center;
+  height:100rpx;
+  line-height: 100rpx;
+  vertical-align: middle;
+  box-sizing: border-box;
+}
+.remove{
+  width:80rpx;
+  height:80rpx;
+  line-height: 80rpx;
+  vertical-align: middle;
+  margin:10rpx 0;
+  text-align: center;
+  border-radius: 50%;
+  font-weight: 900;
+  background: tomato;
+}
+.remove::after{
+  content: "\e648";
+  font-family:"iconfont";
+  margin-top:20rpx;
+  font-size: 80rpx;
+}
+
+</style>
+<template>
+  <movable-area class="panel"
+          style="height:{{personList.length*unitHeight+30}}rpx">
+      <repeat for="{{personList}}" key="item" y="{{y}}">
+        <movable-view class="item" wx:if="{{item}}" direction="vertical"
+           @change="onchange" data-index="{{index}}"
+           style="top:{{index*unitHeight}}rpx">
+          <text class="order">{{index+1}}</text>
+          <input class="name" value="{{item}}" @input="editName" data-index="{{index}}" />
+          <button class="icon remove" @tap="removeName" data-index="{{index}}"></button>
+        </movable-view>
+      </repeat>
+  </movable-area>
+</template>
+
+<script>
+import wepy from 'wepy'
+import 'wepy-async-function'
+export default class Panel extends wepy.component {
+  props = {
+    personList: {
+      type: Array,
+      default: [],
+    }
+  }
+  data={
+    startTime:null,
+    timer:null,
+    unitHeight:130,
+    windowWidth:null,
+    y:0
+  }
+  
+  onLoad(){
+    wx.getSystemInfo({
+      success:(res)=>{
+        this.windowWidth=res.windowWidth
+      }
+    })
+  }
+  methods = {
+    onchange(e){
+      if(!this.startTime){
+        this.startTime=e.timeStamp
+      }
+      if(e.timeStamp-this.startTime<100){
+        this.startTime=e.timeStamp
+        clearTimeout(this.timer)
+        this.timer=null
+        this.timer=setTimeout(() => {
+          let index=e.target.dataset.index
+          console.log('index',index,'y',e.detail.y)
+          this.startTime=null
+          this.$emit('updatePersonList',this.updateOrder(e.detail.y,this.personList.slice(),index))
+          // this.personList=this.updateOrder(e.detail.y,this.personList,index)
+          // this.startTime=null
+          // this.$emit('updatePersonList',this.personList)
+          this.y=0;
+          this.$apply()
+        }, 200);
+      }
+    },
+    editName(e){
+      this.personList[e.target.dataset.index]=e.detail.value
+      this.$emit('updatePersonList',this.personList)
+    },
+    removeName(e){
+      this.personList.splice(e.currentTarget.dataset.index,1)
+      this.$emit('updatePersonList',this.personList)
+    }
+  }
+  pxTorpx(px){
+    let rpx=750/this.windowWidth*px
+    return rpx
+  }
+
+updateOrder(y,arr,preIndex,windowWidth){
+        y=this.pxTorpx(y)//转换单位
+        let unitY_num=Math.round(y/this.unitHeight)
+        let curIndex=preIndex+unitY_num
+        let perValue=arr[preIndex]
+        if(y>0){
+          curIndex=Math.min(curIndex,arr.length-1)
+        }
+        if(y<0){
+          curIndex=Math.max(curIndex,0)
+        }
+        if(unitY_num<0){//如果index 从大到小，则先删除大位（原来的）,再添加到新的index位置
+          arr.splice(preIndex,1)
+          arr.splice(curIndex,0,perValue)
+        }
+        if(unitY_num>0){//如果index 从小到大，则先增加大位（新的）,再删除旧位index位置
+          arr.splice(curIndex+1,0,perValue)
+          arr.splice(preIndex,1)
+        }
+        // this.y=0
+        console.log(arr)
+        return arr
+  }
+}
+</script>
+ 
