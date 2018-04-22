@@ -1,49 +1,85 @@
 <template>
   <view class="container" style="min-height:{{windowHeight}}px">
-    <view class="tip">请先按照队员的能力由强到弱依次排序后，再生成对阵表，
-                      这样有利于避免一些尴尬的情况(如两强vs两弱)，
-                      从而生成更合理的对阵表</view>
+    <view class="tophead">
+      <text class="title">报名表</text>
+      <button class="button">快速输入</button>
+    </view>
+    <view class="tip">
+      <text>请按队员能力由强到弱排序，这样有利于生成更合理的对阵表,避免一些尴尬的情况 如两强vs两弱。</text>
+    </view>
+    <view>
+      <panle wx:if="{{personList.length}}" :personList.sync="personList"></panle>
+    </view>
+    <view class="inputGroup round">
+      <view class="title">每个队员的比赛场数</view>
+      <input type="number" class="roundCount" @input="roundCountInput" 
+          placeholder="要求与人数的乘积能被4整除"
+          placeholder-style="font-weight:700;color:tomato;font-size:24rpx"/>
+    </view>
+    <button class="makeGroup" @tap="makeGroup" 
+            disabled="{{!ifOk}}">生成对阵表</button>
+
     <view  class="inputGroup names">
       <text class="title">人员报名</text>
       <input type="text" class="roundCount" @input="inputName" 
             placeholder="这里输入参赛队员姓名，用 '+' 或 '空格' 结束" 
             placeholder-style="font-weight:200;color:red;font-size:24rpx"/>
     </view>
-    <view class="inputGroup round">
-      <text class="title">场次设定</text>
-      <input type="number" class="roundCount" @input="roundCountInput" 
-          placeholder="这里输入每人场次,要求与人数的乘积能被4整除"
-          placeholder-style="font-weight:200;color:red;font-size:24rpx"/>
-    </view>
-    <button class="makeGroup" @tap="makeGroup" 
-            disabled="{{!ifOk}}">生成对阵表</button>
-    <panle wx:if="{{personList.length}}" :personList.sync="personList"></panle>
+    
+    
   </view>
 </template>
 <style lang="less" scoped>
 @import '../common/common.less';
-.tip{
+.tophead{
+  background: @bgc-card;
+  padding-top:60rpx;
+  border-bottom: 1rpx solid @font-side;
+  width:750rpx;
+  text-align: center;
+  font-size: 60rpx;
+  font-weight: 900;
+  position: relative;
+  .button{
+    height:60rpx;
+    line-height: 60rpx;
+    width:130rpx;
+    margin:0;
+    font-size:28rpx;
+    text-align: center;
+    position: absolute;
+    right:60rpx;
+    bottom:10rpx;
+    padding:5rpx;
+  }
+}
+  .tip{
   font-size: 28rpx;
-  color:#000;
   line-height: 50rpx;
   padding:20rpx;
-  font-weight: 200;
-  background: @btn;
-}
+  font-weight: 700;
+  background: @bgc-card
+  }
 .inputGroup{
   display: flex;
-  font-size:32rpx;
-  text-align:center;
-  margin-bottom:0;
-  margin-top:5rpx;
+  font-size:28rpx;
+  font-weight: 700;
   background:@bgc-card;
-  padding:20rpx;
+  padding:auto 20rpx;
+  height:120rpx;
+  line-height: 120rpx;
+  vertical-align: middle;
   input{
-    flex:1; 
-  }
-  .title{
-    padding-right:10rpx;
-    border-right:4rpx solid @bgc;
+    flex:1;
+    margin-right:60rpx;
+    border:1rpx solid @bgc;
+    border-radius: 5rpx;
+    height:80rpx;
+    line-height: 80rpx;
+    margin:10rpx 20rpx;
+    padding:auto 20rpx;
+    
+    
   }
 }
   .makeGroup{

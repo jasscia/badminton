@@ -14,7 +14,7 @@ export default class extends wepy.app {
       backgroundColor: '#eee',
       navigationBarTextStyle: 'black',
       navigationBarBackgroundColor: '#eee',
-      navigationBarTitleText: 'CGGC羽球赛'
+      navigationBarTitleText: '羽毛球业余双打排阵与计分'
     },
     tabBar: {
       list: [
