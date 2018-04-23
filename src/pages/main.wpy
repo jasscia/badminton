@@ -46,7 +46,7 @@ export default class Live extends wepy.page {
   onLoad(options){
     this.groupList=wx.getStorageSync('groupList')
     wx.getSystemInfo({
-    success(res){
+    success:(res)=>{
       this.windowHeight=res.windowHeight
       console.log(this.windowHeight)
     }

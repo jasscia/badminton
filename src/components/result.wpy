@@ -1,21 +1,25 @@
 <!--pages/result/result.wxml-->
 <template>   
   <view class="wrapper">
-    <!-- <button wx:if="{{ifShowBtn}}" @tap="getResult">获取排名结果</button> -->
-    <view class="itemHead">
-      <view class='item1'>姓名</view>
-      <view class='item3'>胜-负</view>
-      <view class='item2'>净胜分</view>
-      <view class='item4'>名次</view>
-    </view>
-    <repeat wx:for="{{result}}" wx:key="{{index}}">
-      <view  class="item itemBody">
-        <view class='item1 NO-{{item[4]}}'>{{index}}</view>
-        <view class='item3'>{{item[1]}}-{{item[2]}}</view>
-        <view class='item2'>{{item[0]}}</view>            
-        <view class='item4 NO-{{item[4]}}'>{{item[4]}}</view>
+    <view wx:if="{{!groupList.length}}">
+      <noMatchInresult></noMatchInresult>
+    </view> 
+    <block wx:else>
+      <view class="itemHead">
+        <view class='item1'>姓名</view>
+        <view class='item3'>胜-负</view>
+        <view class='item2'>净胜分</view>
+        <view class='item4'>名次</view>
       </view>
-  </repeat>
+      <repeat wx:for="{{result}}" wx:key="{{index}}">
+        <view  class="item itemBody">
+          <view class='item1 NO-{{item[4]}}'>{{index}}</view>
+          <view class='item3'>{{item[1]}}-{{item[2]}}</view>
+          <view class='item2'>{{item[0]}}</view>            
+          <view class='item4 NO-{{item[4]}}'>{{item[4]}}</view>
+        </view>
+      </repeat>
+    </block>
   </view>
 </template>
 <style lang="less" scoped>
@@ -77,7 +81,11 @@
 </style>
 <script>
 import wepy from 'wepy';
+import noMatch from "./noMatch";
 export default class Result extends wepy.page  {
+  components={
+    noMatchInresult:noMatch
+  }
   props= {
     groupList: {
       type:Array,

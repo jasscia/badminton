@@ -1,0 +1,138 @@
+<template>
+  <view class="container" style="min-height:{{windowHeight}}px">
+    <view class="warp">
+      <view class="tophead">
+        <text class="title">快速输入</text>
+      </view>
+      <view class="tip">
+        <text>是针对在微信后QQ上通过"跟帖"方式报名，比如：</text>
+        <text class="em">明天晚上打球报名：小白+高手+舞步+甜心+...</text>
+        <text>只需要将名字序列复制到下面的文本框，即可完成快速报名</text>
+      </view>
+      <textarea class="textarea" @input="userInput" auto-height auto-focus value="{{inputString}}"
+               cursor-spacing="{{250*windowHeight/750}}">
+      </textarea>
+      <view class="btnGroup">
+        <button @tap="cancel">取消</button>
+        <button type="primary" @tap="submit">确定</button>
+        <button @tap="reset">重置</button>
+      </view>
+    </view>
+  </view>
+</template>
+<style lang="less" scoped>
+@import '../common/common.less';
+.container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.warp{
+  background:@bgc-card;
+  box-sizing: border-box;
+  border-bottom:2rpx solid @font;
+  border-top:2rpx solid @font;
+  font-size: 28rpx;
+}
+.tophead{
+  padding-top:36rpx;
+  text-align: center;
+  font-size: 48rpx;
+  font-weight: 900;
+}
+.tip{
+  line-height: 50rpx;
+  padding:10rpx;
+  font-weight: 700;
+  .em{
+    color:@btn;
+    display: block;
+  }
+}
+.textarea{
+  margin:10rpx 40rpx;
+  width:630rpx;
+  padding:20rpx;
+  min-height: 200rpx;
+  line-height: 50rpx;
+  border:4rpx solid @bgc;
+  background: #f8f8f8;
+  font-size: 32rpx;
+  display: block;
+}
+.btnGroup{
+  display: flex;
+  justify-content: space-around;
+  button{
+    padding:0 20rpx;
+    font-size: 32rpx;
+  }
+  margin:30rpx;
+}
+</style>
+
+<script>
+import wepy from 'wepy'
+import 'wepy-async-function'
+export default class inputNames extends wepy.page {
+  data={
+    inputString: null,//用户输入的字符串
+    inputArr:[],//用户输入后 分解成数组
+    windowHeight:750
+  }
+  onLoad(){
+    let initalData=wx.getStorageSync('personList').filter(name=>{
+      return name
+    })//首先拿到用户以前的输入 防止重复进来 以前输入清空的现象
+    this.inputString=initalData.join('+')
+    this.inputArr=this.inputString.split(/[\+\＋\s]+/).filter(name=>{
+          return name
+        })
+    wx.getSystemInfo({
+    success:(res)=>{
+      this.windowHeight=res.windowHeight
+      console.log(this.windowHeight)
+      }
+    })
+  }
+  
+  methods={
+    userInput(e){
+      this.inputString=e.detail.value
+      this.inputArr=this.inputString.split(/[\+\＋\s]+/).filter(name=>{
+          return name
+        })
+    },
+    cancel(){
+      wx.switchTab({
+        url:'/pages/index'
+      })
+    },
+    reset(e){
+      this.inputString=''
+      this.inputArr=[]
+      return {
+        value:'',
+        cursor:0
+      }
+    },
+    submit(e){
+      if(this.inputArr.length<4){
+        wx.showToast({
+          title:"人数不能少于4",
+          type:'none'
+        })
+        return
+      }
+      wx.setStorageSync('personList',this.inputArr)
+      wx.showToast({
+        type:"success",
+        type:'none'
+      })
+      wx.switchTab({
+        url:'/pages/index'
+      })
+    }
+  }
+}
+</script>

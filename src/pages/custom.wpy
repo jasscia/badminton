@@ -67,7 +67,7 @@ export default class Custom extends wepy.page {
   }
   onLoad(){
     wx.getSystemInfo({
-    success(res){
+    success:(res)=>{
       this.windowHeight=res.windowHeight
       console.log(this.windowHeight)
     }

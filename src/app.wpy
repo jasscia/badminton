@@ -7,7 +7,8 @@ export default class extends wepy.app {
     pages: [
       'pages/index',
       'pages/main',
-      'pages/custom'
+      'pages/custom',
+      'pages/inputNames'
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -28,24 +29,15 @@ export default class extends wepy.app {
     }
   }
 
-  onLaunch() {
-    this.setKeepScreenOn()
-    wx.getSystemInfo({
-      success(res){
-        // console.log('globaldata',this.globalData)
-        // this.globalData.windowHeight=res.windowHeight
-        // this.globalData.windowWidth=res.windowWidth
-      }
-    })
-  }
-  globalData={
-    windowHeight:null,
-    windowWidth:null
-  }
   setKeepScreenOn() {
     wepy.setKeepScreenOn({
       keepScreenOn: true
     })
+  }
+  onLaunch(){
+    if(!wx.getStorageSync('personList')){
+      wx.setStorageSync('personList',['小白','高手','舞步','甜心'])
+    }
   }
 }
 </script>

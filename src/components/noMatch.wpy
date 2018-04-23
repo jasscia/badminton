@@ -1,0 +1,38 @@
+
+<template>
+    <view class="totast">
+      <view class="tip">ops!您还没有生成对阵表</view>
+      <button class="gotoIndex" @tap="gotoIndex">去生成对阵表</button>
+    </view> 
+</template>
+
+<style lang="less" scoped>
+  @import '../common/common.less';
+  .totast{
+    .tip{
+      margin-top:200rpx;
+      margin-bottom: 50rpx;
+      padding:0 20rpx;
+      text-align: center;
+      vertical-align: middle;
+      font-size: 60rpx;
+    }
+    button{
+      width:67%;
+    }
+  }
+</style>
+
+
+<script>
+import wepy from 'wepy';
+export default class noMatch extends wepy.page {
+  methods={
+    gotoIndex(){
+      wx.switchTab({
+        url:'/pages/index'
+      })
+    }
+  }
+}
+</script>

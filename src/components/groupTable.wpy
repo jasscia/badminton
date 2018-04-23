@@ -1,60 +1,45 @@
 
 <template>
   <view class="warp">
-    <view wx:if="!groupList.length" class="totast">
-      <view class="tip">ops!您没有任何赛事信息</view>
-      <button class="gotoIndex" @tap="gotoIndex">创建赛事</button>
+    <view wx:if="{{!groupList.length}}">
+      <noMatchIntable></noMatchIntable>
     </view> 
-  <repeat for="{{groupList}}" key="index" index="index" item="item" if="{{groupList.length&&state===1}}">
-    <view class="againstTable">
-    <view class="againstItem {{item[6]}} {{activedItem===index?'selected':''}}" @tap.stop='selectItem' data-id="{{index}}">
-      <view class="side">
-        <view class="name">{{item[0]}}</view>
-        <view class="name">{{item[1]}}</view>
-      </view>
-      <!-- <view class="score"> -->
-      <view class="handleBtnGroup">
-        <button @tap='scoreChange' data-id="{{index}}" data-side="A" data-way="more"  hover-class="hover">+</button>
-        <button @tap='scoreChange' data-id="{{index}}" data-side="A" data-way="less"  hover-class="hover">-</button>
-      </view>
-      <view class="score scoreL">{{item[4]}}</view>
-      <view class="sub" bindtap="finish" data-id="{{index}}">
-        <view>第{{index+1}}场</view>
-        <view wx:if="{{item[6]==='undone'}}"  class="finishBtn">结束比赛</view> 
-        <view wx:else  class="finishBtn">查看比赛</view>
-      </view>
-      <view class="score scoreR">{{item[5]}}</view>
-      <view class="handleBtnGroup">
-        <button @tap='scoreChange' data-id="{{index}}" data-side="B" data-way="more" hover-class="hover">+</button>
-        <button @tap='scoreChange' data-id="{{index}}" data-side="B" data-way="less"  hover-class="hover">-</button>
-      </view>
-      <!-- </view> -->
-      <view class="side">
-        <view class="name">{{item[2]}}</view>
-        <view class="name">{{item[3]}}</view>
+    <repeat else for="{{groupList}}" key="index" index="index" item="item">
+      <view class="againstTable">
+      <view class="againstItem {{item[6]}} {{activedItem===index?'selected':''}}" @tap.stop='selectItem' data-id="{{index}}">
+        <view class="side">
+          <view class="name">{{item[0]}}</view>
+          <view class="name">{{item[1]}}</view>
+        </view>
+        <!-- <view class="score"> -->
+        <view class="handleBtnGroup">
+          <button @tap='scoreChange' data-id="{{index}}" data-side="A" data-way="more"  hover-class="hover">+</button>
+          <button @tap='scoreChange' data-id="{{index}}" data-side="A" data-way="less"  hover-class="hover">-</button>
+        </view>
+        <view class="score scoreL">{{item[4]}}</view>
+        <view class="sub" bindtap="finish" data-id="{{index}}">
+          <view>第{{index+1}}场</view>
+          <view wx:if="{{item[6]==='undone'}}"  class="finishBtn">结束比赛</view> 
+          <view wx:else  class="finishBtn">查看比赛</view>
+        </view>
+        <view class="score scoreR">{{item[5]}}</view>
+        <view class="handleBtnGroup">
+          <button @tap='scoreChange' data-id="{{index}}" data-side="B" data-way="more" hover-class="hover">+</button>
+          <button @tap='scoreChange' data-id="{{index}}" data-side="B" data-way="less"  hover-class="hover">-</button>
+        </view>
+        <!-- </view> -->
+        <view class="side">
+          <view class="name">{{item[2]}}</view>
+          <view class="name">{{item[3]}}</view>
+        </view>
       </view>
     </view>
-  </view>
-  </repeat>
-  <view class="err" if="{{state!==1}}">{{msg[state]}}</view>
+    </repeat>
   </view>
 </template>
 
 <style lang="less" scoped>
   @import '../common/common.less';
-  .totast{
-    .tip{
-      margin-top:200rpx;
-      margin-bottom: 50rpx;
-      padding:0 20rpx;
-      text-align: center;
-      vertical-align: middle;
-      font-size: 60rpx;
-    }
-    button{
-      width:67%;
-    }
-  }
 .againstTable{
   width:100%;
   box-sizing: border-box;
@@ -171,7 +156,11 @@ padding:20px 0;
 
 <script>
 import wepy from 'wepy';
+import noMatch from './noMatch';
 export default class GroupTable extends wepy.page {
+  components={
+    noMatchIntable:noMatch
+  }
   props={
     groupList:{
       type:Array,
@@ -181,7 +170,6 @@ export default class GroupTable extends wepy.page {
   data={
     activedItem:null
   }
-  
   watch={
     groupList(){
       this.$emit('updataGroupList',this.groupList)
