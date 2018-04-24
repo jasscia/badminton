@@ -12,14 +12,14 @@
 ### 图片
 <div style="display:flex;flex-warp:warp;margin:40px">
 <div>调整实力</div>
-<img src="./image/page1.jpeg" height = "150" style="margin:0 10px"/>
+<img src="./src/image/page1.jpeg" height = "150" style="margin:0 10px"/>
 <div>报名</div>
-<img src="./image/page2.jpeg" height = "150" style="margin:0 10px"/>
+<img src="./src/image/page2.jpeg" height = "150" style="margin:0 10px"/>
 </div>
 <div style="display:flex;flex-warp:warp;margin:40px">
 <div>对阵方案</div>
-<img src="./image/page3.jpeg" height = "150" style="margin:0 10px"/>
+<img src="./src/image/page3.jpeg" height = "150" style="margin:0 10px"/>
 <div>排名定位</div>
-<img src="./image/page4.jpeg" height = "150" style="margin:0 10px"/>
+<img src="./src/image/page4.jpeg" height = "150" style="margin:0 10px"/>
 </div>
 

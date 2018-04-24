@@ -112,7 +112,7 @@ export default class Panel extends wepy.component {
         this.timer=null
         this.timer=setTimeout(() => {
           let index=e.target.dataset.index
-          console.log('index',index,'y',e.detail.y)
+          // console.log('index',index,'y',e.detail.y)
           this.startTime=null
           this.$emit('updatePersonList',this.updateOrder(e.detail.y,this.personList.slice(),index))
           // this.personList=this.updateOrder(e.detail.y,this.personList,index)

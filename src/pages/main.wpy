@@ -40,7 +40,8 @@ export default class Live extends wepy.page {
   }
   onShareAppMessage() {
     return {
-      path:'/pages/index'
+      path:'/pages/index',
+      imageUrl:'/image/share.png'
     }
   }
   onLoad(options){
@@ -48,7 +49,7 @@ export default class Live extends wepy.page {
     wx.getSystemInfo({
     success:(res)=>{
       this.windowHeight=res.windowHeight
-      console.log(this.windowHeight)
+      // console.log(this.windowHeight)
     }
   })
   }

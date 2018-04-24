@@ -96,14 +96,15 @@ export default class Index extends wepy.page {
   }
   onShareAppMessage() {
     return {
-      path:'/pages/index'
+      path:'/pages/index',
+      imageUrl:'/image/share.png'
     }
   }
   onLoad(){
     wx.getSystemInfo({
       success:(res)=>{
           this.windowHeight=res.windowHeight
-          console.log(this.windowHeight)
+          // console.log(this.windowHeight)
         }
     })
     let initalData=wx.getStorageSync('personList').filter(name=>{

@@ -204,7 +204,7 @@ export default class panelWithstep extends wepy.component {
     }
     if (way === 'add') {
       this.addBefore = index
-      console.log(index)
+      // console.log(index)
       array.splice(index,0,null)
     }
     if (way === 'sureAdd') {

@@ -91,7 +91,7 @@ export default class inputNames extends wepy.page {
     wx.getSystemInfo({
     success:(res)=>{
       this.windowHeight=res.windowHeight
-      console.log(this.windowHeight)
+      // console.log(this.windowHeight)
       }
     })
   }

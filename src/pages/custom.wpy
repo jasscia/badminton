@@ -59,7 +59,8 @@ import wepy from 'wepy'
 export default class Custom extends wepy.page {
   onShareAppMessage() {
     return {
-      path:'/pages/index'
+      path:'/pages/index',
+      imageUrl:'/image/share.png'
     }
   }
   data={
