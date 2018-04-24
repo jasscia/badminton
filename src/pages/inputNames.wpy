@@ -10,7 +10,7 @@
         <text>只需要将名字序列复制到下面的文本框，即可完成快速报名</text>
       </view>
       <textarea class="textarea" @input="userInput" auto-height auto-focus value="{{inputString}}"
-               cursor-spacing="{{250*windowHeight/750}}">
+               cursor-spacing="{{180*windowHeight/750}}">
       </textarea>
       <view class="btnGroup">
         <button @tap="cancel">取消</button>
