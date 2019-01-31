@@ -19,6 +19,7 @@
     </view>
     <button class="makeGroup" @tap="makeGroup" type="primary"
             disabled="{{!ifOk}}">生成对阵表</button>
+    <text wx:if="tips" class="tips">{{tips}}</text>
   </view>
 </template>
 <style lang="less" scoped>
@@ -74,11 +75,16 @@
   .makeGroup{
     margin:40rpx auto;
   }
+  .tips {
+    color: red;
+    font-size: 40px;
+  }
 </style>
 
 <script>
 import wepy from 'wepy'
 import { requestTableList } from '../common/common'
+import badmin from '../common/makeGroup'
 import panle from '../components/panle'
 import panleWithstep from "../components/panleWithstep";
 import 'wepy-async-function'
@@ -92,6 +98,7 @@ export default class Index extends wepy.page {
     personCount:4,
     roundCount:null,
     ifOk:false,
+    tips: '',
     windowHeight:750
   }
   onShareAppMessage() {
@@ -129,7 +136,7 @@ export default class Index extends wepy.page {
     this.ifOk=(this.personCount>=4 && this.roundCount && !(this.personCount*this.roundCount%4))
   }
   // watch={
-    
+
   // }
   events={
     updatePersonList(personList) {
@@ -197,8 +204,23 @@ export default class Index extends wepy.page {
       }
     }
     //请求 对阵表
-    let groupList=await requestTableList(this.personCount,this.roundCount)
+    //let groupList=await requestTableList(this.personCount,this.roundCount)
     //将请求到的 只有数字的对阵表 转换成带人名的 对阵表，并在后面加上 分数 和完成状态
+    let groupObj = badmin(this.personCount, this,roundCount).result
+    if (typeof groupObj == 'string') {
+      this.tips = groupObj
+      return
+    } else {
+      this.tips = ''
+    }
+    let groupList = []
+    let len = groupObj[0].length
+    for (let i=0; i< len; i++) {
+      groupList[i] = []
+      for (let j=0; j<4; j++) {
+        groupList[i][j] = groupObj[j][i])
+      }
+    }
     groupList.forEach((numList,index,groupList)=>{
       // console.log('index',index+1,groupList[index].slice())
       this.transformNumToPersonName(numList,reversePersonList)
@@ -215,11 +237,11 @@ export default class Index extends wepy.page {
           url:'/pages/main'
         })
       }
-    })       
+    })
   }
   transformNumToPersonName(numList,nameList){
     numList.forEach((num,index,numList) => {
-      numList[index]=nameList[num-1]
+      numList[index]=nameList[num]
     });
   }
 }

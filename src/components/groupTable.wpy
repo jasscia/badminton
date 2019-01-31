@@ -3,7 +3,7 @@
   <view class="warp">
     <view wx:if="{{!groupList.length}}">
       <noMatchIntable></noMatchIntable>
-    </view> 
+    </view>
     <repeat else for="{{groupList}}" key="index" index="index" item="item">
       <view class="againstTable">
       <view class="againstItem {{item[6]}} {{activedItem===index?'selected':''}}" @tap.stop='selectItem' data-id="{{index}}">
@@ -19,7 +19,7 @@
         <view class="score scoreL">{{item[4]}}</view>
         <view class="sub" bindtap="finish" data-id="{{index}}">
           <view>第{{index+1}}场</view>
-          <view wx:if="{{item[6]==='undone'}}"  class="finishBtn">结束比赛</view> 
+          <view wx:if="{{item[6]==='undone'}}"  class="finishBtn">结束比赛</view>
           <view wx:else  class="finishBtn">查看比赛</view>
         </view>
         <view class="score scoreR">{{item[5]}}</view>
@@ -96,10 +96,10 @@ padding:20px 0;
     }
     .score{
       height:160rpx;
-      text-align: center; 
+      text-align: center;
       line-height: 160rpx;
-      font-size:60rpx; 
-      background:@btn; 
+      font-size:60rpx;
+      background:@btn;
     }
     .scoreL{
       border-bottom-left-radius: 50%;
@@ -117,9 +117,9 @@ padding:20px 0;
         margin:5rpx;
         background: gold;
         border-radius: 20%;
-        } 
+        }
     }
-  }  
+  }
 }
 .done::before{
   content: '';
