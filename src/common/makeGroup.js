@@ -1,6 +1,7 @@
 import {htr} from './util';
   //方案1-Badmin结束
 export default  function Badmin(personNum,roundPer){
+    console.log('get parmas', personNum, roundPer, ...arguments)
     this.personNum = personNum;//参赛人数
     this.roundPer = roundPer;//预设的 每人参赛场数
     this.maxTime = Math.ceil(roundPer / (personNum - 1), 0);//为了公平，设定的 两人组队teamMeat 在整个过程中 出现的最多次数
